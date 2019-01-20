@@ -25,6 +25,7 @@ import { ViewclosedComponent } from './viewclosed/viewclosed.component';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { UserViewComponent } from './user-view/user-view.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
+import { UserFeedbackComponent } from './user-feedback/user-feedback.component';
 
 
 library.add(faCoffee);
@@ -42,7 +43,8 @@ library.add(faCoffee);
     UnitTestComponent,
     ViewclosedComponent,
     UserViewComponent,
-    UserRegisterComponent
+    UserRegisterComponent,
+    UserFeedbackComponent
   ],
 
   imports: [BrowserModule,
