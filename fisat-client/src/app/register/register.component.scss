@@ -1,0 +1,53 @@
+
+input[type=text], select {
+    width: 100%;
+    padding: 6px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  input[type=submit] {
+    width: 100%;
+    // background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+  
+  .div-container {
+    border-radius: 5px;
+    background-color: rgb(152, 159, 161);
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
+    
+  }
+  .btn-div{
+    display:block;
+	margin: 5%;
+    margin-left: 20%;
+  }
+  .text-style{
+    font-size: 211%;
+    font-style: unset;
+    color: seagreen;
+  }
+  .btn-style{
+    border-radius: 84%;
+    size: 0%;
+    background-color: #4CAF50; /* Green */
+  border: none;
+  height: 25px;
+  width: 25px;
+  }

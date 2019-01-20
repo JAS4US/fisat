@@ -1,0 +1,69 @@
+
+ 
+
+
+<div class="" id="container" >
+    <div class="div_firstHalf top left ">
+      <img src="/assets/images/iconfinder.png" alt="no image" class="img_divfirst">
+    </div>
+    <div class="div_secondHalf top ">
+        <form (ngSubmit)="onRegisterSubmit(newVals)" style="position:relative;left:50px;">
+            <br><br>
+            <div class="form-group row">
+                <!-- <label for="exampleFormControlSelect1" class="textStyle">Select Module Type</label> -->
+              <div class="col-sm-10">
+                
+                <select class="form-control selStyle"  id="exampleFormControlSelect1" [(ngModel)]="selectedValue"  [ngModelOptions]="{standalone: true}" required>
+                    <option selected="selected" value="null">Select Module Type</option>
+                    <option *ngFor="let m of modul" >{{m.moduleType}}</option>
+                </select>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <!-- <label for="exampleFormControlSelect1" class="textStyle">Select Complaint Type</label> -->
+              <div class="col-sm-10">
+                <select class="form-control selStyle" id="exampleFormControlSelect1" [(ngModel)]="selectedValue_comp" [ngModelOptions]="{standalone: true}" required>
+                    <option selected="selected" value="null">Select Complaint Type</option>
+                    <option *ngFor="let c of complaint" >{{c.complaintType}}</option>
+                    <option value="Others">Others</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+                <!-- <label for="exampleFormControlSelect1" class="textStyle">Select Complaint Type</label> -->
+              <div class="col-sm-10">
+                  <input list="browsers" name="browser"  [(ngModel)]="txt_others"  *ngIf="selectedValue_comp=='Others'"  [ngModelOptions]="{standalone: true}" maxlength="25" class = "form-control selStyle txtAreaStyle">
+                  <datalist id="browsers"  class="selStyle" >
+                      <option *ngFor="let f of comp_others">{{f.complaintothers}}</option>
+                      
+                  </datalist>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <!-- <label for="exampleFormControlTextarea1" class="textStyle">Enter Error Details</label> -->
+              <div class="col-sm-10">
+                <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="txt_description" [ngModelOptions]="{standalone: true}" placeholder="Error Details"></textarea>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <!-- <label for="exampleFormControlInput1" class="textStyle">Enter the error Path</label> -->
+              <div class="col-sm-10">
+                <input type="text" class="form-control  selStyle" id="exampleFormControlInput1" [(ngModel)] = "txt_error" [ngModelOptions]="{standalone: true}" placeholder = "Error Path : eg:-/academics/student" style="border-color: #0099cc;">
+              </div>
+            </div>
+            
+           
+            <div class="form-group row">
+              <div class="col-sm-10 btn-div" >
+                <button class="btn btn-danger btn-block" type="submit">Register</button>
+                <!-- <button type="submit" class="btn btn-lg btn-outline-primary modal-btn" >Regsiter </button> -->
+              </div>
+            </div>
+          </form>
+    </div>
+    
+ </div> 
+

@@ -1,0 +1,47 @@
+  
+<table class="table responstable">
+  <thead>
+    <tr class=" rowstyle tr-style">
+      <th scope="col" class="thstyle">Serial No.</th>
+      <!-- <th scope="col">to be hidden</th> -->
+      <th scope="col"class="thstyle">ModuleName</th>
+      <th scope="col"class="thstyle">ComplaintName</th>
+      <th scope="col"class="thstyle">Description</th>
+      <th scope="col"class="thstyle">ComplaintDate</th>
+      <th scope="col"class="thstyle">ErrorPath</th>
+      <th scope="col"class="thstyle">Remarks</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="rowstyle" *ngFor="let user of closedComp;let i = index">
+      <th scope="row">{{i+1}}</th>
+      <!-- <td>{{user.complaintId}}</td> -->
+      <td class="tdstyle">{{user.module_type}}</td>
+            <td class="tdstyle">{{user.complaint_type}}</td>
+            <td class="tdstyle">{{user.description}}</td>
+            <td class="tdstyle">{{user.complaintDate}}</td>
+            <td class="tdstyle">{{user.error_path}}</td>
+            <td class="tdstyle">{{user.remarks}}</td>
+      
+      
+    </tr>
+ 
+  </tbody>
+</table>
+
+<!--MODAL.....REOPEN-->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-register></app-register>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>

@@ -1,0 +1,36 @@
+
+<app-layout>       
+      
+
+          <div class="container">	
+				
+                        <div class="tab-wrap">
+                        
+                                <input type="radio" id="tab1" name="tabGroup1" class="tab" checked>
+                                <label for="tab1" class="open">Opened</label>
+        
+                                <input type="radio" id="tab2" name="tabGroup1" class="tab completed">
+                                <label for="tab2" class="completed">Completed</label>
+        
+                                <input type="radio" id="tab3" name="tabGroup1" class="tab closed">
+                                <label for="tab3" class="closed">Closed</label>
+        
+                                <div class="tab__content">
+                                                <app-view></app-view> 
+                                </div>
+        
+                                <div class="tab__content">
+                                                <app-view-completed></app-view-completed>
+                                </div>
+        
+                                <div class="tab__content">
+                                               <app-viewclosed></app-viewclosed>
+                                </div>
+        
+                        </div>
+        
+                        
+                </div>	
+        
+
+</app-layout>

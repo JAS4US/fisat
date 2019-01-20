@@ -1,0 +1,29 @@
+.container-style{
+   align-self: center;
+   margin-top: 10%;
+  // background-color:#76b852;
+   background-color: #5ab743b0;
+   position: fixed;
+}
+.container{
+width: 57%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: 15%;
+    height: 57%;
+}
+
+body
+{
+  padding: 30px;
+  background-color: #fcfcfc;
+}
+.center-div
+{
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+  background-color: #ccc;
+  border-radius: 3px;
+}

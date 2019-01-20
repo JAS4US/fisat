@@ -1,0 +1,250 @@
+<app-layout></app-layout>
+<!-- <button type="button" class="btn btn-info modal-btn" (click)="open(content)">Regsiter Here</button> -->
+<!-- <button class="btn btn-lg btn-outline-primary modal-btn" (click)="open(content)">Regsiter Here</button> -->
+<div class="form-group row">
+  <div class="col-sm-10 btn-div" >
+    <!-- <button class="btn btn-danger btn-block" type="submit">Register</button> -->
+    <button type="button" class="btn btn-info modal-btn regbutton" (click)="open(content)">Regsiter Here</button>
+  </div>
+</div>
+<ng-template #content let-modal>
+   
+
+    <div class="modal-header header-style">
+     <h5 class="modal-title head-style" id="modal-register-title">Register Here</h5> 
+      <button type="button" class="close header-style" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div> 
+    <div class="modal-body">
+<!--new register-->
+
+<div class="" id="container" >
+    <div class="div_firstHalf top left .div_firstHalf">
+      <img src="/assets/images/register-icon.png" alt="no image" class="img_divfirst">
+    </div>
+    <div class="div_secondHalf top ">
+        <form (submit)="onRegisterSubmit($event)" style="position:relative;left:50px;">
+            <br><br>
+            <div class="form-group row">
+                <!-- <label for="exampleFormControlSelect1" class="textStyle">Select Module Type</label>  -->
+              <div class="col-sm-10">
+                <!--testssss-->
+                <select  id="checkout_city_id" class="form-control checkout-select  selRegStyle  validate[required]">
+                    <option>Select Module Type </option>
+                    <option *ngFor="let m of modul" >{{m.moduleType}}</option>
+                 </select>
+      
+               
+              </div>
+            </div>
+            <br>
+           
+            <div class="form-group row">
+              <div class="col-sm-10">
+                  <select  id="checkout_city_id" class="form-control checkout-select  selRegStyle  validate[required]" (change)="onChange($event)">
+                      <option>Select Complaint Type </option>
+                      <option *ngFor="let c of complaint" >{{c.complaintType}}</option>
+                    <option value="Others">Others</option>
+                   </select>
+                
+                <br>
+       
+         
+      <input list="browsers" name="browser"  class="selRegStyle"  *ngIf="selectedValue_comp==='Others'"   maxlength="25" class = "form-control selStyle txtAreaStyle">
+          <datalist id="browsers"  >
+              <option *ngFor="let f of comp_others">{{f.complaintothers}}</option>
+              
+          </datalist>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <!-- <label for="exampleFormControlTextarea1" class="textStyle">Enter Error Details</label> -->
+              <div class="col-sm-10">
+                <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="txt_description" [ngModelOptions]="{standalone: true}" placeholder="Error Details"></textarea>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <!-- <label for="exampleFormControlInput1" class="textStyle">Enter the error Path</label> -->
+              <div class="col-sm-10">
+                <input type="text" class="form-control "style="background-color:white;color: #0099cc;border-color: #0099cc;  width: 99%;" id="exampleFormControlInput1" [(ngModel)] = "txt_error" [ngModelOptions]="{standalone: true}" placeholder = "Error Path : eg:-/academics/student">
+              </div>
+            </div>
+                   
+            <div class="form-group row">
+              <div class="col-sm-10 btn-div1" >
+                <button class="btn btn-danger btn-block" type="submit">Register</button>
+               
+              </div>
+            </div>
+          </form>
+    </div>
+    
+ </div>
+ 
+
+    </div>
+    
+  
+  </ng-template>
+  
+
+<!--EDIT MODAL.............................STARTS...........................-->
+
+
+<ng-template #contentEdit let-modal>
+<div class="modal-header header-style" >
+    <h5 class="modal-title head-style" id="modal-edit-title">Change your details</h5> 
+     <button type="button" class="close header-style" aria-label="Close" (click)="modal.dismiss('Cross click')">
+       <span aria-hidden="true">&times;</span>
+     </button>
+   </div> 
+   <div class="modal-body" model="editDialog">
+<!--FORM edit-->
+
+<div class="" id="container" >
+   <div class="div_firstHalf top left .div_firstHalf">
+     <img src="/assets/images/iconfinder.png" alt="no image" class="img_divfirst">
+   </div>
+   <div class="div_secondHalf top ">
+       <form (submit)="onUpdateSubmit($event)" style="position:relative;left:50px;">
+           <br><br>
+           <div class="form-group row">
+             <div class="col-sm-10">
+                <span class="firstcol"><input type="text" [(ngModel)]="txt_module" [ngModelOptions]="{standalone: true}"  class="disabledtextStyle" readonly="readonly"> </span>   
+                  <span class="secdcol"><select  id="checkout_city_id"  (change)="onEditModChange($event)"    class="form-control checkout-select  selStyle  validate[required]">
+                   <option>New Module</option>
+                   <option *ngFor="let m of modul" >{{m.moduleType}}</option>
+                </select></span>  
+             </div>
+           </div>
+           <br>
+           <div class="form-group row" *ngIf="divVisible">
+             <div class="col-sm-10">
+                <span class="firstcol"><input type="text"  [(ngModel)]="txt_complaint" [ngModelOptions]="{standalone: true}" class="disabledtextStyle" readonly="readonly"></span>  
+                <span class="secdcol"><select  id="checkout_city_id" (change)="onEditCompChange($event)" class="form-control checkout-select  selStyle  validate[required]" (change)="onChange($event)">
+                     <option>New Complaint </option>
+                     <option *ngFor="let c of complaint" >{{c.complaintType}}</option>
+                   <option value="Others">Others</option>
+                  </select>
+                </span>
+               <br>
+      
+        
+    
+             </div>
+            </div>
+            <div class="form-group row" *ngIf="divVisibleOthers">
+              <div class="col-sm-10">
+                 <span class="firstcol"><input type="text"  [(ngModel)]="txt_complaint" [ngModelOptions]="{standalone: true}" class="disabledtextStyle" readonly="readonly"></span>  
+                 <span class="secdcol"><select  id="checkout_city_id" (change)="onEditCompChange($event)" class="form-control checkout-select  selStyle  validate[required]" (change)="onChange($event)">
+                      <option>New Complaint </option>
+                      <option *ngFor="let c of complaintOthers" >{{c.complaintType}}</option>
+                    <option value="Others">Others</option>
+                   </select>
+                 </span>
+                <br>
+       
+         
+     
+              </div>
+             </div>
+           <br>
+
+
+           <div class="form-group row">
+             
+             <div class="col-sm-10">
+               <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="txt_description" [ngModelOptions]="{standalone: true}" placeholder="Error Details" (keypress)="onKeyPress($event)"></textarea>
+             </div>
+           </div>
+           <br>
+           <div class="form-group row">
+               <!-- <label for="exampleFormControlInput1" class="textStyle">Enter the error Path</label> -->
+             <div class="col-sm-10">
+               <input  class="form-control errorStyle"style="background-color:white;color: #0099cc;border-color: #0099cc;" id="exampleFormControlInput1" [(ngModel)] = "txt_error" [ngModelOptions]="{standalone: true}" placeholder = "Error Path : eg:-/academics/student" (keypress)="onKeyPress($event)">
+             </div>
+           </div>
+                  
+           <div class="form-group row">
+             <div class="col-sm-10 btn-div2" >
+               <button class="btn btn-danger btn-block" type="submit" [disabled]="getbtnUpdate()">Update</button>
+               <!-- <button type="submit" class="btn btn-lg btn-outline-primary modal-btn" >Regsiter </button> -->
+             </div>
+           </div>
+         </form>
+   </div>
+   
+</div>
+
+
+   </div>
+   
+
+
+<!--EDIT MODAL ..........................ENDS....................................-->
+
+
+</ng-template>
+
+
+<!-- <div class="container"> -->
+   <!-- <div class="row1"> ex1(scroll) -->
+    <div class="col-12">
+      <table class="table-bordered container">
+        <thead >
+          <tr>
+            <th scope="col" class="thstyle">SlNo.</th>
+            <!-- <th scope="col">to be hidden</th> -->
+            <!-- <th scope="col"class="thstyle">ModuleName</th>-->
+            <th scope="col"class="thstyle">ComplaintName</th> 
+            <!-- <th scope="col"class="thstyle">Description</th> -->
+            <th scope="col"class="thstyle">ComplaintDate</th>
+            <!-- <th scope="col"class="thstyle">ErrorPath</th> -->
+            <th scope="col"class="thstyle">Remarks</th>
+            <th scope="col"class="thstyle">Action</th>
+            <!-- <th scope="col"class="thstyle">Status</th> -->
+          </tr>
+        </thead>
+        <tbody>
+            <tr class="rowstyle" *ngFor="let user of complaints;let i = index">
+                <th scope="row" style="width: 40px; height: 40px">{{i+1}}</th>
+                <!-- <td>{{user.complaintId}}</td>  -->
+                <!-- <td class="tdstyle">{{user.module_type}}</td> -->
+                <td class="tdstyle">{{user.complaint_type}}</td>
+                <!-- <td class="tdstyle" >{{user.description}}</td> -->
+                <td class="tdstyle">{{user.complaintDate}}</td>
+                <!-- <td class="tdstyle">{{user.error_path}}</td> <label class="hoverlablestyle">test STATUS LABEL</label>-->
+                <td class="tdstyle">{{user.remarks}}</td>
+                <td>
+                     <div *ngIf="(user.stf_status=='Opened')">             
+                  <span class="spansize"><i class="fa fa-edit " title="View & Edit" aria-hidden="true" (click)="openEdit(contentEdit,user)"></i></span>
+                   
+                  <span class="spansize " data-toggle="confirmation"><i class="fa fa-trash deliconstyle"  title="Delete" (click)="onDeleteRow(user)" aria-hidden="true"></i></span>
+                </div>   
+                <div *ngIf="(user.stf_status=='Closed')" >               
+                  <span class="spansize" class="imgfeedback">
+                    <i class="fa fa-commenting" aria-hidden="true" title="feedBack"></i>
+                   
+                  </span> 
+                 
+                </div>
+                </td>
+                <!-- <td>
+                                     
+                 <img src="/assets/images/process-icon.png" alt="no image" title="Under Processing" class="imgprocessicon-style">
+                 <img src="/assets/images/open-icon.png" alt="no image" title="Opened" class="imgOpenicon-style">
+                 <img src="/assets/images/close-icon.png" alt="no image" title="Closed" class="imgCloseicon-style">  
+                 
+                 
+                </td> -->
+              </tr>
+        </tbody>
+      </table>
+    </div>
+  <!-- </div> -->
+  <!-- <ngb-pagination [collectionSize]="5" [(page)]="page"></ngb-pagination> -->
+<!-- </div> -->
+

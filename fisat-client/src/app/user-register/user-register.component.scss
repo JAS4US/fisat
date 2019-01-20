@@ -1,0 +1,210 @@
+
+input[type=text], select {
+    width: 100%;
+    padding: 6px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  input[type=submit] {
+    width: 100%;
+    // background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+  //ORIGINAL
+  // .div-container {
+  //   border-radius: 5px;
+  //   background-color: rgb(152, 159, 161);
+  //   padding: 20px;
+  //   max-width: 500px;
+  //   margin: auto;
+    
+  // }
+  // .inner-div{
+  //   //opacity: 5;
+  //   //background-image: url("/assets/images/support2.jpg");
+  //   //opacity: 1;
+  //   background-color: white;
+  // }
+  
+  //.div-container {
+    //border-radius: 5px;
+    // background-color:#4abdac;width:1350px;height:50px;background-image: linear-gradient(to left, #a6e9e1, #Dfdcd3);
+    //background-color: rgb(152, 159, 161);
+    //background-color: #f4f0ec #6d7993;    
+    //background-color:rgb(162, 206, 75);
+    // background-image: url("/assets/images/support2.jpg");
+    // padding: 20px;
+    // max-width: 500px;
+    // margin-top: 500px;
+    // margin: auto;
+    // box-shadow: 3px 3px 5px 5px rgba(0, 0, 0, 0.3);
+    // //max-height: 625px;
+    // height:600px;
+  //}
+  .div-container{
+    position: absolute;
+    background-color: #d0eed1;
+    max-width: 1000px;
+    max-height: 600px;
+    padding: 20px;
+    margin: auto;
+    box-shadow: 3px 3px 5px 5px rgba(0, 0, 0, 0.3);
+  }
+  #container{
+    
+    width:785px;
+   
+    height:540px;
+    position:relative;
+    //border:5px solid black;
+    margin: auto;
+  }
+  .box{
+    //border:1px solid red;
+    position:absolute;
+    width:20px;
+    height:20px;    
+  }
+
+  .top{top:0}
+  .div_firstHalf{
+    //position: absolute;
+    position: absolute;
+    //border:1px solid red;
+    width:435px;
+    height:530px;
+    background-color:#FFFFFF;
+    background-repeat: no-repeat;
+    opacity: 2;
+  }
+  .div_secondHalf{
+    position: relative;
+    //border:5px solid red;
+    width:438px;
+    height:530px;
+    //background-color: #0099cc;
+    background-color: white;
+    left: 43.5%;
+    right: 125%;
+  }
+  
+  .middle{top:50%;margin-top:-10px;/*half of the .box height*/}
+  .bottom{bottom:0}
+
+  .left{left:0;}
+  .center{left:50%;margin-left:-10px;/*half of the .box width*/}
+  .right{right:0;}
+
+  .div_left{
+    position: relative;
+    background-color: #666;
+    float: left;
+    max-width: 500px;
+    max-height:inherit;
+  }
+  .div_right{
+    position: relative;
+    background-color: rgb(53, 30, 30);
+    float: right;
+    max-width: 500px;
+    max-height: 580px;
+  }
+  .btn-div{
+    display:block;
+	margin: 5%;
+    margin-left: 20%;
+  }
+  
+/////////
+.btn-danger {
+  color: #333;
+  background-color: #fff;
+  margin-top: 15px;
+  outline: none;
+  padding: 12px 12px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border: none;
+  text-transform: uppercase;
+  font-family: 'Raleway', sans-serif;
+  transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+  -ms-transition: 0.5s all;
+}
+.btn-block {
+  position: relative;
+  right: 75px;
+  display: block;
+  width: 50%;
+  margin: 0 auto;
+      margin-top: 0px;
+}
+.btn-danger:hover {background-color: #1f1d1d;
+  color:white;
+}
+/////////
+  
+  .modal-btn:hover {background-color: #ee1010;}//background-color: #f52323}
+  
+  .modal-btn:active {
+    //background-color: #ee1010;
+    background-color: #f52323;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+  .textStyle{
+    //color: white;
+    color: #0099cc;
+    //font-weight: bold;
+  }
+  .img_divfirst{
+    position: relative;
+    top:158px;
+    bottom:35px;
+    right:-36px;
+  }
+  .selStyle{
+    Border: none;
+    //border-bottom: 1px solid white;
+    border-bottom: 1px solid #0099cc;
+    //background-color: #0099cc;
+    background-color:white;
+    color: #0099cc;
+    //color:white;
+  }
+  .txtAreaStyle{
+    // background-color: #0099cc;
+    // color:white;
+    background-color:white;
+    color: #0099cc;
+    border-color: #0099cc;
+  }
+  ::placeholder{
+    //color:white;
+    
+    color: #0099cc;
+  }
+  

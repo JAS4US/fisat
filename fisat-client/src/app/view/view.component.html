@@ -1,0 +1,38 @@
+
+
+   
+    <table class="table responstable">
+        <thead>
+          <tr class=" rowstyle tr-style">
+            <th scope="col" class="thstyle">Serial No.</th>
+            <!-- <th scope="col">to be hidden</th> -->
+            <th scope="col"class="thstyle">ModuleName</th>
+            <th scope="col"class="thstyle">ComplaintName</th>
+            <th scope="col"class="thstyle">Description</th>
+            <th scope="col"class="thstyle">ComplaintDate</th>
+            <th scope="col"class="thstyle">ErrorPath</th>
+            <th scope="col"class="thstyle">Remarks</th>
+            <th scope="col"class="thstyle">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="rowstyle" *ngFor="let user of openComplaints;let i = index">
+            <th scope="row">{{i+1}}</th>
+            <!-- <td>{{user.complaintId}}</td>  -->
+            <td class="tdstyle">{{user.module_type}}</td>
+            <td class="tdstyle">{{user.complaint_type}}</td>
+            <td class="tdstyle">{{user.description}}</td>
+            <td class="tdstyle">{{user.complaintDate}}</td>
+            <td class="tdstyle">{{user.error_path}}</td>
+            <td class="tdstyle">{{user.remarks}}</td>
+            <td class="tdstyle"> <i class="fa fa-trash icon-size" (click)="onDelete(user)"></i></td> 
+              <!-- <button type="button" class="btn btn-danger" data-toggle="confirmation">delete</button></td> -->
+          </tr>
+       
+        </tbody>
+      </table>
+
+      
+
+
+
