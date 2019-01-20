@@ -188,7 +188,38 @@
 
 
 </ng-template>
+<!--feedBack-->
 
+
+<ng-template #contentfeedback let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Feedback</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form  role = "form" class="well" (ngSubmit)="feedback($event)" autocomplete="off">
+     
+    
+      <textarea rows = "5" cols = "50" name = "description" [(ngModel)]="fdbktext">
+        
+      </textarea>
+
+
+
+
+      <input type="hidden" ng-model="newcontact.id">
+      <!-- <input type="submit" class="btn btn-primary" (click)="onRegisterSubmit(newVals)" class="btn btn-primary" value = "Submit"> -->
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+    
+  </div>
+  <!-- <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div> -->
+</ng-template>
 
 <!-- <div class="container"> -->
    <!-- <div class="row1"> ex1(scroll) -->
