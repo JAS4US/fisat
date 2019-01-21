@@ -43,7 +43,7 @@ otherCount:any;
 @Input() txt_module;
 //@Input() txt_description;
 @Input() txt_complaint;
-
+@Input() fdbktext;
 @ViewChild('encasUnPwModal') public modal: BootstrapModalModule;
 
 //register
@@ -262,6 +262,40 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
     })
 
 }
+
+
+///FEED BACK
+
+feedback(e,user:any){
+  // console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
+    console.log("jjjjjj"+user);
+     this.comp_details={
+         "complaintId":user["complaintId"],
+          "personalid":"p2",
+          "comments":e.target[0].value
+          
+        };
+   
+   console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
+     //this.dataService.onSubmit1(this.comp_details).subscribe()
+      this.dataService.onFeedback(this.comp_details).subscribe(data=>{
+       return true;
+       },
+       error=>{
+        console.error("Error");
+        return false;
+       }
+      
+     )
+      alert(" thank u for feedback");
+    
+    this.modalService.dismissAll();
+    location.reload();
+   }
+ 
+ 
+ 
+ //FEEDBACK ENDSS
 
 
 public onKeyPress(e)
