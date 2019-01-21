@@ -120,6 +120,28 @@ open(content) {
 }
 
 
+openFeedback(contentfeedback:any,user:any) {
+  this.complaintNo=user["complaintId"];
+  //console.log("user=FEED== : "+JSON.stringify(user));
+  // this.coms=user['fdbktext'];
+  //   console.log("cooooo"+this.coms);
+    
+    
+ 
+   this.modalService.open(contentfeedback, {ariaLabelledBy: 'modal-feedback-title', size:'lg'}).result.then((result) => {
+   
+   console.log("inside fun");
+   //this.modal=this.userData;
+   this.txt_complaint=JSON.stringify(user);
+   }, (reason) => {
+    
+   });
+ }
+
+
+
+
+
 
 openEdit(contentEdit:any,user:any) {
   
@@ -266,27 +288,28 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
 
 ///FEED BACK
 
-onFeedback(e,user:any){
+onFeedback(e){
   // console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
-    console.log("jjjjjj"+user);
+    console.log("jjjjjj  :  "+this.complaintNo);
      this.comp_details={
-         "complaintId":user["complaintId"],
+         "complaintId":this.complaintNo,
           "personalid":"p2",
           "comments":e.target[0].value
           
         };
    
    console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
-     //this.dataService.onSubmit1(this.comp_details).subscribe()
-    //   this.dataService.onFeedbackService(this.comp_details).subscribe(data=>{
-    //    return true;
-    //    },
-    //    error=>{
-    //     console.error("Error");
-    //     return false;
-    //    }
+    //  this.dataService.onSubmit1(this.comp_details).subscribe()
+      this.dataService.onFeedbackService(this.comp_details).subscribe(data=>{
+        alert(" thank u for feedback");
+       return true;
+       },
+       error=>{
+        console.error("Error");
+        return false;
+       }
       
-    //  )
+     )
       alert(" thank u for feedback");
     
     this.modalService.dismissAll();

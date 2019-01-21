@@ -192,33 +192,61 @@
 
 
 <ng-template #contentfeedback let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Feedback</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+  <div class="modal-header header-style">
+    <h5 class="modal-title head-style" id="modal-feedback-title">Feedback</h5>
+    <button type="button" class="close header-style" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
+
   <div class="modal-body">
-    <form  role = "form" class="well" (ngSubmit)="onFeedback($event)" autocomplete="off">
-     
-    
-      <textarea rows = "5" cols = "50" name = "description" [(ngModel)]="fdbktext">
+
+<!--feed back form-->
+
+<div class="" id="container" >
+    <div class="div_firstHalf top left .div_firstHalf">
+      <img src="/assets/images/feedback-icon.png" alt="no image" class="img_divfirst">
+    </div>
+    <div class="div_secondHalf top ">
+        <form (submit)="onFeedback($event)" style="position:relative;left:50px;">
+            <br><br>
+            <div class="form-group row">
+              <div class="col-sm-10">
+                 <!-- <span class="firstcol"><input type="text" [(ngModel)]="txt_module" [ngModelOptions]="{standalone: true}"  class="disabledtextStyle" readonly="readonly"> </span>   
+                   <span class="secdcol"><select  id="checkout_city_id"  (change)="onEditModChange($event)"    class="form-control checkout-select  selStyle  validate[required]">
+                    <option>New Module</option>
+                    <option *ngFor="let m of modul" >{{m.moduleType}}</option>
+                 </select></span>   -->
+              </div>
+            </div>
         
-      </textarea>
-
-
-
-
-      <input type="hidden" ng-model="newcontact.id">
-      <!-- <input type="submit" class="btn btn-primary" (click)="onRegisterSubmit(newVals)" class="btn btn-primary" value = "Submit"> -->
-    <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+            <br>
+ 
+            <div class="form-group row">
+              
+              <div class="col-sm-10">
+                <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="fdbktext" [ngModelOptions]="{standalone: true}" placeholder="Enter  Your FeedBack Here" (keypress)="onKeyPress($event)"></textarea>
+              </div>
+            </div>
+            <br>
+            
+                   
+            <div class="form-group row">
+              <div class="col-sm-10 btn-div2" >
+                <button class="btn btn-danger btn-block" type="submit" >Submit FeedBack</button>
+                <!-- <button type="submit" class="btn btn-lg btn-outline-primary modal-btn" >Regsiter </button> -->
+              </div>
+            </div>
+          </form>
+    </div>
     
+ </div>
+ 
+ 
+    </div>
     
-  </div>
-  <!-- <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
-  </div> -->
+<!--feedback form edsss-->
+    
 </ng-template>
 
 <!-- <div class="container"> -->
@@ -254,10 +282,11 @@
                   <span class="spansize"><i class="fa fa-edit " title="View & Edit" aria-hidden="true" (click)="openEdit(contentEdit,user)"></i></span>
                    
                   <span class="spansize " data-toggle="confirmation"><i class="fa fa-trash deliconstyle"  title="Delete" (click)="onDeleteRow(user)" aria-hidden="true"></i></span>
+                  <!-- <span class="spansize " data-toggle="confirmation"><i class="fa fa-trash deliconstyle"  title="View & Feedback" (click)="onFeedback($event,user)" aria-hidden="true"></i></span> -->
                 </div>   
                 <div *ngIf="(user.stf_status=='Closed')" >               
                   <span class="spansize" class="imgfeedback">
-                    <i class="fa fa-commenting" aria-hidden="true" title="feedBack"></i>
+                    <i class="fa fa-commenting" aria-hidden="true" title="View & Feedback" (click)="openFeedback(contentfeedback,user)"></i>
                    
                   </span> 
                  

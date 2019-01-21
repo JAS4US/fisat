@@ -910,6 +910,36 @@ app.get('/openComplaintUserView',function(req,res,next){
  })
 });
 ///////////////////////////////////////////////////////
+ ///FEED BACK
+
+ app.post('/insertfeedback',urlencodedParser,function(req,res,next){
+  // console.log("hai");
+   console.log("hhhh"+JSON.stringify(req.body));
+   d=JSON.stringify(req.body);
+   var dk=JSON.parse(d);
+ 
+   pool.connect(function(err,client,done){
+    
+    //  console.log("fgggg"+f);
+     var f=dk["comments"];
+        var s=dk["complaintId"];
+        console.log("sssssss"+s);
+          val.push(s,f);
+          client.query('INSERT INTO public."ssfeedback"("comp_id","feedback") VALUES ($1,$2)',val,function( err,result){
+           if (err){
+           console.log("error"+err);
+           val=[];
+           return;
+           }
+   
+           else
+           {
+             console.log("success");
+             val=[];
+           }
+   })
+       })
+     });
  
 
 
