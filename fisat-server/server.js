@@ -39,30 +39,30 @@ var valUpdate=[];
 
 /**LDAP......STARTS */
 
-var ldap = require('ldapjs');
-var assert = require('assert');
-var client = ldap.createClient({
-  url: 'ldap:cim.fisat.edu'
-});
-client.bind('cn=EMP597, o=Users ,dc=fisat,dc=edu', '1597', function(err) {
- // assert.ifError(err);
+// var ldap = require('ldapjs');
+// var assert = require('assert');
+// var client = ldap.createClient({
+//   url: 'ldap:cim.fisat.edu'
+// });
+// client.bind('cn=EMP597, o=Users ,dc=fisat,dc=edu', '1597', function(err) {
+//  // assert.ifError(err);
 
-  if(err){
-    console.log("not connected"+err);
-  }
-});
+//   if(err){
+//     console.log("not connected"+err);
+//   }
+// });
 
-//dn=uid=%s,ou=Users,dc=fisat,dc=edu
-client.compare('cn=EMP597, o=Users','sn', 'bar', function(err, matched) {
-  // assert.ifError(err) {
-  //   console.log("not matched"+err);
-  // }
-  if(err){
-    console.log("not matched"+err);
-  }
-else{ console.log('matched: ' + matched);}
+// //dn=uid=%s,ou=Users,dc=fisat,dc=edu
+// client.compare('cn=EMP597, o=Users','sn', 'bar', function(err, matched) {
+//   // assert.ifError(err) {
+//   //   console.log("not matched"+err);
+//   // }
+//   if(err){
+//     console.log("not matched"+err);
+//   }
+// else{ console.log('matched: ' + matched);}
  
-});
+// });
 
 /**LDAP.......ENDS */
   
@@ -111,10 +111,7 @@ app.get('/masterComplaintlist',function(req,res,next){
               done();
               if (err)
                   res.send(err)
-                  //console.log("result ghfghfghgfhfgh: "+result);
-            //  console.log("table opennnnn-----"+result.rows[0]);
-            //  console.log("table open  -----"+JSON.stringify(result.rows));
-             //console.log("length row : "+result.rows.length);
+                 
              for(i=0;i<result.rows.length;i++)
              {
                 data1=JSON.stringify(result.rows[i]["complaintDate"]);
@@ -132,8 +129,7 @@ app.get('/masterComplaintlist',function(req,res,next){
                 };
                 open_list.push(list1);
              }
-            // console.log("leng json : "+Object.keys(open_list));
-            //  console.log("open list : "+JSON.stringify(open_list));
+           
             res.json(open_list);
  });
 
@@ -913,14 +909,12 @@ app.get('/openComplaintUserView',function(req,res,next){
   
   pool.connect(function (err, client, done) {
    //client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
-    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_char(scm."complaintDate",dd-mm-yyyy),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"], function (err, result) {
+    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"], function (err, result) {
               done();
               if (err)
                   res.send(err)
-                  console.log("result openComplaintuserView : "+JSON.stringify(result.rows));
-            //  console.log("table opennnnn-----"+result.rows[0]);
-            //  console.log("table open  -----"+JSON.stringify(result.rows));
-            //  console.log("length row : "+result.rows.length);
+                  //console.log("result openComplaintuserView : "+JSON.stringify(result.rows));
+            
              for(i=0;i<result.rows.length;i++)
              {
                 data1=JSON.stringify(result.rows[i]["complaintDate"]);
