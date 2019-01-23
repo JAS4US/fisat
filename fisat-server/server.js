@@ -964,7 +964,8 @@ app.get('/openComplaintUserView',function(req,res,next){
              val=[];
            }
           })
-          //update tables/////////////////////////////////////////
+          //update tables/////////////////////////////////////////////
+          
           client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"staffStatus"=$2 where "complaintId"=$3',["Closed","Closed",s],function( err,result){
             if (err){
             console.log("error"+err);
