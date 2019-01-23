@@ -30,10 +30,34 @@ var valUpdate=[];
 };
   const pool = new pg.Pool(config);
 
+/**LDAP......STARTS */
 
+var ldap = require('ldapjs');
+var assert = require('assert');
+var client = ldap.createClient({
+  url: 'ldap:cim.fisat.edu'
+});
+client.bind('cn=EMP597, o=Users ,dc=fisat,dc=edu', '1597', function(err) {
+ // assert.ifError(err);
 
+  if(err){
+    console.log("not connected"+err);
+  }
+});
 
+//dn=uid=%s,ou=Users,dc=fisat,dc=edu
+client.compare('cn=EMP597, o=Users','sn', 'bar', function(err, matched) {
+  // assert.ifError(err) {
+  //   console.log("not matched"+err);
+  // }
+  if(err){
+    console.log("not matched"+err);
+  }
+else{ console.log('matched: ' + matched);}
+ 
+});
 
+/**LDAP.......ENDS */
   
 //Master Module List
  app.get('/masterModulelist',function(req,res,next){
