@@ -8,6 +8,13 @@ var cors = require('cors') ;
  app.use(bodyParser.urlencoded({'extended':'true'}));
  app.use(bodyParser.json());
  app.use(bodyParser.json({type:'application/vnd.api+json'}));
+
+//  var pgp = require('pg-promise');
+ //var types=require('types');
+//  var types = pgp.pg.types;
+
+var types = require('pg').types;
+
  
   app.use(cors()); 
   var cid,mid1,comid1;
@@ -104,15 +111,15 @@ app.get('/masterComplaintlist',function(req,res,next){
               done();
               if (err)
                   res.send(err)
-                  console.log("result ghfghfghgfhfgh: "+result);
+                  //console.log("result ghfghfghgfhfgh: "+result);
             //  console.log("table opennnnn-----"+result.rows[0]);
             //  console.log("table open  -----"+JSON.stringify(result.rows));
-             console.log("length row : "+result.rows.length);
+             //console.log("length row : "+result.rows.length);
              for(i=0;i<result.rows.length;i++)
              {
                 data1=JSON.stringify(result.rows[i]["complaintDate"]);
                 data1=data1.substring(1, 11);
-                console.log("date "+data1);
+                //console.log("date "+data1);
                 list1={
                   "complaintId":result.rows[i]["complaintId"],
                   "module_type":result.rows[i]["moduleType"],
@@ -205,10 +212,10 @@ app.get('/getOtherComplaint',function(req,res,next){
                if (err)
                    res.send(err)
                 else if(!result){
-                  console.log("null");
+                  //console.log("null");
                 }
                 else{
-                   console.log(result);
+                   //console.log(result);
               //console.log(result.rows);
                    res.json(result.rows);
                 }
@@ -246,13 +253,14 @@ app.get('/getOtherComplaint',function(req,res,next){
 
  app.post('/tsInsertComplaint',urlencodedParser,function(req,res,next){
 
-  console.log("testhhgjhgjhg");
+  console.log("test tsInsertComplaint");
+  
 
-  console.log("test req : "+JSON.stringify(req.body));
+  // console.log("test req : "+JSON.stringify(req.body));
   var data=JSON.stringify(req.body);
 
   dataKey=JSON.parse(data);
-  console.log(dataKey["module_type"]);
+  // console.log(dataKey["module_type"]);
   
 
   pool.connect(function(err,client,done){
@@ -261,7 +269,7 @@ app.get('/getOtherComplaint',function(req,res,next){
     var mid=dataKey["module_type"];
     var pid="p1";//dataKey["personalId"];
     comid=dataKey["complaint_type"];
-    console.log("ctype test   : "+comid);
+    // console.log("ctype test   : "+comid);
     var comp_des=dataKey["description"];
     
     var err_path=dataKey["error_path"];
@@ -272,7 +280,7 @@ app.get('/getOtherComplaint',function(req,res,next){
     var rmks="By sir";
 
     other_CompDescription=dataKey["other_Complaints"];
-    console.log("other desc : "+other_CompDescription);
+    // console.log("other desc : "+other_CompDescription);
 
     var currentdate = new Date();
     //comp_date=currentdate.getDate()+'-'+(currentdate.getMonth())+'-'+(currentdate.getFullYear());
@@ -280,7 +288,9 @@ app.get('/getOtherComplaint',function(req,res,next){
     console.log("year : "+(currentdate.getFullYear()));
     console.log("month : "+(currentdate.getMonth()));
     console.log("date : "+currentdate.getDate());
-    console.log("date : "+comp_date); 
+    //types.setTypeParser(1114, str => moment.utc(str).format());
+    
+    console.log("date new 1 comp_date : "+comp_date); 
 
     // //////////////////////////////////////////SEQUENCE//////////////////////////////////////////////////////////////////////////////
 cid;
@@ -294,7 +304,7 @@ client.query('SELECT * from compl_id()',function(err,result){
               //console.log("select compid : "+JSON.stringify(result.rows[0]["compl_id"]));
               cid="comp";
               cid+=JSON.stringify(result.rows[0]["compl_id"]);
-              console.log("cid : "+cid);
+              // console.log("cid : "+cid);
               return cid;
                 //console.log('row inserted with id: ' + result.rows[0].id);
             }
@@ -306,11 +316,11 @@ client.query('SELECT * from compl_id()',function(err,result){
                     console.log(err);
                     return;
                 } else {
-                  console.log("moduleid==========="+result.rows[0]["moduleId"])
-                  console.log("select mid : "+JSON.stringify(result.rows[0]["moduleId"]));
+                  // console.log("moduleid==========="+result.rows[0]["moduleId"])
+                  // console.log("select mid : "+JSON.stringify(result.rows[0]["moduleId"]));
                   mid1=JSON.stringify(result.rows[0]["moduleId"]);
                   mid1 = mid1.replace(/^"(.*)"$/, '$1');
-                  console.log("mid : "+mid1);
+                  // console.log("mid : "+mid1);
                   return mid1;
                 }
     })
@@ -320,6 +330,8 @@ client.query('SELECT * from compl_id()',function(err,result){
                             console.log(err);
                             return;
                         } else {
+                          console.log("insert date  : "+JSON.stringify(result.rows));
+                          var dd=JSON.stringify(result.rows["current_date"]);
                           if(comid=="Others")
                           //if(other_CompDescription=="Others")
                           {
@@ -345,9 +357,9 @@ client.query('SELECT * from compl_id()',function(err,result){
                                                                
                                                                compType_cid=JSON.stringify(result.rows[0]["compltype_id"]);
                                                                compType_cid = compType_cid.replace(/^"(.*)"$/, '$1');
-                                                               console.log("cid type  eeeeee : "+compType_cid);
+                                                              //  console.log("cid type  eeeeee : "+compType_cid);
                                                                other_CompDescription=other_CompDescription.replace(/^"(.*)"$/, '$1');
-                                                               console.log("in if comid : "+comid);
+                                                              //  console.log("in if comid : "+comid);
                                                                //valCType.push(compType_cid,other_CompDescription,comid);
                                                                valCType.push(compType_cid,comp_des,comid);
                                                                val.push(cid,mid1,pid,compType_cid,comp_des,comp_date,err_path,img,ad_stat,stf_stat,lvl,rmks);
@@ -414,7 +426,7 @@ client.query('SELECT * from compl_id()',function(err,result){
                           
                           }
                           else{
-                           console.log("out");
+                          //  console.log("out");
                            client.query('select "complaintTypeId" from public."ssSoftwareComplaint" where "complaintType"=$1',[comid],function(err,result){
                            //client.query('select "complaintTypeId" from public."ssSoftwareComplaint" where "complaintType"=$1',[comid],function(err,result){
                              if (err) {
@@ -428,6 +440,7 @@ client.query('SELECT * from compl_id()',function(err,result){
                                          comid1 = comid1.replace(/^"(.*)"$/, '$1');
 
                                          val.push(cid,mid1,pid,comid1,comp_des,comp_date,err_path,img,ad_stat,stf_stat,lvl,rmks);
+                                        
                                          client.query('insert into public."ssComplaintMaster"("complaintId","moduleId","personalId","complainttypeId","complaintDescription","complaintDate","errorPath","image","adminStatus","staffStatus","level","remarks")values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)',val,function(err,result){
                                                    if (err) {
                                                            console.log(err);
@@ -441,7 +454,7 @@ client.query('SELECT * from compl_id()',function(err,result){
                                          return comid1;
                                        }
                            })
-                            console.log("out comid1 : "+comid1);
+                            // console.log("out comid1 : "+comid1);
                            
                                 
                           }
@@ -456,13 +469,13 @@ client.query('SELECT * from compl_id()',function(err,result){
 ///INSERT COMPLAINT
 app.post('/tsInsertDummySample',urlencodedParser,function(req,res,next){
 
-   console.log("testhhgjhgjhg");
+   console.log("test tsInsertDummySample");
 
-  console.log("test req : "+JSON.stringify(req.body));
+  // console.log("test req : "+JSON.stringify(req.body));
   var data=JSON.stringify(req.body);
 
   dataKey=JSON.parse(data);
-  console.log(dataKey["module_type"]);
+  // console.log(dataKey["module_type"]);
   
 
   pool.connect(function(err,client,done){
@@ -471,7 +484,7 @@ app.post('/tsInsertDummySample',urlencodedParser,function(req,res,next){
     var mid=dataKey["module_type"];
     var pid="p1";//dataKey["personalId"];
     comid=dataKey["complaint_type"];
-    console.log("ctype test   : "+comid);
+    // console.log("ctype test   : "+comid);
     var comp_des=dataKey["description"];
     
     var err_path=dataKey["error_path"];
@@ -490,7 +503,7 @@ app.post('/tsInsertDummySample',urlencodedParser,function(req,res,next){
     console.log("year : "+(currentdate.getFullYear()));
     console.log("month : "+(currentdate.getMonth()));
     console.log("date : "+currentdate.getDate());
-    console.log("date : "+comp_date); 
+    console.log("date insertdummy comp_date : "+comp_date); 
 
     // //////////////////////////////////////////SEQUENCE//////////////////////////////////////////////////////////////////////////////
 cid;
@@ -504,7 +517,7 @@ client.query('SELECT * from compl_id()',function(err,result){
               //console.log("select compid : "+JSON.stringify(result.rows[0]["compl_id"]));
               cid="comp";
               cid+=JSON.stringify(result.rows[0]["compl_id"]);
-              console.log("cid : "+cid);
+              // console.log("cid : "+cid);
               return cid;
                 //console.log('row inserted with id: ' + result.rows[0].id);
             }
@@ -516,11 +529,11 @@ client.query('SELECT * from compl_id()',function(err,result){
                     console.log(err);
                     return;
                 } else {
-                  console.log("moduleid==========="+result.rows[0]["moduleId"])
-                  console.log("select mid : "+JSON.stringify(result.rows[0]["moduleId"]));
+                  // console.log("moduleid==========="+result.rows[0]["moduleId"])
+                  // console.log("select mid : "+JSON.stringify(result.rows[0]["moduleId"]));
                   mid1=JSON.stringify(result.rows[0]["moduleId"]);
                   mid1 = mid1.replace(/^"(.*)"$/, '$1');
-                  console.log("mid : "+mid1);
+                  // console.log("mid : "+mid1);
                   return mid1;
                 }
     })
@@ -540,11 +553,11 @@ client.query('SELECT * from compl_id()',function(err,result){
                                            } else {
                                              
                                              c=result.rows.length;
-                                             console.log("count in first fun : "+c);
+                                            //  console.log("count in first fun : "+c);
                                              //return cid;
                                                //console.log('row inserted with id: ' + result.rows[0].id);
                                                if(c==0){
-                                                 console.log("other's c==0 if");
+                                                //  console.log("other's c==0 if");
                                                  client.query('SELECT * from compltype_id()',function(err,result){
                                                    if (err) {
                                                                  console.log(err);
@@ -553,9 +566,9 @@ client.query('SELECT * from compl_id()',function(err,result){
                                                                
                                                                compType_cid=JSON.stringify(result.rows[0]["compltype_id"]);
                                                                compType_cid = compType_cid.replace(/^"(.*)"$/, '$1');
-                                                               console.log("cid type  eeeeee : "+compType_cid);
+                                                              //  console.log("cid type  eeeeee : "+compType_cid);
                                                                other_CompDescription=other_CompDescription.replace(/^"(.*)"$/, '$1');
-                                                               console.log("in if comid : "+comid);
+                                                              //  console.log("in if comid : "+comid);
                                                                valCType.push(compType_cid,comid,other_CompDescription);
                                                                val.push(cid,mid1,pid,compType_cid,comp_des,comp_date,err_path,img,ad_stat,stf_stat,lvl,rmks);
                                                                return compType_cid;
@@ -591,7 +604,7 @@ client.query('SELECT * from compl_id()',function(err,result){
                                                                  console.log(err);
                                                                  return;
                                                              } else {
-                                                               console.log("select compid : "+JSON.stringify(result.rows[0]["complaintTypeId"]));
+                                                              //  console.log("select compid : "+JSON.stringify(result.rows[0]["complaintTypeId"]));
                                                                
                                                                comid1=JSON.stringify(result.rows[0]["complaintTypeId"]);
                                                                
@@ -667,14 +680,14 @@ client.query('SELECT * from compl_id()',function(err,result){
                 done();
                 if (err)
                     res.send(err)
-                    console.log("result ghfghfghgfhfgh: "+result);
-  
-                    console.log("length row : "+result.rows.length);
+                    // console.log("result closedComplaint: "+result);
+                    console.log("result closedComplaint: ");
+                    // console.log("length row : "+result.rows.length);
                     for(i=0;i<result.rows.length;i++)
                     {
                       data1=JSON.stringify(result.rows[i]["complaintDate"]);
                       data1=data1.substring(1, 11);
-                      console.log("date "+data1);
+                      console.log("date  closed Complaitn  : "+data1);
                       list1={
                         "complaintId":result.rows[i]["complaintId"],
                         "module_type":result.rows[i]["moduleType"],
@@ -686,7 +699,7 @@ client.query('SELECT * from compl_id()',function(err,result){
                       };
                     closed_list.push(list1);
                    }
-                console.log("leng json : "+Object.keys(closed_list));
+                // console.log("leng json : "+Object.keys(closed_list));
                 //  console.log("open list : "+JSON.stringify(open_list));
                 res.json(closed_list);
   
@@ -741,11 +754,11 @@ client.query('SELECT * from compl_id()',function(err,result){
                     //console.log("select mid : "+JSON.stringify(result.rows[0]["moduleId"]));
                     mid1=JSON.stringify(result.rows[0]["moduleId"]);
                     mid1 = mid1.replace(/^"(.*)"$/, '$1');
-                    console.log("mid : "+mid1);
+                    // console.log("mid : "+mid1);
                     return mid1;
                   }
       })
-      console.log("mid 1 : "+mid1);
+      // console.log("mid 1 : "+mid1);
      
       client.query('select current_date',function(err,result){
                 if (err) {
@@ -760,9 +773,9 @@ client.query('SELECT * from compl_id()',function(err,result){
                                              console.log(err);
                                              return;
                                          } else {
-                                           console.log("comid inside : "+comid);
-                                           console.log("count : "+result.rowCount);
-                                           console.log("inside comid val : "+JSON.stringify(result.rows));
+                                          //  console.log("comid inside : "+comid);
+                                          //  console.log("count : "+result.rowCount);
+                                          //  console.log("inside comid val : "+JSON.stringify(result.rows));
                                            var demo=result.rows[0];
                                            
                                           comid1=JSON.stringify(result.rows[0]["complaintTypeId"]);
@@ -796,20 +809,20 @@ client.query('SELECT * from compl_id()',function(err,result){
 
 // Update an existing user's status
 app.post('/testUpdate',urlencodedParser, (request, response) => {
-  console.log("completediddd==");
+  console.log("completediddd== testUpdate");
 
-  console.log("test req : "+JSON.stringify(request.body));
+  // console.log("test req : "+JSON.stringify(request.body));
   var data=JSON.stringify(request.body);
 
   dataKey=JSON.parse(data);
-  console.log(dataKey["compId"]);
+  // console.log(dataKey["compId"]);
   var cId=dataKey["compId"];
 
-  console.log("completediddd=="+cId);
+  // console.log("completediddd=="+cId);
 status="Closed";
 pstatus="opened";
   pool.connect(function (err, client, done) {
-    console.log("connect==");
+    // console.log("connect==");
     client.query('UPDATE public."ssComplaintMaster" SET "staffStatus"=$1 where "complaintId"=$2',[status,cId],(error, result) => {//  WHERE complaintId = ?', [request.body, id], (error, result) => {
       if (error){
         console.log("error===>"+error);
@@ -832,14 +845,14 @@ pstatus="opened";
 app.delete('/deleteSingleData:complaintId', function(req, res,next) {
     
     var id=req.params.complaintId;
-      console.log("iddd=="+id);
+      console.log("iddd== delete : "+id);
          pool.connect(function (err, client, done) {
            client.query('delete from public."ssComplaintMaster" where "complaintId"=$1',[id], function (err, result) {
                            done();
                            if (err)
                                res.send(err)
-                               console.log(result);
-                          console.log(result.rows);
+                              //  console.log(result);
+                          // console.log(result.rows);
                                res.json(result.rows);
 });
 });
@@ -859,8 +872,8 @@ console.log("deleting..........");
               done();
               if (err)
                   res.send(err)
-                  console.log(result);
-             console.log("comppppppp=======> "+result.rows);
+                  // console.log(result);
+            //  console.log("comppppppp=======> "+result.rows);
                   res.json(result.rows);
  });
 
@@ -870,7 +883,7 @@ console.log("deleting..........");
 ///Othercomplant count for enabling select option in userview edit
 app.get('/getOthersCountInEdit1:comptype',function(req,res,next){
   var c_others=req.params.comptype;
-  console.log("other count====> :  "+c_others);
+  console.log("other count====> getOthersCount  :  "+c_others);
    pool.connect(function (err, client, done) {
     //client.query('SELECT "complaintothers" FROM public."ssSoftwareComplaint" where "complaintType"=$1',[c_others], function (err, result) {
       client.query('SELECT * FROM public."ssSoftwareComplaint" where "complaintType"=$1 and "complaintothers" IS NOT NULL',[c_others],function (err, result) {
@@ -882,7 +895,7 @@ app.get('/getOthersCountInEdit1:comptype',function(req,res,next){
                 // }
                 else{
                   otherscount=result.rowCount;
-                  console.log("count others : "+result.rowCount);
+                  // console.log("count others : "+result.rowCount);
                   //console.log(result.rows);
                    res.json(result.rowCount);
                 }
@@ -897,21 +910,33 @@ app.get('/openComplaintUserView',function(req,res,next){
   var stat="Opened";
   var list1=[];
   var open_list=[];
+  
   pool.connect(function (err, client, done) {
    //client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
-    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"], function (err, result) {
+    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_char(scm."complaintDate",dd-mm-yyyy),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"], function (err, result) {
               done();
               if (err)
                   res.send(err)
-                  console.log("result ghfghfghgfhfgh: "+result);
+                  console.log("result openComplaintuserView : "+JSON.stringify(result.rows));
             //  console.log("table opennnnn-----"+result.rows[0]);
             //  console.log("table open  -----"+JSON.stringify(result.rows));
-             console.log("length row : "+result.rows.length);
+            //  console.log("length row : "+result.rows.length);
              for(i=0;i<result.rows.length;i++)
              {
                 data1=JSON.stringify(result.rows[i]["complaintDate"]);
+                // console.log("date before : "+data1);
+                // // console.log(new Date(jsonDate).toUTCString());
+                // data1=new Date(data1).toUTCString();
+                console.log("new dateeeee : " +data1);
+                // console.log("dateeeee :   ==== : "+JSON.stringify(result.rows[i]["complaintDate"]));
+                // types.setTypeParser(1114, data1 => moment.utc(data1).format());
+
+                // types.setTypeParser(20, function(data1) {
+                //   return parseInt(data1)
+                // })
+
                 data1=data1.substring(1, 11);
-                console.log("date "+data1);
+                // console.log("date openComplaintUserView  : "+data1);
                 list1={
                   "complaintId":result.rows[i]["complaintId"],
                   "module_type":result.rows[i]["moduleType"],
@@ -922,7 +947,8 @@ app.get('/openComplaintUserView',function(req,res,next){
                   "error_path":result.rows[i]["errorPath"],
                   "remarks":result.rows[i]["remarks"],
 
-                  "stf_status":result.rows[i]["staffStatus"]
+                  "stf_status":result.rows[i]["staffStatus"],
+                  "adm_status":result.rows[i]["adminStatus"]
                 };
                 open_list.push(list1);
              }
@@ -961,7 +987,24 @@ app.get('/openComplaintUserView',function(req,res,next){
              console.log("success");
              val=[];
            }
-   })
+          })
+          //update tables/////////////////////////////////////////////
+          
+          client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"staffStatus"=$2 where "complaintId"=$3',["Closed","Closed",s],function( err,result){
+            if (err){
+            console.log("error"+err);
+            val=[];
+            return;
+            }
+    
+            else
+            {
+              console.log("success");
+              val=[];
+            }
+           })
+          ////////////////////////////////////////////////////////
+          
        })
      });
  

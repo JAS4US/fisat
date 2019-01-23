@@ -263,34 +263,44 @@
             <th scope="col"class="thstyle">ComplaintDate</th>
             <!-- <th scope="col"class="thstyle">ErrorPath</th> -->
             <th scope="col"class="thstyle">Remarks</th>
+            <th scope="col"class="thstyle">Status</th>
             <th scope="col"class="thstyle">Action</th>
-            <!-- <th scope="col"class="thstyle">Status</th> -->
           </tr>
         </thead>
         <tbody>
-            <tr class="rowstyle" *ngFor="let user of complaints;let i = index">
+            <tr class="rowstyle" *ngFor="let user of complaints1;let i = index">
                 <th scope="row" style="width: 40px; height: 40px">{{i+1}}</th>
-                <!-- <td>{{user.complaintId}}</td>  -->
+                <!-- <td>{{user.complaintId}}</td>  stf_status-->
                 <!-- <td class="tdstyle">{{user.module_type}}</td> -->
                 <td class="tdstyle">{{user.complaint_type}}</td>
                 <!-- <td class="tdstyle" >{{user.description}}</td> -->
                 <td class="tdstyle">{{user.complaintDate}}</td>
-                <!-- <td class="tdstyle">{{user.error_path}}</td> <label class="hoverlablestyle">test STATUS LABEL</label>-->
+                <!-- <td class="tdstyle">{{user.error_path}}</td> <label class="hoverlablestyle">test STATUS LABEL</label> -->
                 <td class="tdstyle">{{user.remarks}}</td>
+                <!-- <td class="tdstyle">{{user.stf_status}}</td> -->
+                <td class="tdstyle">{{user.adm_status}}</td>
                 <td>
-                     <div *ngIf="(user.stf_status=='Opened')">             
-                  <span class="spansize"><i class="fa fa-edit " title="View & Edit" aria-hidden="true" (click)="openEdit(contentEdit,user)"></i></span>
+                     <!-- <div *ngIf="(user.stf_status=='Opened')">              -->
+                     <div *ngIf="(user.adm_status=='Unread')">              
+                        <span class="spansize"><i class="fa fa-edit " title="View & Edit" aria-hidden="true" (click)="openEdit(contentEdit,user)"></i></span>
                    
-                  <span class="spansize " data-toggle="confirmation"><i class="fa fa-trash deliconstyle"  title="Delete" (click)="onDeleteRow(user)" aria-hidden="true"></i></span>
-                  <!-- <span class="spansize " data-toggle="confirmation"><i class="fa fa-trash deliconstyle"  title="View & Feedback" (click)="onFeedback($event,user)" aria-hidden="true"></i></span> -->
-                </div>   
-                <div *ngIf="(user.stf_status=='Closed')" >               
-                  <span class="spansize" class="imgfeedback">
-                    <i class="fa fa-commenting" aria-hidden="true" title="View & Feedback" (click)="openFeedback(contentfeedback,user)"></i>
-                   
-                  </span> 
+                        <span class="spansize " data-toggle="confirmation"><i class="fa fa-trash deliconstyle"  title="Delete" (click)="onDeleteRow(user)" aria-hidden="true"></i></span> 
+                      
+                     </div>  
+                     <div *ngIf="(user.adm_status=='Processing')">              
+                      <span class="spansize"><i class="fa fa-edit " title="View & Edit" aria-hidden="true" (click)="openEdit(contentEdit,user)"></i></span>
                  
-                </div>
+                      <span class="spansize " data-toggle="confirmation"><i class="fa fa-trash deliconstyle"  title="Delete" (click)="onDeleteRow(user)" aria-hidden="true"></i></span> 
+                    </div>   
+                     <!-- <div *ngIf="(user.stf_status=='Closed')" >                --> 
+                       <div *ngIf="(user.adm_status=='Completed')" >               
+                        <span class="spansize" class="imgfeedback">
+                          <i class="fa fa-commenting" aria-hidden="true" title="View & Feedback" (click)="openFeedback(contentfeedback,user)"></i>
+                   
+                        </span> 
+                 
+                      </div> 
+                      
                 </td>
                 <!-- <td>
                                      
