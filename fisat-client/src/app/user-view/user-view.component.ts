@@ -16,6 +16,7 @@ page = 3;
   isDisabled = true;
 modul:any;
 complaint:any;
+complaints1:any;
 comp_details : any;
 comp_others:any;
 prompVal:any;
@@ -63,9 +64,11 @@ this.complaints=data;
 
     this.dataService.getAllComplaints().subscribe(data=>{
       
-      console.log("data--"+JSON.stringify(data));
+      console.log("data get--"+JSON.stringify(data));
       console.log("length datatatata : "+Object.keys(data).length);
-      this.complaints=data;
+      
+      this.complaints1=data;
+      console.log("admin status : "+this.complaints1['adm_status']);
     })
 //register starts..........
  this.dataService.getMasterModule().subscribe(data=>{
@@ -320,6 +323,11 @@ onFeedback(e){
  
  //FEEDBACK ENDSS
 
+
+ public actionDisplay(){
+  //  console.log("actionnnnnn : "+JSON.stringify(this.complaints1[""]));
+   return true;
+ }
 
 public onKeyPress(e)
 {
