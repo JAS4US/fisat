@@ -9,12 +9,7 @@ var cors = require('cors') ;
  app.use(bodyParser.json());
  app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
-//  var pgp = require('pg-promise');
- //var types=require('types');
-//  var types = pgp.pg.types;
-
-var types = require('pg').types;
-
+ 
  
   app.use(cors()); 
   var cid,mid1,comid1;
@@ -22,6 +17,7 @@ var types = require('pg').types;
  var comp_date;
  var valCType=[];
 var valUpdate=[];
+var comp_crt_date;
   const pg  = require('pg');
   // const config = {
   //     user: 'postgres',
@@ -36,11 +32,6 @@ var valUpdate=[];
     port: 5432
 };
   const pool = new pg.Pool(config);
-
-
-
-
-
   
 //Master Module List
  app.get('/masterModulelist',function(req,res,next){
@@ -307,7 +298,8 @@ client.query('SELECT * from compl_id()',function(err,result){
                             return;
                         } else {
                           console.log("insert date  : "+JSON.stringify(result.rows));
-                          var dd=JSON.stringify(result.rows["current_date"]);
+                          // var dd=JSON.stringify(result.rows["current_date"]);
+                          // console.log("insert date111  : "+JSON.stringify(result.rows["current_date"]));
                           if(comid=="Others")
                           //if(other_CompDescription=="Others")
                           {
@@ -519,6 +511,8 @@ client.query('SELECT * from compl_id()',function(err,result){
                             console.log(err);
                             return;
                         } else {
+                          comp_crt_date=JSON.stringify(result.rows);
+                          console.log("datee insert1 : "+comp_crt_date);
                           if(comid=="Others")
                           {
                             console.log("others");
@@ -610,6 +604,7 @@ client.query('SELECT * from compl_id()',function(err,result){
                           }
                           else{
                            console.log("out");
+                           
                            client.query('select "complaintTypeId" from public."ssSoftwareComplaint" where "complaintType"=$1',[comid],function(err,result){
                              if (err) {
                                            console.log(err);
@@ -888,8 +883,8 @@ app.get('/openComplaintUserView',function(req,res,next){
   var open_list=[];
   
   pool.connect(function (err, client, done) {
-   //client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
-    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_char(scm."complaintDate",dd-mm-yyyy),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"], function (err, result) {
+  // client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
+  client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"], function (err, result) {
               done();
               if (err)
                   res.send(err)
@@ -897,22 +892,18 @@ app.get('/openComplaintUserView',function(req,res,next){
             //  console.log("table opennnnn-----"+result.rows[0]);
             //  console.log("table open  -----"+JSON.stringify(result.rows));
             //  console.log("length row : "+result.rows.length);
+
+
+
              for(i=0;i<result.rows.length;i++)
              {
-                data1=JSON.stringify(result.rows[i]["complaintDate"]);
-                // console.log("date before : "+data1);
-                // // console.log(new Date(jsonDate).toUTCString());
-                // data1=new Date(data1).toUTCString();
-                console.log("new dateeeee : " +data1);
-                // console.log("dateeeee :   ==== : "+JSON.stringify(result.rows[i]["complaintDate"]));
-                // types.setTypeParser(1114, data1 => moment.utc(data1).format());
-
-                // types.setTypeParser(20, function(data1) {
-                //   return parseInt(data1)
-                // })
-
+                //data1=JSON.stringify(result.rows[i]["complaintDate"]);
+                data1=JSON.stringify(result.rows[i]["to_jsonb"]);
+                
+                console.log("parsed date : "+result.rows[i]["to_jsonb"]);
                 data1=data1.substring(1, 11);
-                // console.log("date openComplaintUserView  : "+data1);
+                //console.log("date openComplaintUserView  : "+data1);
+                console.log("dateeee val   : "+JSON.stringify(data1));
                 list1={
                   "complaintId":result.rows[i]["complaintId"],
                   "module_type":result.rows[i]["moduleType"],
@@ -964,8 +955,7 @@ app.get('/openComplaintUserView',function(req,res,next){
              val=[];
            }
           })
-          //update tables/////////////////////////////////////////////
-          
+          //update tables/////////////////////////////////////////
           client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"staffStatus"=$2 where "complaintId"=$3',["Closed","Closed",s],function( err,result){
             if (err){
             console.log("error"+err);
