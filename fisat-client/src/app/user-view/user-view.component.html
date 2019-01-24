@@ -280,7 +280,7 @@
                 <!-- <td class="tdstyle">{{user.stf_status}}</td> -->
                 <td class="tdstyle">{{user.adm_status}}</td>
                 <td>
-                     <!-- <div *ngIf="(user.stf_status=='Opened')">              -->
+                     <!-- <div *ngIf="(user.stf_status=='Opened')">-->
                      <div *ngIf="(user.adm_status=='Unread')">              
                         <span class="spansize"><i class="fa fa-edit " title="View & Edit" aria-hidden="true" (click)="openEdit(contentEdit,user)"></i></span>
                    
@@ -302,16 +302,9 @@
                       </div> 
                       
                 </td>
-                <!-- <td>
-                                     
-                 <img src="/assets/images/process-icon.png" alt="no image" title="Under Processing" class="imgprocessicon-style">
-                 <img src="/assets/images/open-icon.png" alt="no image" title="Opened" class="imgOpenicon-style">
-                 <img src="/assets/images/close-icon.png" alt="no image" title="Closed" class="imgCloseicon-style">  
-                 
-                 
-                </td> -->
+               
               </tr>
-        </tbody>
+            </tbody>
       </table>
     </div>
   <!-- </div> -->
