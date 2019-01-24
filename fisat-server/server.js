@@ -882,6 +882,7 @@ app.get('/openComplaintUserView',function(req,res,next){
 
   // client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
   client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"], function (err, result) {
+
               done();
               if (err)
                   res.send(err)
@@ -895,10 +896,13 @@ app.get('/openComplaintUserView',function(req,res,next){
              {
                 //data1=JSON.stringify(result.rows[i]["complaintDate"]);
                 data1=JSON.stringify(result.rows[i]["to_jsonb"]);
+
                 
                 console.log("parsed date : "+result.rows[i]["to_jsonb"]);
                 data1=data1.substring(1, 11);
+
                 console.log("date openComplaintUserView  : "+data1);
+
                 list1={
                   "complaintId":result.rows[i]["complaintId"],
                   "module_type":result.rows[i]["moduleType"],
