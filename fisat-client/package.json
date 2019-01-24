@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "install": "node-gyp rebuild" 
+    "install": "node-gyp rebuild"
   },
   "private": true,
   "dependencies": {
@@ -31,7 +31,6 @@
     "angular-bootstrap-autocomplete": "^1.0.1",
     "angular-tabs-component": "^1.0.6",
     "angular-typeahead": "^1.0.2",
-    "bootstrap": "^4.1.3",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
@@ -41,17 +40,18 @@
     "ngx-bootstrap": "^3.1.3",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26",
-    "dtrace-provider": "git://github.com/itoche/node-dtrace-provider.git#binding-gyp"
-     , "ldapjs": "0.5.4"
+    "dtrace-provider": "git://github.com/itoche/node-dtrace-provider.git#binding-gyp",
+    "ldapjs": "0.5.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.10.0",
     "@angular/cli": "~7.0.1",
     "@angular/compiler-cli": "~7.0.0",
     "@angular/language-service": "~7.0.0",
-    "@types/node": "~8.9.4",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~8.9.4",
+    "bootstrap": "^4.2.1",
     "codelyzer": "~4.5.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",

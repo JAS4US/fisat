@@ -867,9 +867,7 @@ console.log("deleting..........");
     client.query('SELECT "complaintType" FROM public."ssSoftwareComplaint" where "complaintothers"=$1',["Others"], function (err, result) {
               done();
               if (err)
-                  res.send(err)
-                  // console.log(result);
-            //  console.log("comppppppp=======> "+result.rows);
+                  res.send(err);
                   res.json(result.rows);
  });
 
@@ -909,7 +907,7 @@ app.get('/openComplaintUserView',function(req,res,next){
   
   pool.connect(function (err, client, done) {
    //client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
-    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"], function (err, result) {
+    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"], function (err, result) {
               done();
               if (err)
                   res.send(err)
@@ -917,20 +915,13 @@ app.get('/openComplaintUserView',function(req,res,next){
             
              for(i=0;i<result.rows.length;i++)
              {
-                data1=JSON.stringify(result.rows[i]["complaintDate"]);
-                // console.log("date before : "+data1);
-                // // console.log(new Date(jsonDate).toUTCString());
-                // data1=new Date(data1).toUTCString();
+                data1=JSON.stringify(result.rows[i]["to_jsonb"]);
+               
                 console.log("new dateeeee : " +data1);
-                // console.log("dateeeee :   ==== : "+JSON.stringify(result.rows[i]["complaintDate"]));
-                // types.setTypeParser(1114, data1 => moment.utc(data1).format());
-
-                // types.setTypeParser(20, function(data1) {
-                //   return parseInt(data1)
-                // })
+              
 
                 data1=data1.substring(1, 11);
-                // console.log("date openComplaintUserView  : "+data1);
+                console.log("date openComplaintUserView  : "+data1);
                 list1={
                   "complaintId":result.rows[i]["complaintId"],
                   "module_type":result.rows[i]["moduleType"],
@@ -940,14 +931,12 @@ app.get('/openComplaintUserView',function(req,res,next){
                   "complaintDate":data1,
                   "error_path":result.rows[i]["errorPath"],
                   "remarks":result.rows[i]["remarks"],
-
                   "stf_status":result.rows[i]["staffStatus"],
                   "adm_status":result.rows[i]["adminStatus"]
                 };
                 open_list.push(list1);
              }
-            // console.log("leng json : "+Object.keys(open_list));
-            //  console.log("open list : "+JSON.stringify(open_list));
+           
             res.json(open_list);
  });
 
