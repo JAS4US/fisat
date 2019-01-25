@@ -4,6 +4,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import {NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-view',
@@ -21,6 +22,10 @@ comp_details : any;
 comp_others:any;
 prompVal:any;
 newVal:any;
+
+newVal2_module:any;
+// newVal2_complaint:any;
+
 modalReference: any;
 userData :any ;
 mod:any;
@@ -28,13 +33,21 @@ User:any;
 testResult:any;
 complaintOthers:any;
 complaintNo:any;
-divVisible:boolean;
-divVisibleOthers:boolean;
-updtBtn:boolean;
 i:any;
 comptype:any;
 otherCount:any;
 confirmhidden:any;
+
+regForm:any;
+
+divVisible:boolean;
+divVisibleOthers:boolean;
+updtBtn:boolean;
+spanModule:boolean;
+spanComplaint:boolean;
+reg_comp:boolean;
+reg_mod:boolean;
+
 
 @Input() selectedValue;
 @Input() selectedValue_comp;
@@ -56,6 +69,17 @@ confirmhidden:any;
   config.boundaryLinks = true;}
 
   ngOnInit() {
+
+   ///////////////Showing & hiding error message for module Type/////////////////////
+    this.newVal2_module="Select Module Type";
+    this.modCheck();
+   ///////////////Showing & hiding error message for module Type/////////////////////
+
+   ///////////////Showing & hiding error message for complaint Type/////////////////////
+   this.newVal="Select Complaint Type";
+   this.compCheck();
+  ///////////////Showing & hiding error message for complaint Type/////////////////////
+
     this.dataService.getOpenComplaint().subscribe(data=>{
       console.log("data--"+data);
 this.complaints=data;
@@ -91,10 +115,22 @@ this.complaints=data;
 
 
 /**regsiter starts */
+
+ ///////////////Showing & hiding error message for Complaint Type/////////////////////
 public onChange(event): void {  // event will give you full breif of action
+  this.reg_comp=true;
   this.newVal = event.target.value;
-  this.selectedValue_comp=this.newVal
+  this.selectedValue_comp=this.newVal;
   console.log("llllllllllllll"+this.newVal);
+
+  if(this.newVal=="Select Complaint Type")
+  {
+    this.spanComplaint=true;
+  }
+  else{
+    this.spanComplaint=false;
+  }
+
   this.dataService.getOtherComplaintData().subscribe(data=>{
      console.log("comp others lllllllllllll: "+JSON.stringify(data));
     this.comp_others=data;
@@ -102,8 +138,51 @@ public onChange(event): void {  // event will give you full breif of action
   }
 
   )
-
 }
+public compCheck():void{
+  console.log("comp check : "+this.newVal);
+  if(this.newVal=="Select Complaint Type")
+  {
+    this.spanComplaint=true;
+    
+  }
+  else{
+    this.spanComplaint=false;
+    
+  }
+}
+ ///////////////Showing & hiding error message for Complaint Type/////////////////////
+
+ ///////////////Showing & hiding error message for module Type/////////////////////
+public onChange1(event):void{
+  this.reg_mod=true;
+  this.newVal2_module=event.target.value;
+  console.log("inchange  : "+this.newVal2_module);
+  // console.log("inside onchange : "+this.modCheck());
+  //return this.newVal2_module;
+  if(this.newVal2_module=="Select Module Type")
+  {
+    this.spanModule=true;
+    //return true;
+  }
+  else{
+    this.spanModule=false;
+    //return false;
+  }
+}
+public modCheck():void{
+  console.log("mod check : "+this.newVal2_module);
+  if(this.newVal2_module=="Select Module Type")
+  {
+    this.spanModule=true;
+    
+  }
+  else{
+    this.spanModule=false;
+    
+  }
+}
+ ///////////////Showing & hiding error message for module Type/////////////////////
 
 
 public onEditModChange(e):void{
@@ -175,10 +254,10 @@ openEdit(contentEdit:any,user:any) {
      //console.log("elseeeeeee others");
      this.divVisible=true;
      this.divVisibleOthers=false;
-     this.dataService.getAllComplaints().subscribe(data=>{
-     //console.log("data--"+JSON.stringify(data));
-     this.complaints=data;
-     })
+    //  this.dataService.getAllComplaints().subscribe(data=>{
+    //  //console.log("data--"+JSON.stringify(data));
+    //  this.complaints=data;
+    //  })
    
    }
    return true;
@@ -303,10 +382,7 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
       this.confirmhidden=user;
       console.log("inside fun");
      
-      }, (reason) => {
-       
-      });
-   
+
 
 }
 
@@ -365,6 +441,23 @@ public getbtnUpdate(){
     return true;
   }
 }
+
+
+///////Enabling the Register button after selecting the module type and complaint type////////////////////
+public getbtnRegister(){
+  
+    if( (this.reg_comp==true && this.newVal!="Select Complaint Type") &&
+        (this.reg_mod==true && this.newVal2_module!="Select Module Type")
+      )
+  {
+        return false;
+
+  }
+  else{
+    return true;
+  }
+}
+///////Enabling the Register button after selecting the module type and complaint type////////////////////
 
 
 }
