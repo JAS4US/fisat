@@ -19,13 +19,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ViewCompletedComponent } from './view-completed/view-completed.component';
 import { UnitTestComponent } from './unit-test/unit-test.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
+//import { ConfirmationDialogService } from './confirmation-dialog/confirmation-dialog.service';
 import {TabModule} from 'angular-tabs-component';
 import { ViewclosedComponent } from './viewclosed/viewclosed.component';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { UserViewComponent } from './user-view/user-view.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
 import { UserFeedbackComponent } from './user-feedback/user-feedback.component';
+
 
 
 library.add(faCoffee);
@@ -58,7 +59,7 @@ library.add(faCoffee);
      NgbModule.forRoot(),
      TabModule,
      BootstrapModalModule
-    //  ,
+     
     //  NgSelectModule
   
      
