@@ -24,25 +24,29 @@
       <img src="/assets/images/register-icon.png" alt="no image" class="img_divfirst">
     </div>
     <div class="div_secondHalf top ">
-        <form (submit)="onRegisterSubmit($event)" style="position:relative;left:50px;">
+        <form (submit)="onRegisterSubmit($event)" style="position:relative;left:50px;"  ngNativeValidate>
             <br><br>
-            <div class="form-group row">
+            <div class="form-group row" >
                 <!-- <label for="exampleFormControlSelect1" class="textStyle">Select Module Type</label>  -->
-              <div class="col-sm-10">
+              <div class="col-sm-10" >
                 <!--testssss-->
-                <select  id="checkout_city_id" class="form-control checkout-select  selRegStyle  validate[required]">
+                <!-- <select  id="checkout_city_id" class="form-control checkout-select  selRegStyle validate[required]" > -->
+                  <select required="required" id="checkout_city_id" name="modSel" class="form-control checkout-select  selRegStyle" (change)="onChange1($event)">
+                  <!-- <select required="required" id="checkout_city_id" name="modSel" class="form-control checkout-select  selRegStyle" > -->
                     <option>Select Module Type </option>
                     <option *ngFor="let m of modul" >{{m.moduleType}}</option>
                  </select>
-      
-               
+                 <span style="color:rgb(245, 100, 100)" *ngIf="spanModule">
+                  <span ngShow="modSel.$error.required">*Please select the Module Type!!!</span>
+                 </span>
+
               </div>
             </div>
             <br>
-           
+
             <div class="form-group row">
               <div class="col-sm-10">
-                  <select  id="checkout_city_id" class="form-control checkout-select  selRegStyle  validate[required]" (change)="onChange($event)">
+                  <select  required="required" id="checkout_city_id" class="form-control checkout-select  selRegStyle  validate[required]" (change)="onChange($event)">
                       <option>Select Complaint Type </option>
                       <option *ngFor="let c of complaint" >{{c.complaintType}}</option>
                     <option value="Others">Others</option>
@@ -51,31 +55,36 @@
                 <br>
        
          
-      <input list="browsers" name="browser"  class="selRegStyle"  *ngIf="selectedValue_comp==='Others'"   maxlength="25" class = "form-control selStyle txtAreaStyle">
-          <datalist id="browsers"  >
-              <option *ngFor="let f of comp_others">{{f.complaintothers}}</option>
-              
-          </datalist>
+                <input list="browsers" name="browser"  class="selRegStyle"  *ngIf="selectedValue_comp==='Others'"   maxlength="25" class = "form-control selStyle txtAreaStyle">
+                  <datalist id="browsers"  >
+                    <option *ngFor="let f of comp_others">{{f.complaintothers}}</option>
+                  </datalist>
+
+                  <span style="color:rgb(245, 100, 100)" *ngIf="spanComplaint">
+                    <span ngShow="modSel.$error.required">*Please select the Complaint Type!!!</span>
+                  </span>
+
               </div>
             </div>
             <br>
             <div class="form-group row">
                 <!-- <label for="exampleFormControlTextarea1" class="textStyle">Enter Error Details</label> -->
               <div class="col-sm-10">
-                <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="txt_description" [ngModelOptions]="{standalone: true}" placeholder="Error Details"></textarea>
+                <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="txt_description" [ngModelOptions]="{standalone: true}" placeholder="Error Details" required></textarea>
+                
               </div>
             </div>
             <br>
             <div class="form-group row">
                 <!-- <label for="exampleFormControlInput1" class="textStyle">Enter the error Path</label> -->
               <div class="col-sm-10">
-                <input type="text" class="form-control "style="background-color:white;color: #0099cc;border-color: #0099cc;  width: 99%;" id="exampleFormControlInput1" [(ngModel)] = "txt_error" [ngModelOptions]="{standalone: true}" placeholder = "Error Path : eg:-/academics/student">
+                <input type="text" class="form-control "style="background-color:white;color: #0099cc;border-color: #0099cc;  width: 99%;" id="exampleFormControlInput1" [(ngModel)] = "txt_error" [ngModelOptions]="{standalone: true}" placeholder = "Error Path : eg:-/academics/student" required>
               </div>
             </div>
                    
             <div class="form-group row">
               <div class="col-sm-10 btn-div1" >
-                <button class="btn btn-danger btn-block" type="submit">Register</button>
+                <button class="btn btn-danger btn-block" type="submit" [disabled]="getbtnRegister()">Register</button>
                
               </div>
             </div>
@@ -127,7 +136,7 @@
                 <span class="secdcol"><select  id="checkout_city_id" (change)="onEditCompChange($event)" class="form-control checkout-select  selStyle  validate[required]" (change)="onChange($event)">
                      <option>New Complaint </option>
                      <option *ngFor="let c of complaint" >{{c.complaintType}}</option>
-                   <option value="Others">Others</option>
+                   <!-- <option value="Others">Others</option> -->
                   </select>
                 </span>
                <br>

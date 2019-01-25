@@ -50,7 +50,6 @@ console.log("test======-===="+complaint);
 return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint);
   }
   
-  
   onUpdateCloseStatus(id:any)
   {
     console.log("closing dataservice==="+id);
@@ -58,8 +57,6 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
     return this.httpClient.post('http://127.0.0.1:3000/testUpdate',data);
 
   }
-
-
   getClosedComplaint()
   {
     return this.httpClient.get('http://127.0.0.1:3000/closedComplaint');
