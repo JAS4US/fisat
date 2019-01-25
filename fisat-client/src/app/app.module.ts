@@ -10,7 +10,7 @@ import { UiModule } from "./ui/ui.module";
 import { HttpClientModule } from "@angular/common/http";
 import { ReopenComponent } from './reopen/reopen.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FormsModule } from "@angular/forms";
+import { FormsModule,ReactiveFormsModule } from "@angular/forms";
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { TestingItemsComponent } from './testing-items/testing-items.component';
@@ -52,6 +52,7 @@ library.add(faCoffee);
      UiModule,
      HttpClientModule,
      FormsModule,
+     ReactiveFormsModule,
      FontAwesomeModule,
      MatTabsModule,
      BrowserAnimationsModule,
