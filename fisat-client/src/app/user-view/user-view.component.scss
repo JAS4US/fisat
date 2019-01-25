@@ -81,6 +81,8 @@ table thead{
     
     padding-bottom: 4%;
   }
+
+
   .head-style{
     color:#0099cc;
     align-items: center;
@@ -404,4 +406,29 @@ table tr > td:hover > label{
   
   position: relative;
   right: -20px;
+}
+
+.confirmStyle{
+  font-size: 80%;
+
+}
+
+.modalbody-style{
+height: 20%;
+}
+
+.header-style{
+  height: 45px;
+  padding-bottom: 4%;
+}
+
+.modalfooter-style{
+  height: 45px;
+  padding-bottom: 4%;
+}
+
+.iconstyle{
+  color: #0099cc;
+  font-size:24px;
+  
 }

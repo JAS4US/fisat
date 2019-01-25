@@ -36,6 +36,7 @@ complaintNo:any;
 i:any;
 comptype:any;
 otherCount:any;
+confirmhidden:any;
 
 regForm:any;
 
@@ -204,12 +205,6 @@ open(content) {
 
 openFeedback(contentfeedback:any,user:any) {
   this.complaintNo=user["complaintId"];
-  //console.log("user=FEED== : "+JSON.stringify(user));
-  // this.coms=user['fdbktext'];
-  //   console.log("cooooo"+this.coms);
-    
-    
- 
    this.modalService.open(contentfeedback, {ariaLabelledBy: 'modal-feedback-title', size:'lg'}).result.then((result) => {
    
    console.log("inside fun");
@@ -284,6 +279,35 @@ openEdit(contentEdit:any,user:any) {
  }
 
 
+
+ public decline() {
+  this.modalService.dismissAll();
+}
+
+public accept() {
+console.log("dddddddddddddddddd=="+this.confirmhidden);
+  this.dataService.deleteSingleData(this.confirmhidden).subscribe(data => {
+     
+    if(!data){
+      console.log("Not Deleted");
+    }    
+    else{
+      
+           this.complaints1 = this.complaints1.filter(obj => obj.complaintId !== this.confirmhidden);
+           
+        
+        }
+        return true;
+    })
+  this.modalService.dismissAll();
+}
+
+public dismiss() {
+  this.modalService.dismissAll();
+}
+
+
+
 onRegisterSubmit(e){
   console.log("selectedValue_comp-----------"+this.selectedValue_comp);
  
@@ -351,20 +375,14 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
 }
 
 
-  onDeleteRow(user:any){
+  onDeleteRow(contentConfirm,user:any){
     console.log("user"+user.complaintId);
-    
-    this.dataService.deleteSingleData(user.complaintId).subscribe(data => {
+    this.confirmhidden=user.complaintId;
+    this.modalService.open(contentConfirm, {ariaLabelledBy: 'modal-confirm-title', size:'sm'}).result.then((result) => {
+      this.confirmhidden=user;
+      console.log("inside fun");
      
-    if(!data){
-      console.log("Not Deleted");
-    }    
-    else{
-          //  this.complaints = this.complaints.filter(obj => obj.complaintId !== user.complaintId);
-          this.complaints1 = this.complaints1.filter(obj => obj.complaintId !== user.complaintId);
-        }
-        return true;
-    })
+
 
 }
 

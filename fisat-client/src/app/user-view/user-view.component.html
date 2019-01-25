@@ -1,6 +1,4 @@
 <app-layout></app-layout>
-<!-- <button type="button" class="btn btn-info modal-btn" (click)="open(content)">Regsiter Here</button> -->
-<!-- <button class="btn btn-lg btn-outline-primary modal-btn" (click)="open(content)">Regsiter Here</button> -->
 <div class="form-group row">
   <div class="col-sm-10 btn-div" >
     <!-- <button class="btn btn-danger btn-block" type="submit">Register</button> -->
@@ -197,7 +195,7 @@
 
 
 </ng-template>
-<!--feedBack-->
+<!--feedBack MODALLLL-->
 
 
 <ng-template #contentfeedback let-modal>
@@ -258,6 +256,35 @@
     
 </ng-template>
 
+<!--CONFIRMTION MODAL STARTS-->
+
+<ng-template #contentConfirm let-modal>
+
+  <div class="modal-header headerconfirm-style">
+    <!-- <h4 class="modal-title head-style" id="modal-confirm-title">Confirm Again</h4> -->
+    <h6 class="modal-title head-style" id="modal-confirm-title">Confirm Again</h6>
+      <button type="button" class="close header-style" aria-label="Close" (click)="dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body modalbody-style"><input type="text" hidden [(ngModel)]="confirmhidden" [ngModelOptions]="{standalone: true}" />
+      <span class="confirmStyle">Do you Really wnat to delete the record?</span>
+    </div>
+    <div class="modal-footer modalfooter-style">
+      <!-- <button type="button" class="btn btn-danger modalconfirmbtn" (click)="decline()">Cancel</button>  style="font-size:36px"-->
+      <i class="fa fa-close  iconstyle" (click)="decline()"></i>
+      <!-- <button type="button" class="btn btn-primary " (click)="accept()">Delete</button>onDeleteRow -->
+      <i class="fa fa-check iconstyle" aria-hidden="true"  (click)="accept()"></i>
+    </div>
+
+
+
+
+
+
+</ng-template>
+
+<!--CONFIRMTIO MODAL ENDS-->
 <!-- <div class="container"> -->
    <!-- <div class="row1"> ex1(scroll) -->
     <div class="col-12">
@@ -293,13 +320,13 @@
                      <div *ngIf="(user.adm_status=='Unread')">              
                         <span class="spansize"><i class="fa fa-edit " title="View & Edit" aria-hidden="true" (click)="openEdit(contentEdit,user)"></i></span>
                    
-                        <span class="spansize " data-toggle="confirmation"><i class="fa fa-trash deliconstyle"  title="Delete" (click)="onDeleteRow(user)" aria-hidden="true"></i></span> 
+                        <span class="spansize " data-toggle="confirmation"><i class="fa fa-trash deliconstyle"  title="Delete" (click)="onDeleteRow(contentConfirm,user)" aria-hidden="true"></i></span> 
                       
                      </div>  
                      <div *ngIf="(user.adm_status=='Processing')">              
                       <span class="spansize"><i class="fa fa-edit " title="View & Edit" aria-hidden="true" (click)="openEdit(contentEdit,user)"></i></span>
                  
-                      <span class="spansize " data-toggle="confirmation"><i class="fa fa-trash deliconstyle"  title="Delete" (click)="onDeleteRow(user)" aria-hidden="true"></i></span> 
+                      <span class="spansize " data-toggle="confirmation"><i class="fa fa-trash deliconstyle"  title="Delete" (click)="onDeleteRow(contentConfirm,user)" aria-hidden="true"></i></span> 
                     </div>   
                      <!-- <div *ngIf="(user.stf_status=='Closed')" >                --> 
                        <div *ngIf="(user.adm_status=='Completed')" >               
