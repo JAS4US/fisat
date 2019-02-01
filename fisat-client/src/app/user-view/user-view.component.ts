@@ -381,7 +381,7 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
     this.modalService.open(contentConfirm, {ariaLabelledBy: 'modal-confirm-title', size:'sm'}).result.then((result) => {
       this.confirmhidden=user;
       console.log("inside fun");
-     
+    }
 
 
 }
