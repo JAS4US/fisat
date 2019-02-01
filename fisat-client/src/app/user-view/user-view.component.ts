@@ -376,7 +376,8 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
 
 
   onDeleteRow(contentConfirm,user:any){
-    console.log("user"+user.complaintId);
+    alert("sfsf");
+    console.log("user=="+user.complaintId);
     this.confirmhidden=user.complaintId;
     this.modalService.open(contentConfirm, {ariaLabelledBy: 'modal-confirm-title', size:'sm'}).result.then((result) => {
       this.confirmhidden=user;
@@ -384,7 +385,8 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
      
 
 
-}
+})
+  };
 
 
 ///FEED BACK

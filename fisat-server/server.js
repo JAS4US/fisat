@@ -72,19 +72,31 @@ app.get('/masterComplaintlist',function(req,res,next){
  //open Complaint lists
  
  app.get('/openComplaint',function(req,res,next){
-  var stat="Opened";
+  
   var list1=[];
   var open_list=[];
   pool.connect(function (err, client, done) {
-   client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
+    //'select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"]
+   client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 order by scm."complaintDate" desc' ,["Unread"], function (err, result) {
               done();
               if (err)
                   res.send(err)
                  
              for(i=0;i<result.rows.length;i++)
              {
-                data1=JSON.stringify(result.rows[i]["complaintDate"]);
+                // data1=JSON.stringify(result.rows[i]["complaintDate"]);
+
+
+                
+                // data1=data1.substring(1, 11);
+
+                data1=JSON.stringify(result.rows[i]["to_jsonb"]);
+
+                
+                console.log("parsed date : "+result.rows[i]["to_jsonb"]);
                 data1=data1.substring(1, 11);
+
+                console.log("date openComplaintUserView  : "+data1);
                 //console.log("date "+data1);
                 list1={
                   "complaintId":result.rows[i]["complaintId"],
@@ -94,7 +106,9 @@ app.get('/masterComplaintlist',function(req,res,next){
                   "description":result.rows[i]["complaintDescription"],
                   "complaintDate":data1,
                   "error_path":result.rows[i]["errorPath"],
-                  "remarks":result.rows[i]["remarks"]
+                  "remarks":result.rows[i]["remarks"],
+                  "stf_status":result.rows[i]["staffStatus"],
+                  "adm_status":result.rows[i]["adminStatus"]
                 };
                 open_list.push(list1);
              }

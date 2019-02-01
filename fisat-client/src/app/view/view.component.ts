@@ -12,7 +12,7 @@ openComplaints:any;
 
   ngOnInit() {
     this.dataService.getOpenComplaint().subscribe(data=>{
-      console.log("data--"+data);
+      console.log("data--===hhhhhhhhhhhhhh====%%%%"+JSON.stringify(data));
 this.openComplaints=data;
 
     })
