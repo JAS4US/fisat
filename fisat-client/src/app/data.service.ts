@@ -79,9 +79,7 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
      return this.httpClient.post('http://127.0.0.1:3000/insertfeedback',com);
     
   }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
   onInsertRemark(rem:any){
     // console.log("remarks service :"+JSON.stringify(rem));
     return this.httpClient.post('http://127.0.0.1:3000/insertRemarks',rem);
@@ -99,19 +97,14 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
   dateDifference(compId:string){
     return this.httpClient.get(`http://127.0.0.1:3000/getDateDiff${compId}`)
   }
-=======
+
 
   updateProcessStatus(com:any){
     console.log("update process==="+com);
     return this.httpClient.post('http://127.0.0.1:3000/onProceed',com);
   }
 
->>>>>>> 55498830124d2feed55aeb7d0f1e1903c17699f8
- 
-=======
 
->>>>>>> 4d2e91a84e65bea59928b750222b829b6f3c7fad
-=======
->>>>>>> 46da77e8ff9db1dcb6cae997ca0d107de4ca5315
+
 
 }
