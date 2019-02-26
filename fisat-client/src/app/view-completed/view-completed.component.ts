@@ -248,7 +248,7 @@ this.completedComplaints=data;
      
      console.log("inside fun");
      //this.modal=this.userData;
-    //  this.txt_complaint=this.userData["complaint_type"];
+   
      }, (reason) => {
       
      });
