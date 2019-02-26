@@ -8,6 +8,25 @@ text-align: center;
 .tdstyle{
    text-align: center;
 }
+
+.txtAreaStyle{
+    // background-color: #0099cc;
+    // color:white;
+    background-color:white;
+    color: #0099cc;
+    border-color: #0099cc;
+  }
+
+.errorstyle{
+    width: 100%;
+    padding: 6px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #0099cc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
 // .link-btn-style{
 //     background-color: darkolivegreen;
 // }

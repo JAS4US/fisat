@@ -30,12 +30,83 @@
             <td class="tdstyle">{{user.adm_status}}</td>
            
             <!-- <td class="tdstyle">{{user.remarks}}</td> -->
-            <td class="tdstyle"> <i class="fa fa-trash icon-size" (click)="onDelete(user)"></i></td> 
-              <!-- <button type="button" class="btn btn-danger" data-toggle="confirmation">delete</button></td> -->
+            <!-- <td class="tdstyle"> <i class="fa fa-trash icon-size" (click)="onDelete(user)"></i></td>  -->
+            <td class="tdstyle"> <i class="fa fa-eye icon-size" (click)="onView(contentView,user)"></i></td>
+            <!-- <td class="tdstyle"> <i class="fa fa-eye" (click)="onDelete(user)"></i></td> -->
+              <!-- <button type="button" class="btn btn-danger" data-toggle="conirmation">delete</button></td> -->
           </tr>
        
         </tbody>
       </table>
+
+      
+<ng-template #contentView let-modal>
+  <div class="modal-header header-style" >
+      <h5 class="modal-title head-style" id="modal-edit-title">{{title}}</h5> 
+       <button type="button" class="close header-style" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div> 
+     <div class="modal-body" model="editDialog">
+  <!--FORM edit-->
+  
+  <div class="" id="container">
+     <!-- <div class="div_firstHalf top left .div_firstHalf">
+       <img src="/assets/images/iconfinder.png" alt="no image" class="img_divfirst">
+     </div> -->
+     <div class="div_secondHalf top ">
+         <form (submit)="onProceed($event)" style="position:relative;left:50px;">
+             <br><br>
+             <div class="form-group row">
+               <div class="col-sm-10">
+                 Module Type :
+                <span class="firstcol"><input type="text" style="background-color:white;color: #0099cc;border-color: #0099cc;"  [(ngModel)]="txt_Module" [ngModelOptions]="{standalone: true}" class="disabledtextStyle errorstyle" readonly="readonly"></span>  
+                    
+               </div> 
+             </div>
+             
+             <div class="form-group row">
+               <div class="col-sm-10">
+                 Compliant Type :
+                  <span class="firstcol"><input type="text" style="background-color:white;color: #0099cc;border-color: #0099cc;"  [(ngModel)]="txt_Complaint" [ngModelOptions]="{standalone: true}" class="disabledtextStyle errorstyle" readonly="readonly"></span>  
+                  </div>
+              </div>  
+             <div class="form-group row">
+               
+               <div class="col-sm-10">
+                 Complaint Details :
+                 <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="txt_Description" [ngModelOptions]="{standalone: true}" placeholder="Error Details" (keypress)="onKeyPress($event)"></textarea>
+               </div>
+             </div>
+             <br>
+             <div class="form-group row">
+                 <!-- <label for="exampleFormControlInput1" class="textStyle">Enter the error Path</label> -->
+               <div class="col-sm-10">
+                 Error showed in :
+                 <input  class="form-control errorStyle"style="background-color:white;color: #0099cc;border-color: #0099cc;" id="exampleFormControlInput1" [(ngModel)] = "txt_path" [ngModelOptions]="{standalone: true}" placeholder = "Error Path : eg:-/academics/student" (keypress)="onKeyPress($event)">
+               </div>
+             </div>
+                    
+             <div class="form-group row">
+               <div class="col-sm-10 btn-div2" >
+                 <button class="btn btn-danger btn-block"   >Proceed</button>
+                 <!-- <button type="submit" type="submit" class="btn btn-lg btn-outline-primary modal-btn" >Regsiter </button> -->
+               </div>
+             </div>
+           </form>
+     </div>
+     
+  </div>
+  
+  
+     </div>
+     
+  
+  
+  <!--EDIT MODAL ..........................ENDS....................................-->
+  
+  
+  </ng-template>
 
       
 
