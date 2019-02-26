@@ -41,15 +41,6 @@ this.completedComplaints=data;
   }
 
 
-  openCompletedViewRemarks(content:any,user:any) {
-  
-    console.log("user in completed  : "+JSON.stringify(user));
-    this.lbl_complaintID=user["complaintId"];
-    this.lbl_description=user["description"];
-    this.lbl_errPath=user["error_path"];
-
-    this.dataService.loadRemarksOnComplete(this.lbl_complaintID).subscribe(data=>{
-      console.log("getting remarks : "+JSON.stringify(data));
       
       this.txt_remarks=data[0]["remarks"];
       console.log("test : "+data[0]["remarks"]);

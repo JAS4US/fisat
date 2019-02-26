@@ -1,5 +1,6 @@
-import { Component, OnInit, ɵConsole } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { DataService } from '../data.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-view',
@@ -7,8 +8,17 @@ import { DataService } from '../data.service';
   styleUrls: ['./view.component.scss']
 })
 export class ViewComponent implements OnInit {
-openComplaints:any;
-  constructor(private dataService:DataService) { }
+  @Input() title;
+  @Input() txt_Module;
+  @Input() txt_Complaint;
+  @Input() txt_Description;
+  @Input() txt_path;
+  
+  lblComplaintId:any;
+  openComplaints:any;
+  userData:any;
+  data:any;
+  constructor(private dataService:DataService,private modalService: NgbModal) { }
 
   ngOnInit() {
     this.dataService.getOpenComplaint().subscribe(data=>{
@@ -18,22 +28,48 @@ this.openComplaints=data;
     })
   }
 
-  onDelete(user:any){
-    console.log("user"+user.complaintId);
+ 
     
-    this.dataService.deleteSingleData(user.complaintId).subscribe(data => {
+
+  onView(contentView,user:any){
+    //console.log("user=="+JSON.stringify(user);
+    this.userData=JSON.stringify(user);
+    console.log(this.userData["module_type"]);
+    //this.txt_View=user.complaintId;
+    this.title=user.complaintId;
+    this.txt_Module=user["module_type"];;
+    this.txt_Complaint=user["complaint_type"];
+    this.txt_Description=user["description"];
+    this.txt_path=user["error_path"];
+    this.modalService.open(contentView, {ariaLabelledBy: 'modal-confirm-title', size:'lg'}).result.then((result) => {
+      
+      console.log("inside fun");
+    
+    })
+
+  }
+
+  onProceed(e){
+    alert("onprocess");
+    //this.dataService.updateProcessStatus(complaintId)
+    this.data={
+      "complaintId":this.title
+    };
+console.log("Onproceed-----"+this.data);
+    this.dataService.updateProcessStatus(this.data).subscribe(data=>{
+      return true;
+      },
+      error=>{
+       console.error("Error");
+       return false;
+      }
      
-    if(!data){
-      console.log("Not Deleted");
-    }
-    else{
-           this.openComplaints = this.openComplaints.filter(obj => obj.complaintId !== user.complaintId);
-        }
-        return true;
-    }) 
-    
+    )
+    this.modalService.dismissAll();
+ location.reload();
+  }
 
     
   }
 
-}
+
