@@ -384,6 +384,7 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
 //       console.log("inside fun");
     
 <<<<<<< HEAD
+<<<<<<< HEAD
 //     })
 
 // })
@@ -405,6 +406,9 @@ onDeleteRow(contentConfirm,user:any){
 
 
 >>>>>>> 55498830124d2feed55aeb7d0f1e1903c17699f8
+=======
+
+>>>>>>> 4d2e91a84e65bea59928b750222b829b6f3c7fad
 ///FEED BACK
 
 onFeedback(e){

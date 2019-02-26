@@ -41,6 +41,7 @@ this.completedComplaints=data;
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   openCompletedViewRemarks(content:any,user:any) {
   
@@ -56,6 +57,9 @@ this.completedComplaints=data;
     console.log("USER="+JSON.stringify(user));
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',size:'lg'}).result.then((result) => {
 >>>>>>> 55498830124d2feed55aeb7d0f1e1903c17699f8
+=======
+
+>>>>>>> 4d2e91a84e65bea59928b750222b829b6f3c7fad
       
       this.txt_remarks=data[0]["remarks"];
       console.log("test : "+data[0]["remarks"]);

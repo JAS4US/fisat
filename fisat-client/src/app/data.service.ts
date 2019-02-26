@@ -80,6 +80,7 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
     
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
   onInsertRemark(rem:any){
     // console.log("remarks service :"+JSON.stringify(rem));
     return this.httpClient.post('http://127.0.0.1:3000/insertRemarks',rem);
@@ -106,5 +107,8 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
 
 >>>>>>> 55498830124d2feed55aeb7d0f1e1903c17699f8
  
+=======
+
+>>>>>>> 4d2e91a84e65bea59928b750222b829b6f3c7fad
 
 }
