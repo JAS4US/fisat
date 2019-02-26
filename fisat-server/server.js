@@ -130,7 +130,9 @@ app.get('/completedComplaint',function(req,res,next){
   var list1=[];
   var completed_list=[];
   pool.connect(function (err, client, done) {
-   client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and (scm."adminStatus"=$1 or scm."adminStatus"=$2) order by scm."complaintDate" desc',stat, function (err, result) {
+
+   client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1',[stat], function (err, result) {
+
               done();
               if (err)
                   res.send(err)
@@ -1158,6 +1160,36 @@ app.get('/getDateDiff:compId',function(req,res,next){
      });
  
 
+     //////onProceed...starts.............................
+
+     app.post('/onProceed',urlencodedParser, (request, response) => {
+      
+      console.log("test req on proceed================ : "+JSON.stringify(request.body));
+      var data=JSON.stringify(request.body);
+    
+      dataKey=JSON.parse(data);
+      // console.log(dataKey["compId"]);
+      var cId=dataKey["complaintId"];
+    
+      console.log("completediddd=="+cId);
+      status="Process";
+    
+      pool.connect(function (err, client, done) {
+        console.log("connect==kjkjlkjjk"+cId);
+        client.query('UPDATE public."ssComplaintMaster" SET "adminStatus"=$1 where "complaintId"=$2',[status,cId],(error, result) => {//  WHERE complaintId = ?', [request.body, id], (error, result) => {
+          if (error){
+            console.log("error===>"+error);
+            return 0;
+          } 
+          else{
+           
+          response.send('User updated successfully.');
+          return 1;
+        }
+      });
+    
+    })
+    });
 
 
 app.listen(3000);
