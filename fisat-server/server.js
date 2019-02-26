@@ -136,9 +136,7 @@ app.get('/completedComplaint',function(req,res,next){
               done();
               if (err)
                   res.send(err)
-               //   console.log("result ghfghfghgfhfgh: "+result);
-
-                //  console.log("length row : "+result.rows.length);
+             
                   for(i=0;i<result.rows.length;i++)
                   {
                     data1=JSON.stringify(result.rows[i]["complaintDate"]);
