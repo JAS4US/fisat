@@ -13,6 +13,7 @@ var cors = require('cors') ;
  
   app.use(cors()); 
   var cid,mid1,comid1;
+  var rem,adm_status;
   var val=[];
  var comp_date;
  var valCType=[];
@@ -121,11 +122,15 @@ app.get('/masterComplaintlist',function(req,res,next){
  
 //completed complaintlist
 app.get('/completedComplaint',function(req,res,next){
-  var stat="Completed";
+  var stat=[];
+  var stat1="Completed";
+  var stat2="Processing";
+  //var stat="Completed";
+  stat.push(stat1,stat2);
   var list1=[];
   var completed_list=[];
   pool.connect(function (err, client, done) {
-   client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
+   client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and (scm."adminStatus"=$1 or scm."adminStatus"=$2) order by scm."complaintDate" desc',stat, function (err, result) {
               done();
               if (err)
                   res.send(err)
@@ -144,7 +149,8 @@ app.get('/completedComplaint',function(req,res,next){
                       "description":result.rows[i]["complaintDescription"],
                       "complaintDate":data1,
                       "error_path":result.rows[i]["errorPath"],
-                      "remarks":result.rows[i]["remarks"]
+                      "remarks":result.rows[i]["remarks"],
+                      "adm_status":result.rows[i]["adminStatus"]
                     };
                   completed_list.push(list1);
                  }
@@ -659,7 +665,7 @@ client.query('SELECT * from compl_id()',function(err,result){
     var list1=[];
     var closed_list=[];
     pool.connect(function (err, client, done) {
-     client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
+     client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1 order by scm."complaintDate" desc',[stat], function (err, result) {
                 done();
                 if (err)
                     res.send(err)
@@ -938,7 +944,171 @@ app.get('/openComplaintUserView',function(req,res,next){
 
 })
   });
+
+
+/////////////////////////////////INSERT REMARKS///////////////////////////////////////////////////////
+app.post('/insertRemarks',urlencodedParser,function(req,res,next){
+  console.log("remarks : "+JSON.stringify(req.body));
+  var rem1=JSON.parse(JSON.stringify(req.body));
+  rem=rem1["remarks"];
+  var cid1=rem1["compid"];
+  console.log("rem : "+rem);
+  pool.connect(function (err, client, done) {
+    client.query('update public."ssComplaintMaster" set "remarks"=$1 where "complaintId"=$2',[rem,cid1],function( err,result){
+      if (err){
+      console.log("error"+err);
+      val=[];
+      return;
+      }
+
+      else
+      {
+        console.log("success");
+        
+        //val=[];
+      }
+    });
+  })
+});
+////////////////////////////////INSERT REMARKS END////////////////////////////////////////////////////
+
+////////////////////////////CHANGING ADMIN STATUS ON COMPLETE////////////////////////////////////////////////////////////////////////// 
+app.post('/changeAdminStatus',urlencodedParser,function(req,res,next){
+  console.log("remarks : "+JSON.stringify(req.body));
+  var rem1=JSON.parse(JSON.stringify(req.body));
+  rem=rem1["remarks"];
+  var cid1=rem1["compid"];
+  adm_status=rem1["adm_status"];
+  console.log("rem : "+rem);
+
+  var currentdate = new Date();
+  var completion_date=(currentdate.getFullYear())+'-'+(currentdate.getMonth()+1)+'-'+currentdate.getDate();
+  console.log("date new 1 comp_date : "+completion_date); 
+
+  pool.connect(function (err, client, done) {
+    if(rem==null){
+      client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"completiondate"=$2 where "complaintId"=$3',[adm_status,completion_date,cid1],function( err,result){
+        if (err){
+         console.log("error"+err);
+          //val=[];
+          return;
+        }
   
+        else
+        {
+          console.log("success");
+          
+          //val=[];
+        }
+      });
+
+    }
+    else{
+      client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"remarks"=$2,"completiondate"=$3 where "complaintId"=$4',[adm_status,rem,completion_date,cid1],function( err,result){
+        if (err){
+          console.log("error"+err);
+          //val=[];
+          return;
+        }
+
+        else
+        {
+          console.log("success");
+          
+          //val=[];
+        }
+      });
+    }
+  })
+});
+////////////////////////////CHANGING ADMIN STATUS ON COMPLETE END////////////////////////////////////////////////////////////////////////// 
+
+////////////////////////////Getting the Remarks if any/////////////////////////////////////////////////////////////////////////////////////
+app.get('/onLoadRemarks:compId',function(req,res,next){
+  var c_id=req.params.compId;
+  // console.log("other count====> getOthersCount  :  "+c_id);
+   pool.connect(function (err, client, done) {
+    //client.query('SELECT "complaintothers" FROM public."ssSoftwareComplaint" where "complaintType"=$1',[c_others], function (err, result) {
+      client.query('SELECT "remarks" FROM public."ssComplaintMaster" where "complaintId"=$1',[c_id],function (err, result) {
+               done();
+               if (err)
+                   res.send(err)
+                
+                else{
+                  console.log("result in load : "+JSON.stringify(result.rows));
+                  res.json(result.rows);
+                 
+                }
+  });
+
+  })
+});
+////////////////////////////Getting the Remarks if any END/////////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////GETTING THE COMPLETED COMPLAINT DETAILS AFTER UPDATING THE ADMIN STATUS TO COMPLETE////////////////////////
+app.get('/ComplaintAfterAdminUpdateStatus_Complete:compId',function(req,res,next){
+  var c_id=req.params.compId;
+  var stat=[];
+  var stat1="Completed";
+  
+  console.log("inside check!!!!!!!"+c_id);
+
+  stat.push(stat1,c_id);
+  var list1=[];
+  var completed_list=[];
+  pool.connect(function (err, client, done) {
+  //  client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus",to_jsonb(scm."completiondate") from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 and scm."complaintId"=$2 order by scm."complaintDate" desc',stat, function (err, result) {
+    client.query('select to_jsonb(scm."completiondate") from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where  ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 and scm."complaintId"=$2 ',stat, function (err, result) {
+              done();
+              if (err)
+                  res.send(err)
+               
+              //res.json(result.rows);
+              var cdate=JSON.stringify(result.rows[0]["to_jsonb"]);
+              cdate=cdate.substring(1, 11);
+              console.log("dte : "+cdate);
+              res.json(cdate);
+
+
+           
+ });
+
+ })
+});
+////////////////////////////////////////GETTING THE COMPLETED COMPLAINT DETAILS AFTER UPDATING THE ADMIN STATUS TO COMPLETE END////////////////////////
+
+
+////////////////////////////////////////GETTING THE DATE DIFFERENCE BETWEEN COMPLAINT DATE AND COMPLETED DATE////////////////////////
+app.get('/getDateDiff:compId',function(req,res,next){
+  var c_id=req.params.compId;
+  
+ 
+  pool.connect(function (err, client, done) {
+  //  client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus",to_jsonb(scm."completiondate") from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 and scm."complaintId"=$2 order by scm."complaintDate" desc',stat, function (err, result) {
+    client.query('select public.dateDifference($1)',[c_id], function (err, result) {
+              done();
+              if (err)
+                  res.send(err)
+               
+              //res.json(result.rows);
+              
+              console.log("dte : "+JSON.stringify(result.rows));
+              res.json(result.rows);
+
+
+           
+ });
+
+ })
+});
+////////////////////////////////////////GETTING THE DATE DIFFERENCE BETWEEN COMPLAINT DATE AND COMPLETED DATE END////////////////////////
+
+
+
+
+
+
 ///////////////////////////////////////////////////////
  ///FEED BACK
 
