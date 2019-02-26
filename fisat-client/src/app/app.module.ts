@@ -26,6 +26,10 @@ import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { UserViewComponent } from './user-view/user-view.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
 import { UserFeedbackComponent } from './user-feedback/user-feedback.component';
+import { FilterdataPipe } from './filterdata.pipe';
+import { FilterdataModPipe } from './filterdata-mod.pipe';
+import { FiltermodPipe } from './filtermod.pipe';
+import { FilterstatusPipe } from './filterstatus.pipe';
 
 
 
@@ -45,7 +49,11 @@ library.add(faCoffee);
     ViewclosedComponent,
     UserViewComponent,
     UserRegisterComponent,
-    UserFeedbackComponent
+    UserFeedbackComponent,
+    FilterdataPipe,
+    FilterdataModPipe,
+    FiltermodPipe,
+    FilterstatusPipe
   ],
 
   imports: [BrowserModule,

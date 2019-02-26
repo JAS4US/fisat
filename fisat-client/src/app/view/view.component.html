@@ -3,10 +3,26 @@
    
     <table class="table responstable">
         <thead>
+          <tr>
+              <th>
+                Search on ComplaintType :   
+              </th>            
+              <th colspan="3">
+                  <input type="text" [(ngModel)]="queryString" [ngModelOptions]="{standalone:true}">
+                      
+              </th>
+              <th>
+                  Search on ModuleType :   
+                </th>            
+                <th colspan="3">
+                    <input type="text" [(ngModel)]="queryString_mod" [ngModelOptions]="{standalone:true}">
+                        
+                </th>
+            </tr>
           <tr class=" rowstyle tr-style">
             <th scope="col" class="thstyle">Serial No.</th>
             <!-- <th scope="col">to be hidden</th> -->
-            <!-- <th scope="col"class="thstyle">ModuleName</th> -->
+            <th scope="col"class="thstyle">ModuleName</th>
             <th scope="col"class="thstyle">Complaint Id</th>
             <th scope="col"class="thstyle">ComplaintType</th>
             <!-- <th scope="col"class="thstyle">Description</th> -->
@@ -18,10 +34,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="rowstyle" *ngFor="let user of openComplaints;let i = index">
+          <!-- <tr class="rowstyle" *ngFor="let user of openComplaints;let i = index"> -->
+              <tr class="rowstyle" *ngFor="let user of openComplaints|filterdata: queryString : 'complaint_type'|filterdataMod: queryString_mod : 'module_type';let i = index">
             <th scope="row">{{i+1}}</th>
             <!-- <td>{{user.complaintId}}</td>  -->
-            <!-- <td class="tdstyle">{{user.module_type}}</td> -->
+            <td class="tdstyle">{{user.module_type}}</td>
             <td class="tdstyle">{{user.complaintId}}</td>
             <td class="tdstyle">{{user.complaint_type}}</td>
             <!-- <td class="tdstyle">{{user.description}}</td> -->

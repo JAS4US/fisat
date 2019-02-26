@@ -2,59 +2,168 @@
 
    
     <table class="table responstable">
-        <thead>
-          <tr class="tr-style">
-            <th scope="col" class="thstyle">Serial No.</th>
-            <!-- <th scope="col">to be hidden</th> -->
-            <th scope="col"class="thstyle">ModuleName</th>
-            <th scope="col"class="thstyle">ComplaintName</th>
-            <th scope="col"class="thstyle">Description</th>
-            <th scope="col"class="thstyle">ComplaintDate</th>
-            <th scope="col"class="thstyle">ErrorPath</th>
-            <th scope="col"class="thstyle">Remarks</th>
-            <th scope="col"class="thstyle">Action</th>
+      <thead>
+          <tr>
+            <th colspan="7" >
+              
+              Status : 
+              <input type="text" [(ngModel)]="queryString_stat" [ngModelOptions]="{standalone:true}">
+            </th>
           </tr>
-        </thead>
-        <tbody>
-          <tr class="rowstyle" *ngFor="let user of completedComplaints;let i = index">
-            <th scope="row">{{i+1}}</th>
-            <!-- <td>{{user.complaintId}}</td> -->
-            <td class="tdstyle">{{user.module_type}}</td>
-            <td class="tdstyle">{{user.complaint_type}}</td>
-            <td class="tdstyle">{{user.description}}</td>
-            <td class="tdstyle">{{user.complaintDate}}</td>
-            <td class="tdstyle">{{user.error_path}}</td>
-            <td class="tdstyle">{{user.remarks}}</td>
-            <!-- <td class="tdstyle">{{user.remarks}}</td> -->
-            <td class="tdstyle">
-             
-         <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <a  class="btn "(click)="open(content,user)"><i class="fa fa-eye" aria-hidden="true"></i>
-                <!-- <i class="icon-large icon-search"></i> <span class="glyphicon glyphicon-eye-open"></span> Eye-open -->
+        <tr class="tr-style">
+          <th scope="col" class="thstyle">Serial No.</th>
+          <!-- <th scope="col">to be hidden</th> -->
+          <!-- <th scope="col">Complaint ID</th> -->
+          <th scope="col"class="thstyle">ModuleName</th>
+          <th scope="col"class="thstyle">ComplaintName</th>
+          <!-- <th scope="col"class="thstyle">Description</th> -->
+          <th scope="col"class="thstyle">ComplaintDate</th>
+          <th scope="col"class="thstyle">ErrorPath</th>
+          <th scope="col"class="thstyle">Status</th>
+          <!-- <th scope="col"class="thstyle">Remarks</th> -->
+          <th scope="col"class="thstyle">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- <tr class="rowstyle" *ngFor="let user of completedComplaints|filterdata: queryString : 'complaint_type'|filterdataMod: queryString_mod : 'module_type'|filterstatus:queryString_stat:'adm_status';let i = index"> -->
+        <tr class="rowstyle" *ngFor="let user of completedComplaints|filterstatus:queryString_stat:'adm_status';let i = index">
+          <th scope="row">{{i+1}}</th>
+          <!-- <td>{{user.complaintId}}</td> -->
+          <td class="tdstyle">{{user.module_type}}</td>
+          <td class="tdstyle">{{user.complaint_type}}</td>
+          <!-- <td class="tdstyle">{{user.description}}</td> -->
+          <td class="tdstyle">{{user.complaintDate}}</td>
+          <td class="tdstyle">{{user.error_path}}</td>
+          <td class="tdstyle">{{user.adm_status}}</td>
+          <!-- <td class="tdstyle">{{user.remarks}}</td> -->
+          <!-- <td class="tdstyle">{{user.remarks}}</td> -->
+          <td class="tdstyle">
+            <div *ngIf="(user.adm_status=='Processing')">               
+              <a>
+                <span class="spansize"><i class="fa fa-eye " title="View & Add Remarks" aria-hidden="true" (click)="openCompletedViewRemarks(content,user)"></i></span>
               </a>
-              <a  class="btn "(click)="close(user)"><i class="fa fa-close" aria-hidden="true"></i>
-                <!-- <i class="icon-large icon-search"></i> <span class="glyphicon glyphicon-eye-open"></span> Eye-open -->
-              </a>
-                </div> 
-                 
-                </td>
-          </tr>
-       
-        </tbody>
-      </table>
+            </div>  
+            <div class="btn-group btn-group-toggle" data-toggle="buttons"  *ngIf="(user.adm_status=='Completed')">
+                <span class="spansize"><i class="fa fa-eye " title="View" aria-hidden="true" (click)="openCompletedView(contentComplete,user)"></i></span>
+            </div>        
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-      <!--MODAL.....REOPEN-->
-      <ng-template #content let-modal>
-        <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
-          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-          </button>
+
+
+    <!--MODAL.....REOPEN-->
+    <ng-template #content let-modal>
+      <div class="modal-header" id="remarksModal">
+        <h4 class="modal-title" id="modal-basic-title" style="color:#0099cc">Complaint Details</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <app-reopen></app-reopen> -->
+        <form (submit)="onRemarkSubmit($event)" style="position:relative;left:50px;">
+          <div class="form-group row">
+            <div class="col-sm-10">
+              Complaint ID : 
+                <input type="text" style="border:none;" readonly="readonly" class="disabledtextStyle" [(ngModel)]="lbl_complaintID" [ngModelOptions]="{standalone: true}" >
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-10">
+              Description : 
+                <input type="text" style="border:none;background-color: white;" readonly="readonly" class="disabledtextStyle" [(ngModel)]="lbl_description" [ngModelOptions]="{standalone: true}" > 
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-10">
+              Error Path : 
+                <input type="text" style="border:none;background-color: white;" readonly="readonly" class="disabledtextStyle" [(ngModel)]="lbl_errPath" [ngModelOptions]="{standalone: true}" > 
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-10">
+              Remarks : 
+                <input type="text" class="txt_remarkss"  [(ngModel)]="txt_remarks" [ngModelOptions]="{standalone: true}" style="color:#0099cc" > 
+            </div>
+          </div>
+          <br>
+          <div class="form-group row">
+            <!-- <div class="col-sm-10"> -->
+              <button class="btn btn-danger btn-block" type="submit" data-dimiss="modal">Reprocess</button>
+              <button class="btn btn-danger btn-blockComplete" type="button" style="margin-left: 12px;" (click)="onCompleteComplaint()">Completed</button>
+            <!-- </div> -->
+          </div>  
+            
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </ng-template>
+
+<!-- Complete View -->
+<ng-template #contentComplete let-modal>
+    <div class="modal-header" id="remarksModal">
+      <h4 class="modal-title" id="modal-basic-title" style="color:#0099cc">Complaint Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- <app-reopen></app-reopen> -->
+      <form (submit)="onRemarkSubmit($event)" style="position:relative;left:50px;">
+        <div class="form-group row">
+          <div class="col-sm-10" style="color: #0099cc">
+            Complaint ID : 
+              <input type="text" style="border:none;" readonly="readonly" class="disabledtextStyle" [(ngModel)]="lbl_complaintID" [ngModelOptions]="{standalone: true}" >
+          </div>
         </div>
-        <div class="modal-body">
-          <app-reopen></app-reopen>
+        <div class="form-group row">
+          <div class="col-sm-10" style="color: #0099cc">
+            Description : 
+              <input type="text" style="border:none;background-color: white;" readonly="readonly" class="disabledtextStyle" [(ngModel)]="lbl_description" [ngModelOptions]="{standalone: true}" > 
+          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+        <div class="form-group row">
+          <div class="col-sm-10" style="color: #0099cc">
+            Error Path : 
+              <input type="text" style="border:none;background-color: white;" readonly="readonly" class="disabledtextStyle" [(ngModel)]="lbl_errPath" [ngModelOptions]="{standalone: true}" > 
+          </div>
         </div>
-      </ng-template>
+        <div class="form-group row">
+          <div class="col-sm-10" style="color: #0099cc">
+            Remarks : 
+            <input type="text" style="border:none;background-color: white;" readonly="readonly" class="disabledtextStyle" [(ngModel)]="lbl_remarks" [ngModelOptions]="{standalone: true}" > 
+          </div>
+        </div>
+        <!-- <br> -->
+        <div class="form-group row">
+            <div class="col-sm-10" style="color: #0099cc">
+              Complaint Date : 
+              <input type="text" style="border:none;background-color: white;" readonly="readonly" class="disabledtextStyle" [(ngModel)]="lbl_complaintDate" [ngModelOptions]="{standalone: true}" > 
+            </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-10" style="color: #0099cc">
+            Completed Date : 
+            <input type="text" style="border:none;background-color: white;" readonly="readonly" class="disabledtextStyle" [(ngModel)]="lbl_completionDate" [ngModelOptions]="{standalone: true}" > 
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-10" style="color: #0099cc">
+            Days taken for Completion : 
+            <input type="text" style="border:none;background-color: white;" readonly="readonly" class="disabledtextStyle" [(ngModel)]="lbl_completionDateDiff" [ngModelOptions]="{standalone: true}" > 
+          </div>
+        </div>
+        <br>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
+      </form>
+
+    </div>
+    <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div> -->
+  </ng-template>
