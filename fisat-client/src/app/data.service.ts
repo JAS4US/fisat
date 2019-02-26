@@ -95,7 +95,7 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
     return this.httpClient.get(`http://127.0.0.1:3000/ComplaintAfterAdminUpdateStatus_Complete${compId}`)
   }
   dateDifference(compId:string){
-    return this.httpClient.get(`http://127.0.0.1:3000/getDateDiff${compId}`)
+    return this.httpClient.get(`http://127.0.0.1:3000/getDateDiff${compId}`);
   }
 
 
