@@ -40,6 +40,7 @@ this.completedComplaints=data;
     })
   }
 
+<<<<<<< HEAD
 
   openCompletedViewRemarks(content:any,user:any) {
   
@@ -50,6 +51,11 @@ this.completedComplaints=data;
 
     this.dataService.loadRemarksOnComplete(this.lbl_complaintID).subscribe(data=>{
       console.log("getting remarks : "+JSON.stringify(data));
+=======
+  open(content,user:any) {
+    console.log("USER="+JSON.stringify(user));
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',size:'lg'}).result.then((result) => {
+>>>>>>> 55498830124d2feed55aeb7d0f1e1903c17699f8
       
       this.txt_remarks=data[0]["remarks"];
       console.log("test : "+data[0]["remarks"]);
