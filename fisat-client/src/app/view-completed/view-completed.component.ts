@@ -42,6 +42,7 @@ this.completedComplaints=data;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   openCompletedViewRemarks(content:any,user:any) {
   
@@ -60,6 +61,9 @@ this.completedComplaints=data;
 =======
 
 >>>>>>> 4d2e91a84e65bea59928b750222b829b6f3c7fad
+=======
+
+>>>>>>> 46da77e8ff9db1dcb6cae997ca0d107de4ca5315
       
       this.txt_remarks=data[0]["remarks"];
       console.log("test : "+data[0]["remarks"]);
@@ -71,40 +75,6 @@ this.completedComplaints=data;
       return false;
     })
 
-
-   
-     this.modalService.open(content, {ariaLabelledBy: 'modal-edit-title', size:'lg'}).result.then((result) => {
-     
-     console.log("inside fun");
-     //this.modal=this.userData;
-    //  this.txt_complaint=this.userData["complaint_type"];
-     }, (reason) => {
-      
-     });
-   }
-
-
-   openCompletedView(content:any,user:any) {
-  
-    console.log("user in completed  : "+JSON.stringify(user));
-    this.lbl_complaintID=user["complaintId"];
-    this.lbl_description=user["description"];
-    this.lbl_errPath=user["error_path"];
-    this.lbl_remarks=user["remarks"];
-    this.lbl_complaintDate=user["complaintDate"];
-    
-    this.dataService.loadComplaintsAfterAdminStatus_Complete(this.lbl_complaintID).subscribe(data=>{
-      console.log("getting complete : "+JSON.stringify(data));
-      
-      this.lbl_completionDate=data;
-      console.log("test : "+data);
-      
-      return true;
-    },
-    error=>{
-      console.log("Error");
-      return false;
-    })
 
     ////////FINDING THE DATE DIFFERENCE/////////////////////////////////////////
     this.dataService.dateDifference(this.lbl_complaintID).subscribe(data=>{
