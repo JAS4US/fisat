@@ -383,28 +383,9 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
 //       this.confirmhidden=user;
 //       console.log("inside fun");
     
-<<<<<<< HEAD
-//     })
-
-// })
-//   };
-
-onDeleteRow(contentConfirm,user:any){
-  alert("dsdsdf");
-  console.log("user === "+user.complaintId);
-  this.confirmhidden=user.complaintId;
-  this.modalService.open(contentConfirm,{ariaLabelledBy:'modal-confirm-title',size:'sm'}).result.then((result)=>{
-    this.confirmhidden=user;
-    console.log("inside fun");
-  })
-};
-=======
-    })
-
-  };
 
 
->>>>>>> 55498830124d2feed55aeb7d0f1e1903c17699f8
+
 ///FEED BACK
 
 onFeedback(e){
