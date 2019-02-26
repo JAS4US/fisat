@@ -43,6 +43,7 @@ this.completedComplaints=data;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   openCompletedViewRemarks(content:any,user:any) {
   
@@ -61,6 +62,9 @@ this.completedComplaints=data;
 =======
 
 >>>>>>> 4d2e91a84e65bea59928b750222b829b6f3c7fad
+=======
+
+>>>>>>> 46da77e8ff9db1dcb6cae997ca0d107de4ca5315
 =======
 
 >>>>>>> 46da77e8ff9db1dcb6cae997ca0d107de4ca5315
