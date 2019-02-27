@@ -74,7 +74,6 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
     return this.httpClient.get(`http://127.0.0.1:3000/getOthersCountInEdit1${comptype}`);
   }
   onFeedbackService(com:any){
-    
       console.log("haibbbbbbbbbbbbblllll"+com);
      return this.httpClient.post('http://127.0.0.1:3000/insertfeedback',com);
     
