@@ -9,7 +9,7 @@ var cors = require('cors') ;
  app.use(bodyParser.json());
  app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
- 
+ var nodemailer = require('nodemailer');
  
   app.use(cors()); 
   var cid,mid1,comid1;
@@ -132,14 +132,14 @@ app.get('/completedComplaint',function(req,res,next){
   pool.connect(function (err, client, done) {
 
    //client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1',[stat], function (err, result) {
-    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and (scm."adminStatus"=$1 or scm."adminStatus"=$2) order by scm."complaintDate" desc',stat, function (err, result) {
+    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and (scm."adminStatus"=$1 or scm."adminStatus"=$2) order by scm."complaintDate" desc',stat, function (err, result) {
               done();
               if (err)
                   res.send(err)
              
                   for(i=0;i<result.rows.length;i++)
                   {
-                    data1=JSON.stringify(result.rows[i]["complaintDate"]);
+                    data1=JSON.stringify(result.rows[i]["to_jsonb"]);
                     data1=data1.substring(1, 11);
                   //  console.log("date "+data1);
                     list1={
@@ -1020,6 +1020,7 @@ app.post('/changeAdminStatus',urlencodedParser,function(req,res,next){
       });
     }
   })
+
 });
 ////////////////////////////CHANGING ADMIN STATUS ON COMPLETE END////////////////////////////////////////////////////////////////////////// 
 
@@ -1104,8 +1105,65 @@ app.get('/getDateDiff:compId',function(req,res,next){
 });
 ////////////////////////////////////////GETTING THE DATE DIFFERENCE BETWEEN COMPLAINT DATE AND COMPLETED DATE END////////////////////////
 
+////////////////////////////////////////MAIL SENDING///////////////////////////////////////////////////////////////////
+app.post('/sendMessageDemo',urlencodedParser,function(req,res,next){
+  console.log("Message : "+JSON.stringify(req.body));
+  var details=JSON.parse(JSON.stringify(req.body));
+  console.log("Details : "+details);
+  var uname=details["uname"];
+  console.log("username : "+uname);
+  var sub=details["subject"];
+  console.log("subject : "+sub);
+  console.log("message : "+details["message"]);
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'mailjas4us@gmail.com',
+      pass: '#m1nd1lla#'
+    }
+  });
+
+  var mailOptions = {
+    from: 'mailjas4us@gmail.com',
+    //to: 'cslifisat17@gmail.com',
+    to:details["uname"],
+    //subject: 'Sending Email using Node.js',
+    subject:details["subject"],
+    //text: 'That was easy!'
+    text:details["message"]
+  };
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
 
 
+  // pool.connect(function (err, client, done) {
+    // client.query('update public."ssComplaintMaster" set "remarks"=$1 where "complaintId"=$2',[rem,cid1],function( err,result){
+    //   if (err){
+    //   console.log("error"+err);
+    //   val=[];
+    //   return;
+    //   }
+
+    //   else
+    //   {
+    //     console.log("success");
+        
+    //     //val=[];
+    //   }
+    // });
+  // })
+});
+
+
+
+
+////////////////////////////////////////MAIL SENDING END///////////////////////////////////////////////////////////////////
 
 
 
@@ -1187,8 +1245,36 @@ app.get('/getDateDiff:compId',function(req,res,next){
       });
     
     })
+    
     });
 
+    sendMailMsg()
+    {
+      var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'mailjas4us@gmail.com',
+          pass: '#m1nd1lla#'
+        }
+      });
+    
+      var mailOptions = {
+        from: 'mailjas4us@gmail.com',
+        to: 'cslifisat17@gmail.com',
+        // to:details["uname"],
+        subject: 'Sending Email using Node.js',
+        // subject:details["subject"],
+        text: 'That was easy!'
+        // text:details["message"]
+      };
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+    }
 
 app.listen(3000);
 console.log('Listening on port 3000...');
