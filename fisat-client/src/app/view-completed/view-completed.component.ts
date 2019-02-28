@@ -22,6 +22,7 @@ export class ViewCompletedComponent implements OnInit {
   @Input() lbl_errPath;
   @Input() lbl_remarks;
   @Input() lbl_completionDate;
+  @Input() lbl_complaintDate;
   @Input() lbl_completionDateDiff;
 
   remarks:any;
@@ -32,10 +33,9 @@ export class ViewCompletedComponent implements OnInit {
   constructor(private dataService:DataService,private modalService: NgbModal) {}
 //completedComplaints
   ngOnInit() {
-    
     this.dataService. getDataCompleted().subscribe(data=>{
-      console.log(data);
-this.completedComplaints=data;
+    console.log("lllllllllllllll"+JSON.stringify(data));
+    this.completedComplaints=data;
 
     })
   }
@@ -81,6 +81,7 @@ this.completedComplaints=data;
     this.lbl_description=user["description"];
     this.lbl_errPath=user["error_path"];
     this.lbl_remarks=user["remarks"];
+    this.lbl_complaintDate=user["complaintDate"];
     
     this.dataService.loadComplaintsAfterAdminStatus_Complete(this.lbl_complaintID).subscribe(data=>{
       console.log("getting complete : "+JSON.stringify(data));

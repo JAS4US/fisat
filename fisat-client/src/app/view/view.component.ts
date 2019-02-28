@@ -13,6 +13,7 @@ export class ViewComponent implements OnInit {
   @Input() txt_Complaint;
   @Input() txt_Description;
   @Input() txt_path;
+  @Input() lbl_complaintDate;
   
   lblComplaintId:any;
   openComplaints:any;
@@ -41,6 +42,7 @@ this.openComplaints=data;
     this.txt_Complaint=user["complaint_type"];
     this.txt_Description=user["description"];
     this.txt_path=user["error_path"];
+    this.lbl_complaintDate=user["complaintDate"];
     this.modalService.open(contentView, {ariaLabelledBy: 'modal-confirm-title', size:'lg'}).result.then((result) => {
       
       console.log("inside fun");
