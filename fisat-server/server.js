@@ -1228,7 +1228,7 @@ app.post('/sendMessageDemo',urlencodedParser,function(req,res,next){
       var cId=dataKey["complaintId"];
     
       console.log("completediddd=="+cId);
-      status="Process";
+      status="Processing";
     
       pool.connect(function (err, client, done) {
         console.log("connect==kjkjlkjjk"+cId);
