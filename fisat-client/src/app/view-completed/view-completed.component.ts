@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from '../data.service';
 // import {   Inject, PLATFORM_ID, Injector } from '@angular/core';
@@ -33,11 +34,44 @@ export class ViewCompletedComponent implements OnInit {
 //completedComplaints
   ngOnInit() {
     this.dataService. getDataCompleted().subscribe(data=>{
-      console.log(data);
-this.completedComplaints=data;
+    console.log("lllllllllllllll"+JSON.stringify(data));
+    this.completedComplaints=data;
 
     })
   }
+
+
+  openCompletedViewRemarks(content:any,user:any) {
+  
+    console.log("user in completed  : "+JSON.stringify(user));
+    this.lbl_complaintID=user["complaintId"];
+    this.lbl_description=user["description"];
+    this.lbl_errPath=user["error_path"];
+
+    this.dataService.loadRemarksOnComplete(this.lbl_complaintID).subscribe(data=>{
+      console.log("getting remarks : "+JSON.stringify(data));
+      
+      this.txt_remarks=data[0]["remarks"];
+      console.log("test : "+data[0]["remarks"]);
+      
+      return true;
+    },
+    error=>{
+      console.log("Error");
+      return false;
+    })
+
+
+   
+     this.modalService.open(content, {ariaLabelledBy: 'modal-edit-title', size:'lg'}).result.then((result) => {
+     
+     console.log("inside fun");
+     //this.modal=this.userData;
+   
+     }, (reason) => {
+      
+     });
+   }
 
 
    openCompletedView(content:any,user:any) {
