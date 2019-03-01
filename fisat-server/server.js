@@ -1254,5 +1254,85 @@ app.get('/getDateDiff:compId',function(req,res,next){
       
     }
 
+
+    //insert module
+app.post('/onaddmoduleser',urlencodedParser,function(req,res,next){
+  console.log('jjini');
+  var m=JSON.stringify(req.body);
+  dataKey=JSON.parse(m);
+  // console.log("m in module : "+m["moduleType"]);
+  pool.connect(function(err,client,done){
+
+/////////sequence////
+//mid
+client.query('SELECT * from modid_f()',function(err,result){
+  if (err) {
+                console.log(err);
+                return;
+            } else {
+              //console.log("select compid : "+JSON.stringify(result.rows[0]["compl_id"]));
+              
+              md=JSON.stringify(result.rows[0]["modid_f"]);
+              md ="m"+md.replace(/^"(.*)"$/, '$1');
+              console.log("mid1 : "+md);
+              var m1=dataKey["moduleType"];
+              console.log("jinnni md  "+m1);
+              var v=[];
+              v.push(md,m1);
+              //return md;
+              client.query('insert into public."ssSoftwareModules"("moduleId", "moduleType")values($1,$2)',v,function(err,result){
+                if(err)
+                       console.log(err);
+              })
+                //console.log('row inserted with id: ' + result.rows[0].id);
+            }
+})  
+
+
+  }) 
+}
+)
+
+///insert new complaint
+
+//insert module
+app.post('/onaddcomplser',urlencodedParser,function(req,res,next){
+  console.log('jjini');
+  var n=JSON.stringify(req.body);
+  dataKey=JSON.parse(n);
+  // console.log("m in module : "+m["moduleType"]);
+  pool.connect(function(err,client,done){
+
+    var m1=dataKey["complaintType"];
+    console.log("jinnni md  "+m1);
+    client.query('SELECT * from compl_id()',function(err,result){
+      if (err) {
+                    console.log(err);
+                    return;
+                } else {
+                  //console.log("select compid : "+JSON.stringify(result.rows[0]["compl_id"]));
+                  cid="comp";
+                  cid+=JSON.stringify(result.rows[0]["compl_id"]);
+                  console.log("cid : "+cid);
+                  console.log("mid2 : "+cid);
+                  var v=[];
+                 // var a='m10';
+                  v.push(cid,m1);
+                 //console.log("ddddddd"+v);
+                 // 'insert into public."ssSoftwareModules"("moduleId", "moduleType")VALUES("m15","hjkk")'
+                  client.query('insert into public."ssSoftwareComplaint"("complaintTypeId","complaintType")values($1,$2)',v,function(err,result){
+                    if(err)
+                           console.log(err);
+                  })
+                  //return cid;
+                    //console.log('row inserted with id: ' + result.rows[0].id);
+                }
+    }) 
+  
+
+  
+  })
+})
+
 app.listen(3000);
 console.log('Listening on port 3000...');
