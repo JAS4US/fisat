@@ -103,7 +103,16 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
     return this.httpClient.post('http://127.0.0.1:3000/onProceed',com);
   }
 
-
+  insertModule(mod:any)
+  {
+  console.log("dataservice "+JSON.stringify(mod));
+  return this.httpClient.post('http://127.0.0.1:3000/onaddmoduleser',mod);
+  }
+  insertComplaint(comp:any)
+  {
+    console.log('hhhhhh');
+    return this.httpClient.post('http://127.0.0.1:3000/onaddcomplser',comp)
+  }
 
 
 }

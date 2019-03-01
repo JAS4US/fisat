@@ -4,8 +4,8 @@
         <div class="row div-btn-outer">
                 <div class="col-sm-10 btn-div" >
                   <!-- <button class="btn btn-danger btn-block" type="submit">Register</button>  (click)="" -->
-                  <button type="button" class="btn btn-info modal-btn modulebutton">Add ModuleType</button>&nbsp; &nbsp; &nbsp; 
-                  <button type="button" class="btn btn-info modal-btn complaintbutton">Add ComplaintType</button>
+                  <button type="button" class="btn btn-info modal-btn modulebutton" (click)="openMod(modcontent)">Add ModuleType </button>&nbsp; &nbsp; &nbsp; 
+                  <button type="button" class="btn btn-info modal-btn complaintbutton" (click)="openComp(compcontent)">Add ComplaintType</button>
                 </div>
                
         </div>
@@ -39,5 +39,112 @@
                         
                 </div>	
         
+
+
+<!--master complaint modal-->
+                <ng-template #compcontent let-modal>
+                        <div class="modal-header header-style">
+                         <h5 class="modal-title head-style" id="modal-register-title">New Complaint</h5> 
+                          <button type="button" class="close header-style" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div> 
+                        <div class="modal-body">
+                    <!--new register-->
+                    
+                    <div class="" id="container" >
+                        <div class="div_firstHalf top left .div_firstHalf">
+                          <img src="/assets/images/register-icon.png" alt="no image" class="img_divfirst">
+                        </div>
+                        <div class="div_secondHalf top ">
+                            <form (submit)="onaddcomplaint(newVals,user)" style="position:relative;left:50px;"  ngNativeValidate>
+                                <br><br>
+                                <div class="form-group row" >
+                                   
+                                </div>
+                                <br>
+                                       
+                                <br>
+                                <div class="form-group row">
+                                    <!-- <label for="exampleFormControlInput1" class="textStyle">Enter the error Path</label> -->
+                                  <div class="col-sm-10">
+                                    <input type="text" class="form-control "style="background-color:white;color: #0099cc;border-color: #0099cc;  width: 99%;" id="exampleFormControlInput1" [(ngModel)] = "in_compl" [ngModelOptions]="{standalone: true}" placeholder = "Enter complaint" required>
+                                  </div>
+                                </div>
+                                       
+                                <div class="form-group row">
+                                  <div class="col-sm-10 btn-div1" >
+                                    <button class="btn btn-danger btn-block" type="submit">Submit</button>
+                                   
+                                  </div>
+                                </div>
+                              </form>
+                        </div>
+                        
+                     </div>
+                     
+                    
+                        </div>
+                        
+                      
+                      </ng-template>
+
+
+                     <!--master complaint modal-->
+
+
+
+                     <!-- master Module-->
+                     <ng-template #modcontent let-modal>
+                        <div class="modal-header header-style">
+                         <h5 class="modal-title head-style" id="modal-register-title">New Module</h5> 
+                          <button type="button" class="close header-style" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div> 
+                        <div class="modal-body">
+                    <!--new register-->
+                    
+                    <div class="" id="container" >
+                        <div class="div_firstHalf top left .div_firstHalf">
+                          <img src="/assets/images/register-icon.png" alt="no image" class="img_divfirst">
+                        </div>
+                        <div class="div_secondHalf top ">
+                            <form (submit)="onaddmodule(newVals,user)" style="position:relative;left:50px;"  ngNativeValidate>
+                                <br><br>
+                                <div class="form-group row" >
+                                   
+                                </div>
+                                <br>
+                                       
+                                <br>
+                                <div class="form-group row">
+                                    <!-- <label for="exampleFormControlInput1" class="textStyle">Enter the error Path</label> -->
+                                  <div class="col-sm-10">
+                                    <input type="text" class="form-control "style="background-color:white;color: #0099cc;border-color: #0099cc;  width: 99%;" id="exampleFormControlInput1" [(ngModel)] = "in_modu" [ngModelOptions]="{standalone: true}" placeholder = "Enter module" required>
+                                  </div>
+                                </div>
+                                       
+                                <div class="form-group row">
+                                  <div class="col-sm-10 btn-div1" >
+                                    <button class="btn btn-danger btn-block" type="submit">Submit</button>
+                                   
+                                  </div>
+                                </div>
+                              </form>
+                        </div>
+                        
+                     </div>
+                     
+                    
+                        </div>
+                        
+                      
+                      </ng-template>
+
+               <!-- master Module-->
+
+
+
 
 </app-layout>
