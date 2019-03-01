@@ -9,7 +9,7 @@ var cors = require('cors') ;
  app.use(bodyParser.json());
  app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
- 
+ var nodemailer = require('nodemailer');
  
   app.use(cors()); 
   var cid,mid1,comid1;
@@ -1020,6 +1020,18 @@ app.post('/changeAdminStatus',urlencodedParser,function(req,res,next){
       });
     }
   })
+
+  pool.connect(function (err, client, done) {
+    client.query('SELECT "complaintDescription" FROM public."ssComplaintMaster" where "complaintId"=$1',[cid1],function (err, result) {
+             done();
+             
+      des=JSON.stringify(result.rows[0]["complaintDescription"]);
+      des = des.replace(/^"(.*)"$/, '$1');
+      sendMailMsg(des);
+});
+
+})
+
 });
 ////////////////////////////CHANGING ADMIN STATUS ON COMPLETE END////////////////////////////////////////////////////////////////////////// 
 
@@ -1106,9 +1118,6 @@ app.get('/getDateDiff:compId',function(req,res,next){
 
 
 
-
-
-
 ///////////////////////////////////////////////////////
  ///FEED BACK
 
@@ -1187,8 +1196,63 @@ app.get('/getDateDiff:compId',function(req,res,next){
       });
     
     })
+
+    pool.connect(function (err, client, done) {
+      client.query('SELECT "complaintDescription" FROM public."ssComplaintMaster" where "complaintId"=$1',[cId],function (err, result) {
+               done();
+               
+        des=JSON.stringify(result.rows[0]["complaintDescription"]);
+        des = des.replace(/^"(.*)"$/, '$1');
+        
+        sendMailMsg(des,status);
+  });
+  
+  })
+    
     });
 
+    var sendMailMsg=function(des,status1)
+    {
+      var sub;
+      // console.log("inside function sendMailMsg(c_id) : "+des);
+      if(status1=="Processing")
+      {
+        //console.log("processing");
+        sub="Software Complaint Registered Under Processing"
+        des="Your complaint : "+des+"\n is now in processing!!!";
+      }
+      else{
+        sub="Software Complaint Resolved";
+        des="Your complaint : "+des+"\n is now resolved\nPlease check it!!!";
+        
+      }
+        
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'mailjas4us@gmail.com',
+            pass: '#m1nd1lla#'
+          }
+        });
+      
+        var mailOptions = {
+          from: 'mailjas4us@gmail.com',
+          to: 'cslifisat17@gmail.com',
+          // to:details["uname"],
+          // subject: 'Sending Email using Node.js',
+          subject:sub,
+          // text: 'That was easy!'
+          text:des
+        };
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+      
+    }
 
 
     //insert module
