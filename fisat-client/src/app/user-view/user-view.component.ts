@@ -357,7 +357,7 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
        "other_Complaints":e.target[6].value
      };
 
-//console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
+console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
   //this.dataService.onSubmit1(this.comp_details).subscribe()
    this.dataService.onUpdateComplaint(this.comp_details).subscribe(data=>{
     return true;
