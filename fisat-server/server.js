@@ -1021,6 +1021,17 @@ app.post('/changeAdminStatus',urlencodedParser,function(req,res,next){
     }
   })
 
+  pool.connect(function (err, client, done) {
+    client.query('SELECT "complaintDescription" FROM public."ssComplaintMaster" where "complaintId"=$1',[cid1],function (err, result) {
+             done();
+             
+      des=JSON.stringify(result.rows[0]["complaintDescription"]);
+      des = des.replace(/^"(.*)"$/, '$1');
+      sendMailMsg(des);
+});
+
+})
+
 });
 ////////////////////////////CHANGING ADMIN STATUS ON COMPLETE END////////////////////////////////////////////////////////////////////////// 
 
@@ -1105,66 +1116,6 @@ app.get('/getDateDiff:compId',function(req,res,next){
 });
 ////////////////////////////////////////GETTING THE DATE DIFFERENCE BETWEEN COMPLAINT DATE AND COMPLETED DATE END////////////////////////
 
-////////////////////////////////////////MAIL SENDING///////////////////////////////////////////////////////////////////
-app.post('/sendMessageDemo',urlencodedParser,function(req,res,next){
-  console.log("Message : "+JSON.stringify(req.body));
-  var details=JSON.parse(JSON.stringify(req.body));
-  console.log("Details : "+details);
-  var uname=details["uname"];
-  console.log("username : "+uname);
-  var sub=details["subject"];
-  console.log("subject : "+sub);
-  console.log("message : "+details["message"]);
-
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'mailjas4us@gmail.com',
-      pass: '#m1nd1lla#'
-    }
-  });
-
-  var mailOptions = {
-    from: 'mailjas4us@gmail.com',
-    //to: 'cslifisat17@gmail.com',
-    to:details["uname"],
-    //subject: 'Sending Email using Node.js',
-    subject:details["subject"],
-    //text: 'That was easy!'
-    text:details["message"]
-  };
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
-
-
-  // pool.connect(function (err, client, done) {
-    // client.query('update public."ssComplaintMaster" set "remarks"=$1 where "complaintId"=$2',[rem,cid1],function( err,result){
-    //   if (err){
-    //   console.log("error"+err);
-    //   val=[];
-    //   return;
-    //   }
-
-    //   else
-    //   {
-    //     console.log("success");
-        
-    //     //val=[];
-    //   }
-    // });
-  // })
-});
-
-
-
-
-////////////////////////////////////////MAIL SENDING END///////////////////////////////////////////////////////////////////
-
 
 
 ///////////////////////////////////////////////////////
@@ -1245,35 +1196,62 @@ app.post('/sendMessageDemo',urlencodedParser,function(req,res,next){
       });
     
     })
+
+    pool.connect(function (err, client, done) {
+      client.query('SELECT "complaintDescription" FROM public."ssComplaintMaster" where "complaintId"=$1',[cId],function (err, result) {
+               done();
+               
+        des=JSON.stringify(result.rows[0]["complaintDescription"]);
+        des = des.replace(/^"(.*)"$/, '$1');
+        
+        sendMailMsg(des,status);
+  });
+  
+  })
     
     });
 
-    sendMailMsg()
+    var sendMailMsg=function(des,status1)
     {
-      var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'mailjas4us@gmail.com',
-          pass: '#m1nd1lla#'
-        }
-      });
-    
-      var mailOptions = {
-        from: 'mailjas4us@gmail.com',
-        to: 'cslifisat17@gmail.com',
-        // to:details["uname"],
-        subject: 'Sending Email using Node.js',
-        // subject:details["subject"],
-        text: 'That was easy!'
-        // text:details["message"]
-      };
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
-      });
+      var sub;
+      // console.log("inside function sendMailMsg(c_id) : "+des);
+      if(status1=="Processing")
+      {
+        //console.log("processing");
+        sub="Software Complaint Registered Under Processing"
+        des="Your complaint : "+des+"\n is now in processing!!!";
+      }
+      else{
+        sub="Software Complaint Resolved";
+        des="Your complaint : "+des+"\n is now resolved\nPlease check it!!!";
+        
+      }
+        
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'mailjas4us@gmail.com',
+            pass: '#m1nd1lla#'
+          }
+        });
+      
+        var mailOptions = {
+          from: 'mailjas4us@gmail.com',
+          to: 'cslifisat17@gmail.com',
+          // to:details["uname"],
+          // subject: 'Sending Email using Node.js',
+          subject:sub,
+          // text: 'That was easy!'
+          text:des
+        };
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+      
     }
 
 app.listen(3000);
