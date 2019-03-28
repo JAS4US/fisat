@@ -15,10 +15,35 @@ export class TestingItemsComponent implements OnInit {
 
   constructor(private dataservice:DataService,private modalService: NgbModal) { }
   @Input() in_compl;
-  compl_details:any;
   @Input()  in_modu;
-module_details:any;
+
+  compl_details:any;
+  module_details:any;
+  unreadCount:any;
+  processingCount:any;
+  completedCount:any;
+  closedCount:any;
+
   ngOnInit() {
+
+    this.dataservice.getUnreadCount().subscribe(data=>{
+      this.unreadCount=data;
+      return true;
+    })
+    this.dataservice.getProcessingCount().subscribe(data=>{
+      this.processingCount=data;
+      return true;
+    })
+    this.dataservice.getCompletedCount().subscribe(data=>{
+      this.completedCount=data;
+      return true;
+    })
+    this.dataservice.getClosedCount().subscribe(data=>{
+      this.closedCount=data;
+      
+      return true;
+    })
+
   }
 
   openComp(compcontent) {
@@ -29,10 +54,7 @@ module_details:any;
      }, (reason) => {
       
      });
-   }
-   
-   
-   
+   } 
    onaddcomplaint(module:any,user:any){
       console.log("inside fun");
       console.log("error : "+this.in_compl);

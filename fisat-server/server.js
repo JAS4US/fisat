@@ -1,7 +1,10 @@
-
 var express  = require('express');
 var bodyParser=require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
+
+
+
+
 //var app = express();
 var cors = require('cors') ;
  app = express();
@@ -10,7 +13,8 @@ var cors = require('cors') ;
  app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
  var nodemailer = require('nodemailer');
- 
+
+
   app.use(cors()); 
   var cid,mid1,comid1;
   var rem,adm_status;
@@ -169,7 +173,8 @@ app.get('/completedComplaint',function(req,res,next){
 app.get('/getOtherComplaint',function(req,res,next){
   var c_others='Others';
    pool.connect(function (err, client, done) {
-    client.query('SELECT "complaintothers" FROM public."ssSoftwareComplaint" where "complaintType"=$1',[c_others], function (err, result) {
+    // client.query('SELECT "complaintothers" FROM public."ssSoftwareComplaint" where "complaintType"=$1',[c_others], function (err, result) {
+      client.query('SELECT "complaintType" FROM public."ssSoftwareComplaint" where "complaintothers"=$1',[c_others], function (err, result) {
                done();
                if (err)
                    res.send(err)
@@ -178,7 +183,7 @@ app.get('/getOtherComplaint',function(req,res,next){
                 }
                 else{
                  //  console.log(result);
-              //console.log(result.rows);
+              console.log("others 14-03-19 : "+JSON.stringify(result.rows));
                    res.json(result.rows);
                 }
   });
@@ -188,26 +193,26 @@ app.get('/getOtherComplaint',function(req,res,next){
 
 
 //complaint listOthers
-app.get('/getOtherComplaint',function(req,res,next){
-  var c_others='Others';
-   pool.connect(function (err, client, done) {
-    //client.query('SELECT "complaintothers" FROM public."ssSoftwareComplaint" where "complaintType"=$1',[c_others], function (err, result) {
-      client.query('SELECT "complaintothers" FROM public."ssSoftwareComplaint" where "complaintothers"=$1',[c_others], function (err, result) {
-               done();
-               if (err)
-                   res.send(err)
-                else if(!result){
-                  //console.log("null");
-                }
-                else{
-                   //console.log(result);
-              //console.log(result.rows);
-                   res.json(result.rows);
-                }
-  });
+// app.get('/getOtherComplaint',function(req,res,next){
+//   var c_others='Others';
+//    pool.connect(function (err, client, done) {
+//     //client.query('SELECT "complaintothers" FROM public."ssSoftwareComplaint" where "complaintType"=$1',[c_others], function (err, result) {
+//       client.query('SELECT "complaintothers" FROM public."ssSoftwareComplaint" where "complaintothers"=$1',[c_others], function (err, result) {
+//                done();
+//                if (err)
+//                    res.send(err)
+//                 else if(!result){
+//                   //console.log("null");
+//                 }
+//                 else{
+//                    //console.log(result);
+//               //console.log(result.rows);
+//                    res.json(result.rows);
+//                 }
+//   });
 
-  })
-});
+//   })
+// });
 
 
 // function getModuleId(moduleType)
@@ -457,7 +462,7 @@ app.post('/tsInsertDummySample',urlencodedParser,function(req,res,next){
 
    console.log("test tsInsertDummySample");
 
-  // console.log("test req : "+JSON.stringify(req.body));
+  console.log("test req : "+JSON.stringify(req.body));
   var data=JSON.stringify(req.body);
 
   dataKey=JSON.parse(data);
@@ -716,6 +721,7 @@ client.query('SELECT * from compl_id()',function(err,result){
   
       cno=dataKey["complaintId"];
       var mid=dataKey["module_type"];
+      console.log("before going to query : "+mid);
       var pid="p1";//dataKey["personalId"];
       comid=dataKey["complaint_type"];
       // console.log("ctype test   : "+comid);
@@ -1165,7 +1171,48 @@ app.get('/getDateDiff:compId',function(req,res,next){
           
        })
      });
+
+/////////////INSERTING THE COMPLAINT DESCRIPTION IF THE PROBLEM SOLVED IN THE FEEDBACK ICON IS ON/////////////////////////
+app.post('/feedbackComplaintProcess',urlencodedParser,function(req,res,next){
+  // console.log("hai");
+   console.log("hhhh COMP DESCRIPTION : "+JSON.stringify(req.body));
+   d=JSON.stringify(req.body);
+   var dk=JSON.parse(d);
  
+   pool.connect(function(err,client,done){
+    
+    //  console.log("fgggg"+f);
+    var f=dk["comments"];
+    var s=dk["complaintId"];
+    console.log("sssssss"+s);
+    var ad_status="Unread";
+    var completedDate=null;
+    // val.push(s,f);
+
+    var currentdate = new Date();
+    comp_date=(currentdate.getFullYear())+'-'+(currentdate.getMonth()+1)+'-'+currentdate.getDate();
+    console.log("year : "+(currentdate.getFullYear()));
+    console.log("month : "+(currentdate.getMonth()));
+    console.log("date : "+currentdate.getDate());
+    
+    console.log("date new 1 comp_date : "+comp_date); 
+    client.query('update public."ssComplaintMaster" set "complaintDescription"=$1,"complaintDate"=$3,"adminStatus"=$4,completiondate=$5 where "complaintId"=$2',[f,s,comp_date,ad_status,completedDate],function( err,result){
+      if (err){
+        console.log("error"+err);
+        val=[];
+        return;
+      }
+      else
+      {
+        console.log("success");
+      }
+   })
+
+   
+          
+  })
+});
+/////////////INSERTING THE COMPLAINT DESCRIPTION IF THE PROBLEM SOLVED IN THE FEEDBACK ICON IS ON END/////////////////////////////
 
      //////onProceed...starts.............................
 
@@ -1223,7 +1270,7 @@ app.get('/getDateDiff:compId',function(req,res,next){
       }
       else{
         sub="Software Complaint Resolved";
-        des="Your complaint : "+des+"\n is now resolved\nPlease check it!!!";
+        des="Your complaint : "+des+"\n is now resolved.\nPlease check it!!!";
         
       }
         
@@ -1333,6 +1380,106 @@ app.post('/onaddcomplser',urlencodedParser,function(req,res,next){
   
   })
 })
+
+///////////////////////////////////////Unread Count////////////////////////////////////////////////////////////////
+app.get('/unreadCount',function(req,res,next){
+  var unread='Unread';
+  
+ 
+  pool.connect(function (err, client, done) {
+  
+    client.query('select count("adminStatus") from public."ssComplaintMaster" where "adminStatus"=$1',[unread], function (err, result) {
+              done();
+              if (err)
+                  res.send(err)
+               
+              //res.json(result.rows);
+              
+              console.log("Unread count : "+JSON.stringify(result.rows));
+              res.json(result.rows);
+
+
+           
+ });
+
+ })
+});
+///////////////////////////////////////Unread Count End///////////////////////////////////////////////////////////
+
+///////////////////////////////////////Processing Count////////////////////////////////////////////////////////////////
+app.get('/processingCount',function(req,res,next){
+  var proCount='Processing';
+  
+ 
+  pool.connect(function (err, client, done) {
+  
+    client.query('select count("adminStatus") from public."ssComplaintMaster" where "adminStatus"=$1',[proCount], function (err, result) {
+              done();
+              if (err)
+                  res.send(err)
+               
+              //res.json(result.rows);
+              
+              console.log("Processing count : "+JSON.stringify(result.rows));
+              res.json(result.rows);
+
+
+           
+ });
+
+ })
+});
+///////////////////////////////////////Processing Count End///////////////////////////////////////////////////////////
+
+///////////////////////////////////////Completed Count////////////////////////////////////////////////////////////////
+app.get('/completeCount',function(req,res,next){
+  var completedCount='Completed';
+  
+ 
+  pool.connect(function (err, client, done) {
+  
+    client.query('select count("adminStatus") from public."ssComplaintMaster" where "adminStatus"=$1',[completedCount], function (err, result) {
+              done();
+              if (err)
+                  res.send(err)
+               
+              //res.json(result.rows);
+              
+              console.log("Completed count : "+JSON.stringify(result.rows));
+              res.json(result.rows);
+
+
+           
+ });
+
+ })
+});
+///////////////////////////////////////Completed Count End///////////////////////////////////////////////////////////
+
+///////////////////////////////////////Closed Count////////////////////////////////////////////////////////////////
+app.get('/closedCount',function(req,res,next){
+  var closedCount='Closed';
+  
+ 
+  pool.connect(function (err, client, done) {
+  
+    client.query('select count("adminStatus") from public."ssComplaintMaster" where "adminStatus"=$1',[closedCount], function (err, result) {
+              done();
+              if (err)
+                  res.send(err)
+               
+              //res.json(result.rows);
+              
+              console.log("Closed count : "+JSON.stringify(result.rows));
+              res.json(result.rows);
+
+
+           
+ });
+
+ })
+});
+///////////////////////////////////////Closed Count End///////////////////////////////////////////////////////////
 
 app.listen(3000);
 console.log('Listening on port 3000...');
