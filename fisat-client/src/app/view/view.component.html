@@ -44,7 +44,12 @@
             <!-- <td class="tdstyle">{{user.description}}</td> -->
             <td class="tdstyle">{{user.complaintDate}}</td>
             <!-- <td class="tdstyle">{{user.error_path}}</td> -->
-            <td class="tdstyle">{{user.adm_status}}</td>
+
+            <!-- <td class="tdstyle" >{{user.adm_status}}</td> -->
+            <td class="tdstyle" data-toggle="tooltip" data-placement="right" title={{user.description}}>
+              {{user.adm_status}}
+            </td>
+            <!-- <p data-toggle="tooltip" data-placement="left" data-container="body" title="hi">some text</p> -->
            
             <!-- <td class="tdstyle">{{user.remarks}}</td> -->
             <!-- <td class="tdstyle"> <i class="fa fa-trash icon-size" (click)="onDelete(user)"></i></td>  -->
