@@ -350,8 +350,8 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
  
   this.comp_details={
       "complaintId":this.complaintNo,
-       "module_type":e.target[1].value,
-       "complaint_type":e.target[3].value,
+       "module_type":e.target[0].value,
+       "complaint_type":e.target[2].value,
        "description":e.target[4].value,
        "error_path":e.target[5].value,
        "other_Complaints":e.target[6].value
@@ -374,15 +374,24 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
  location.reload();
 }
 
-
-//   onDeleteRow(contentConfirm,user:any){
-//     alert("sfsf");
-//     console.log("user=="+user.complaintId);
-//     this.confirmhidden=user.complaintId;
-//     this.modalService.open(contentConfirm, {ariaLabelledBy: 'modal-confirm-title', size:'sm'}).result.then((result) => {
-//       this.confirmhidden=user;
-//       console.log("inside fun");
-    
+///////////////////DELETIONNN//////////////////////////////////////////////////////////////
+  // onDeleteRow(contentConfirm,user:any){
+  //   alert("sfsf");
+  //   console.log("user=="+user.complaintId);
+  //   this.confirmhidden=user.complaintId;
+  //   this.modalService.open(contentConfirm, {ariaLabelledBy: 'modal-confirm-title', size:'sm'}).result.then((result) => {
+  //     this.confirmhidden=user;
+  //     console.log("inside fun");
+  //   }
+  onDeleteRow(contentConfirm,user:any){
+    console.log("user=="+user.complaintId);
+    this.confirmhidden=user.complaintId;
+    this.modalService.open(contentConfirm,{ariaLabelledBy:'modal-confirm-title',size:'sm'}).result.then((result)=>{
+      this.confirmhidden=user;
+      console.log("inside function");
+    })
+  }
+///////////////////DELETIONNN END//////////////////////////////////////////////////////////////    
 
 
 

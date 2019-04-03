@@ -2,6 +2,7 @@
 var express  = require('express');
 var bodyParser=require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
+var ldap = require('ldapjs');
 //var app = express();
 var cors = require('cors') ;
  app = express();
@@ -1201,14 +1202,14 @@ app.post('/onaddmoduleser',urlencodedParser,function(req,res,next){
 
 /////////sequence////
 //mid
-client.query('SELECT * from modid_f()',function(err,result){
+client.query('SELECT * from modidnewf()',function(err,result){
   if (err) {
                 console.log(err);
                 return;
             } else {
               //console.log("select compid : "+JSON.stringify(result.rows[0]["compl_id"]));
               
-              md=JSON.stringify(result.rows[0]["modid_f"]);
+              md=JSON.stringify(result.rows[0]["modidnewf"]);
               md ="m"+md.replace(/^"(.*)"$/, '$1');
               console.log("mid1 : "+md);
               var m1=dataKey["moduleType"];
@@ -1241,14 +1242,14 @@ app.post('/onaddcomplser',urlencodedParser,function(req,res,next){
 
     var m1=dataKey["complaintType"];
     console.log("jinnni md  "+m1);
-    client.query('SELECT * from compl_id()',function(err,result){
+    client.query('SELECT * from compidnewf()',function(err,result){
       if (err) {
                     console.log(err);
                     return;
                 } else {
                   //console.log("select compid : "+JSON.stringify(result.rows[0]["compl_id"]));
                   cid="comp";
-                  cid+=JSON.stringify(result.rows[0]["compl_id"]);
+                  cid+=JSON.stringify(result.rows[0]["compidnewf"]);
                   console.log("cid : "+cid);
                   console.log("mid2 : "+cid);
                   var v=[];
@@ -1268,6 +1269,28 @@ app.post('/onaddcomplser',urlencodedParser,function(req,res,next){
 
   
   })
+})
+
+app.get('/ldapLogin:userData',function(req,res,next){
+var d=JSON.parse(req.params.userData);
+console.log("d : "+d.userName+d.password);
+var userName=d.userName;
+var resp;
+var password=d.password;
+var ldap_server = ldap.createClient({url: 'ldap://cim.fisat.edu'});
+var dn='uid='+userName+',ou=Users,dc=fisat,dc=edu';
+ldap_server.bind(dn, password, function(err) {
+  if (err) {
+    console.log('LDAP binding failed... disconnecting',err);
+    resp={"msg":0};
+    res.send(resp);
+  }else{
+   console.log("Bind Success");
+   resp={"msg":1};
+   res.send(resp);
+  }
+});
+
 })
 
 app.listen(3000);

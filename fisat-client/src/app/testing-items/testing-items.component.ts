@@ -22,7 +22,7 @@ module_details:any;
   }
 
   openComp(compcontent) {
-    alert("asdasd");
+    // alert("asdasd");
     //this.modalService.open()
     this.modalService.open(compcontent, {ariaLabelledBy: 'modal-register-title', size:'sm'}).result.then((result) => {
       
@@ -48,12 +48,13 @@ module_details:any;
   this.dataservice.insertComplaint(this.compl_details).subscribe(data=>{
     return true;
   })
+  this.in_compl="";
   this.modalService.dismissAll();
    }
 
 
    openMod(content) {
-    alert("asdasd");
+    // alert("asdasd");
       this.modalService.open(content, {ariaLabelledBy: 'modal-register-title', size:'sm'}).result.then((result) => {
       
      }, (reason) => {
