@@ -375,6 +375,7 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
   //      "other_Complaints":e.target[6].value
   //    };
   this.comp_details={
+
     "complaintId":this.complaintNo,
      "module_type":e.target[0].value,
      "complaint_type":e.target[2].value,
@@ -384,6 +385,7 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
    };
 
 console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
+
   //this.dataService.onSubmit1(this.comp_details).subscribe()
    this.dataService.onUpdateComplaint(this.comp_details).subscribe(data=>{
     return true;
@@ -401,14 +403,6 @@ console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
 }
 
 
-//   onDeleteRow(contentConfirm,user:any){
-//     alert("sfsf");
-//     console.log("user=="+user.complaintId);
-//     this.confirmhidden=user.complaintId;
-//     this.modalService.open(contentConfirm, {ariaLabelledBy: 'modal-confirm-title', size:'sm'}).result.then((result) => {
-//       this.confirmhidden=user;
-//       console.log("inside fun");
-    
 //////////////////////////////DELETE COMPLAINT///////////////////////////////////////////////////////////////////
 onDeleteRow(contentConfirm,user:any){
   console.log("user=="+user.complaintId);
@@ -419,6 +413,7 @@ onDeleteRow(contentConfirm,user:any){
   })
 }
 /////////////////////////////DELETE COMPLAINT END////////////////////////////////////////////////////////////////
+
 
 
 ///FEED BACK

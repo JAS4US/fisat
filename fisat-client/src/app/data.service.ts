@@ -118,6 +118,11 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
     console.log('hhhhhh');
     return this.httpClient.post('http://127.0.0.1:3000/onaddcomplser',comp)
   }
+  onLogin(userData:any){
+  //console.log("teststts"+JSON.stringify(userData));
+  userData=JSON.stringify(userData);
+    return this.httpClient.get(`http://127.0.0.1:3000/ldapLogin${userData}`);
+  }
 
   getUnreadCount(){
     return this.httpClient.get('http://127.0.0.1:3000/unreadCount');
