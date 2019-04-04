@@ -1286,7 +1286,11 @@ ldap_server.bind(dn, password, function(err) {
     res.send(resp);
   }else{
    console.log("Bind Success");
+    //query to get username
+
+
    resp={"msg":1};
+
    res.send(resp);
   }
 });
