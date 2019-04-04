@@ -74,9 +74,14 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
     return this.httpClient.get(`http://127.0.0.1:3000/getOthersCountInEdit1${comptype}`);
   }
   onFeedbackService(com:any){
-      console.log("haibbbbbbbbbbbbblllll"+com);
+      console.log("haibbbbbbbbbbbbblllll    "+JSON.stringify(com));
      return this.httpClient.post('http://127.0.0.1:3000/insertfeedback',com);
     
+  }
+  onFeedbackComplaintService(com:any){
+    console.log();
+    return this.httpClient.post('http://127.0.0.1:3000/feedbackComplaintProcess',com);
+
   }
 
   onInsertRemark(rem:any){
@@ -119,5 +124,17 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
     return this.httpClient.get(`http://127.0.0.1:3000/ldapLogin${userData}`);
   }
 
+  getUnreadCount(){
+    return this.httpClient.get('http://127.0.0.1:3000/unreadCount');
+  }
+  getProcessingCount(){
+    return this.httpClient.get('http://127.0.0.1:3000/processingCount');
+  }
+  getCompletedCount(){
+    return this.httpClient.get('http://127.0.0.1:3000/completeCount');
+  }
+  getClosedCount(){
+    return this.httpClient.get('http://127.0.0.1:3000/closedCount');
+  }
 
 }

@@ -14,13 +14,15 @@
                         <div class="tab-wrap">
                         
                                 <input type="radio" id="tab1" name="tabGroup1" class="tab open" checked>
-                                <label for="tab1" class="open">Opened</label>
+                                <label for="tab1"  *ngFor="let c of unreadCount" class="open"><b>Opened ( {{c.count}} )</b></label>
         
                                 <input type="radio" id="tab2" name="tabGroup1" class="tab completed">
-                                <label for="tab2" class="completed">Completed</label>
-        
+                                <!-- <label for="tab2" *ngFor="let p of processingCount let cl of closedCount" class="completed" >Processing ({{ p.count }}) & Completed ({{cl.count}})</label> -->
+                                <label for="tab2" *ngFor="let p of processingCount" class="completed" ><b>Processing ( {{p.count}} ) & </b>
+                                  <label for="tab2" *ngFor="let cmplt of completedCount"><b>Completed ( {{cmplt.count}} )</b></label>
+                                </label>
                                 <input type="radio" id="tab3" name="tabGroup1" class="tab closed">
-                                <label for="tab3" class="closed">Closed</label>
+                                <label for="tab3" *ngFor="let cc of closedCount"  class="closed"><b> Closed ( {{cc.count}} )</b></label>
         
                                 <div class="tab__content">
                                                 <app-view></app-view> 
