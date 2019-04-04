@@ -8,14 +8,17 @@ export class DataService {
 dat:any;
   constructor(private httpClient:HttpClient) { }
 
-  getOpenComplaint()
+  getOpenComplaint(username:any)
   {
-    return this.httpClient.get('http://127.0.0.1:3000/openComplaint');
+    //console.log("user service : "+username);
+    // return this.httpClient.get('http://127.0.0.1:3000/openComplaint');
+    return this.httpClient.get(`http://127.0.0.1:3000/openComplaint${username}`);
   }
 
-  getAllComplaints()
+  getAllComplaints(username:any)
   {
-    return this.httpClient.get('http://127.0.0.1:3000/openComplaintUserView');
+    return this.httpClient.get(`http://127.0.0.1:3000/ComplaintUserView${username}`);
+    // return this.httpClient.get(`http://127.0.0.1:3000/openComplaintUserView${username}`);
   }
 
   getDataCompleted()
@@ -131,5 +134,11 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
   getClosedCount(){
     return this.httpClient.get('http://127.0.0.1:3000/closedCount');
   }
+
+  ///////////////////////////////////////////////////////////LOGIN////////////////////////////
+  getOnLogin(){
+    return this.httpClient.get('http://127.0.0.1:3000/loginCheck')
+  }
+  
 
 }

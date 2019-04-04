@@ -19,10 +19,12 @@ export class ViewComponent implements OnInit {
   openComplaints:any;
   userData:any;
   data:any;
+  userNameSession:any;
   constructor(private dataService:DataService,private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.dataService.getOpenComplaint().subscribe(data=>{
+    this.userNameSession=sessionStorage.getItem("username");
+    this.dataService.getOpenComplaint(this.userNameSession).subscribe(data=>{
       console.log("data--===hhhhhhhhhhhhhh====%%%%"+JSON.stringify(data));
 this.openComplaints=data;
 
