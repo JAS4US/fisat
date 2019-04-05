@@ -7,9 +7,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  userNameSession:any;
+  userWelcome:boolean;
+
+  constructor() {
+    this.userWelcome=false;
+   }
 
   ngOnInit() {
+
+    this.userNameSession=sessionStorage.getItem("username");
+    console.log("username header : "+this.userNameSession);
+    if(this.userNameSession!=null){
+      this.userWelcome=true;
+    }
+    else{
+      this.userWelcome=false;
+    }
+
+  }
+  onLogoutService(){
+    console.log("logout!!!!");
+    sessionStorage.removeItem("username");
   }
 
 }

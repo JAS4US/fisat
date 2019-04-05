@@ -1,5 +1,9 @@
+
+<app-layout></app-layout>
+  <!-- <div class="jumbotron">
 <app-layout>
   <div class="jumbotron">
+
     <h1>Login</h1>
     <form (submit)="onSubmit($event)">
       <div class="form-group">
@@ -32,8 +36,47 @@
     </form>
   </div>
 
+<div class="" id="container">
+    <div class="div_firstHalf top left ">
+        <img src="/assets/images/iconfinder.png" alt="no image" class="img_divfirst">
+    </div>
+  <div class="div_secondHalf top ">
+    <form (ngSubmit)="onLogin()" style="position:relative;left:50px;" >
+        <br><br>
+        
+        <br>
+        
+        <div class="form-group row">
+            <!-- <label for="exampleFormControlSelect1" class="textStyle">Select Complaint Type</label> -->
+          <div class="col-sm-10">
+              <!-- <input list="browsers" name="browser"  [(ngModel)]="txt_others"  *ngIf="selectedValue_comp=='Others'"  [ngModelOptions]="{standalone: true}" maxlength="25" class = "form-control selStyle txtAreaStyle"> -->
+              <input type="text" name="txtLogin" [(ngModel)]="txt_uname" [ngModelOptions]="{standalone: true}" placeholder="USERNAME">
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+            <!-- <label for="exampleFormControlTextarea1" class="textStyle">Enter Error Details</label> -->
+          <div class="col-sm-10">
+            <!-- <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="txt_description" [ngModelOptions]="{standalone: true}" placeholder="Error Details"></textarea> -->
+            <input type="text" name="txtPassword" [(ngModel)]="txt_passwrd" [ngModelOptions]="{standalone: true}" placeholder="PASSWORD">
+          </div>
+        </div>
+        <br>
+        
+        <div class="form-group row">
+          <div class="col-sm-10 btn-div" >
+            <button class="btn btn-danger btn-block" type="submit">Login</button>
+            <!-- <button type="submit" class="btn btn-lg btn-outline-primary modal-btn" >Regsiter </button> -->
+          </div>
+        </div>
+      </form>
+  </div>
+</div>
+<!-- </app-layout> -->
+
 
 
 
   
-</app-layout>
+
+
