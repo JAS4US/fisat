@@ -51,6 +51,8 @@ reg_mod:boolean;
 divFeedbckYes:boolean;
 divFeedbckNo:boolean;
 
+userNameSession:any;
+
 
 @Input() selectedValue;
 @Input() selectedValue_comp;
@@ -65,6 +67,8 @@ divFeedbckNo:boolean;
 @Input() fdbktext_compDescription;
 @Input() rad_problem;
 
+
+
 @ViewChild('encasUnPwModal') public modal: BootstrapModalModule;
 
 //register
@@ -76,6 +80,10 @@ divFeedbckNo:boolean;
 
   ngOnInit() {
 
+   //this.userNameSession=sessionStorage.getItem("username");
+   this.userNameSession=sessionStorage.getItem("username");
+   console.log("session : "+this.userNameSession);
+
    ///////////////Showing & hiding error message for module Type/////////////////////
     this.newVal2_module="Select Module Type";
     this.modCheck();
@@ -86,14 +94,14 @@ divFeedbckNo:boolean;
    this.compCheck();
   ///////////////Showing & hiding error message for complaint Type/////////////////////
 
-    this.dataService.getOpenComplaint().subscribe(data=>{
-      console.log("data--"+data);
-this.complaints=data;
+    // this.dataService.getOpenComplaint(this.userNameSession).subscribe(data=>{
+    //   console.log("data--"+JSON.stringify(data));
+    //   this.complaints=data;
 
 
-    })
+    // })
 
-    this.dataService.getAllComplaints().subscribe(data=>{
+    this.dataService.getAllComplaints(this.userNameSession).subscribe(data=>{
       
       console.log("data get--"+JSON.stringify(data));
       console.log("length datatatata : "+Object.keys(data).length);
@@ -328,8 +336,10 @@ public dismiss() {
 
 onRegisterSubmit(e){
   console.log("selectedValue_comp-----------"+this.selectedValue_comp);
+  console.log("Session value : "+this.userNameSession);
  
   this.comp_details={
+       "personalId" : this.userNameSession,
        "module_type":e.target[0].value,
        "complaint_type":e.target[1].value,
        "description":e.target[2].value,
@@ -376,6 +386,7 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
   //    };
   this.comp_details={
 
+    "personalId":this.userNameSession,
     "complaintId":this.complaintNo,
      "module_type":e.target[0].value,
      "complaint_type":e.target[2].value,
@@ -423,7 +434,7 @@ onFeedback(e){
     console.log("jjjjjj  :  "+this.complaintNo);
      this.comp_details={
          "complaintId":this.complaintNo,
-          "personalid":"p2",
+          "personalid":this.userNameSession,
           "comments":e.target[0].value
           
         };
@@ -431,7 +442,7 @@ onFeedback(e){
    console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
     //  this.dataService.onSubmit1(this.comp_details).subscribe()
       this.dataService.onFeedbackService(this.comp_details).subscribe(data=>{
-        alert(" thank u for feedback");
+        // alert(" thank u for feedback service");
        return true;
        },
        error=>{
@@ -440,7 +451,7 @@ onFeedback(e){
        }
       
      )
-      alert(" thank u for feedback");
+      alert(" thank u for feedback out");
     
     this.modalService.dismissAll();
     location.reload();
@@ -452,7 +463,7 @@ onFeedback(e){
       console.log("jjjjjj  :  "+this.complaintNo);
        this.comp_details={
            "complaintId":this.complaintNo,
-            "personalid":"p2",
+            "personalId":this.userNameSession,
             "comments":e.target[0].value
             
           };
@@ -480,7 +491,7 @@ onFeedback(e){
         
     //    )
         // alert(" thank u for feedback");
-      
+      alert("Your Complaint Registered Again!!!");
       this.modalService.dismissAll();
       location.reload();
      }

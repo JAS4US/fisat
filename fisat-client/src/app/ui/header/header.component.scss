@@ -52,11 +52,20 @@
 }
 .div_menuView{
   position: relative;
-  right: 150px;
+  // right: 150px;
+  right: 0px;
+  color:bisque;
+  font-family: Roboto,sans-serif;
 }
 .div_menuLogout{
   position: relative;
   right: 90px;
+  top:35px;
+}
+
+.div_WelcomeUser{
+  position: relative;
+  right: 50px;
   top:35px;
 }
 .div11{
