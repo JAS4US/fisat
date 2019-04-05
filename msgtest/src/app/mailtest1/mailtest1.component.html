@@ -1,0 +1,36 @@
+<!-- <p>
+  mailtest1 works!
+</p> -->
+
+<div >
+  <!-- <app-reopen></app-reopen> -->
+  <form (submit)="onMailSubmit()" style="position:relative;left:50px;">
+    <div class="form-group row">
+      <div class="col-sm-10">
+        Username : 
+          <input type="text"  [(ngModel)]="txt_uname" [ngModelOptions]="{standalone: true}" >
+      </div>
+    </div>
+    <br>
+    <div class="form-group row">
+      <div class="col-sm-10">
+        Subject : 
+          <input type="text"  [(ngModel)]="txt_sub" [ngModelOptions]="{standalone: true}" > 
+      </div>
+    </div>
+    <br>
+    <div class="form-group row">
+      <div class="col-sm-10">
+        Message : 
+          <input type="text"  [(ngModel)]="txt_msg" [ngModelOptions]="{standalone: true}" > 
+      </div>
+    </div>
+    
+    <br>
+    <div class="form-group row">
+        <button class="btn btn-danger btn-block" type="submit" data-dimiss="modal">SEND MESSAGE</button>
+    </div>  
+      
+  </form>
+
+</div>

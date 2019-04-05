@@ -5,6 +5,7 @@ import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import {NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { error } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-user-view',
@@ -47,6 +48,8 @@ spanModule:boolean;
 spanComplaint:boolean;
 reg_comp:boolean;
 reg_mod:boolean;
+divFeedbckYes:boolean;
+divFeedbckNo:boolean;
 
 
 @Input() selectedValue;
@@ -59,6 +62,9 @@ reg_mod:boolean;
 //@Input() txt_description;
 @Input() txt_complaint;
 @Input() fdbktext;
+@Input() fdbktext_compDescription;
+@Input() rad_problem;
+
 @ViewChild('encasUnPwModal') public modal: BootstrapModalModule;
 
 //register
@@ -81,7 +87,7 @@ reg_mod:boolean;
   ///////////////Showing & hiding error message for complaint Type/////////////////////
 
     this.dataService.getOpenComplaint().subscribe(data=>{
-      console.log("data--"+data);
+      console.log("data-TETETEETT-"+data);
 this.complaints=data;
 
 
@@ -205,20 +211,32 @@ open(content) {
 
 openFeedback(contentfeedback:any,user:any) {
   this.complaintNo=user["complaintId"];
+  this.divFeedbckYes=false;
+  this.divFeedbckNo=false;
+  console.log("openfeedback");
    this.modalService.open(contentfeedback, {ariaLabelledBy: 'modal-feedback-title', size:'lg'}).result.then((result) => {
    
-   console.log("inside fun");
+   console.log("inside fun : ");
    //this.modal=this.userData;
    this.txt_complaint=JSON.stringify(user);
    }, (reason) => {
     
    });
  }
+ onradiobtn_problemSolved(e){
+  console.log("radio event : "+this.rad_problem);
+  if(this.rad_problem=="yes")
+  {
+    this.divFeedbckYes=true;
+    this.divFeedbckNo=false;
+  }
+  else if(this.rad_problem=="no"){
+    this.divFeedbckNo=true;
+    this.divFeedbckYes=false;
 
-
-
-
-
+  }
+ 
+}
 
 openEdit(contentEdit:any,user:any) {
   
@@ -242,7 +260,7 @@ openEdit(contentEdit:any,user:any) {
      this.divVisibleOthers=true;
      this.dataService.othersInEdit(this.comptype).subscribe(data=>{
      this.complaintOthers=data;
-     //console.log("after others : "+JSON.stringify(this.complaintOthers));
+     console.log("after others : "+JSON.stringify(this.complaintOthers));
      return true;
    },
    error=>{
@@ -319,7 +337,7 @@ onRegisterSubmit(e){
        "other_Complaints":e.target[4].value
      };
 
-console.log("sdfsdfg"+JSON.stringify(this.comp_details));
+console.log("sdfsdfg register : "+JSON.stringify(this.comp_details));
   //this.dataService.onSubmit1(this.comp_details).subscribe()
    this.dataService.onInsertComplaint(this.comp_details).subscribe(data=>{
     return true;
@@ -348,16 +366,24 @@ console.log("sdfsdfg"+JSON.stringify(this.comp_details));
 onUpdateSubmit(e){
 console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
  
+  // this.comp_details={
+  //     "complaintId":this.complaintNo,
+  //      "module_type":e.target[1].value,
+  //      "complaint_type":e.target[3].value,
+  //      "description":e.target[4].value,
+  //      "error_path":e.target[5].value,
+  //      "other_Complaints":e.target[6].value
+  //    };
   this.comp_details={
-      "complaintId":this.complaintNo,
-       "module_type":e.target[0].value,
-       "complaint_type":e.target[2].value,
-       "description":e.target[4].value,
-       "error_path":e.target[5].value,
-       "other_Complaints":e.target[6].value
-     };
+   "complaintId":this.complaintNo,
+     "module_type":e.target[0].value,
+     "complaint_type":e.target[2].value,
+     "description":e.target[4].value,
+     "error_path":e.target[5].value,
+     "other_Complaints":e.target[6].value
+   };
 
-//console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
+console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
   //this.dataService.onSubmit1(this.comp_details).subscribe()
    this.dataService.onUpdateComplaint(this.comp_details).subscribe(data=>{
     return true;
@@ -374,15 +400,7 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
  location.reload();
 }
 
-///////////////////DELETIONNN//////////////////////////////////////////////////////////////
-  // onDeleteRow(contentConfirm,user:any){
-  //   alert("sfsf");
-  //   console.log("user=="+user.complaintId);
-  //   this.confirmhidden=user.complaintId;
-  //   this.modalService.open(contentConfirm, {ariaLabelledBy: 'modal-confirm-title', size:'sm'}).result.then((result) => {
-  //     this.confirmhidden=user;
-  //     console.log("inside fun");
-  //   }
+
   onDeleteRow(contentConfirm,user:any){
     console.log("user=="+user.complaintId);
     this.confirmhidden=user.complaintId;
@@ -392,6 +410,15 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
     })
   }
 ///////////////////DELETIONNN END//////////////////////////////////////////////////////////////    
+
+//   onDeleteRow(contentConfirm,user:any){
+//     alert("sfsf");
+//     console.log("user=="+user.complaintId);
+//     this.confirmhidden=user.complaintId;
+//     this.modalService.open(contentConfirm, {ariaLabelledBy: 'modal-confirm-title', size:'sm'}).result.then((result) => {
+//       this.confirmhidden=user;
+//       console.log("inside fun");
+    
 
 
 
@@ -425,7 +452,45 @@ onFeedback(e){
     location.reload();
    }
  
- 
+   ///////////////////////////////////////////FEEDBACK COMPLAINT DECRIPTION ON NO//////////////////////////////
+   onFeedbackComplaint(e){
+    // console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
+      console.log("jjjjjj  :  "+this.complaintNo);
+       this.comp_details={
+           "complaintId":this.complaintNo,
+            "personalid":"p2",
+            "comments":e.target[0].value
+            
+          };
+     
+     console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
+     this.dataService.onFeedbackComplaintService(this.comp_details).subscribe(data=>{
+       alert("registered again!!!");
+       return true;
+     },
+     error=>{
+       console.error("Error");
+       return false;
+     }
+     
+     )
+    //   //  this.dataService.onSubmit1(this.comp_details).subscribe()
+    //     this.dataService.onFeedbackComplaintService(this.comp_details).subscribe(data=>{
+    //       alert(" thank u for complaint");
+    //      return true;
+    //      },
+    //      error=>{
+    //       console.error("Error");
+    //       return false;
+    //      }
+        
+    //    )
+        // alert(" thank u for feedback");
+      
+      this.modalService.dismissAll();
+      location.reload();
+     }
+   //////////////////////////////FEEDBACK COMPLAINT DECRIPTION ON NO END///////////////////////////////////////////
  
  //FEEDBACK ENDSS
 

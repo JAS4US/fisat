@@ -6,7 +6,7 @@
       <!-- <th scope="col">to be hidden</th> -->
       <th scope="col"class="thstyle">ModuleName</th>
       <th scope="col"class="thstyle">ComplaintName</th>
-      <th scope="col"class="thstyle">Description</th>
+      <!-- <th scope="col"class="thstyle">Description</th> -->
       <th scope="col"class="thstyle">ComplaintDate</th>
       <th scope="col"class="thstyle">ErrorPath</th>
       <th scope="col"class="thstyle">Remarks</th>
@@ -14,12 +14,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr class="rowstyle" *ngFor="let user of closedComp;let i = index">
+    <tr class="rowstyle" *ngFor="let user of closedComp;let i = index" data-toggle="tooltip" data-placement="right" title={{user.description}}>
       <th scope="row">{{i+1}}</th>
       <td>{{user.complaintId}}</td>
       <!-- <td class="tdstyle">{{user.module_type}}</td> -->
             <td class="tdstyle">{{user.complaint_type}}</td>
-            <td class="tdstyle">{{user.description}}</td>
+            <!-- <td class="tdstyle">{{user.description}}</td> -->
             <td class="tdstyle">{{user.complaintDate}}</td>
             <td class="tdstyle">{{user.error_path}}</td>
             <td class="tdstyle">{{user.remarks}}</td>

@@ -55,7 +55,8 @@
          
                 <input list="browsers" name="browser"  class="selRegStyle"  *ngIf="selectedValue_comp==='Others'"   maxlength="25" class = "form-control selStyle txtAreaStyle">
                   <datalist id="browsers"  >
-                    <option *ngFor="let f of comp_others">{{f.complaintothers}}</option>
+                    <!-- <option *ngFor="let f of comp_others">{{f.complaintothers}}</option> -->
+                    <option *ngFor="let f of comp_others">{{f.complaintType}}</option>
                   </datalist>
 
                   <span style="color:rgb(245, 100, 100)" *ngIf="spanComplaint">
@@ -215,36 +216,74 @@
       <img src="/assets/images/feedback-icon.png" alt="no image" class="img_divfirst">
     </div>
     <div class="div_secondHalf top ">
-        <form (submit)="onFeedback($event)" style="position:relative;left:50px;">
-            <br><br>
-            <div class="form-group row">
-              <div class="col-sm-10">
-                 <!-- <span class="firstcol"><input type="text" [(ngModel)]="txt_module" [ngModelOptions]="{standalone: true}"  class="disabledtextStyle" readonly="readonly"> </span>   
-                   <span class="secdcol"><select  id="checkout_city_id"  (change)="onEditModChange($event)"    class="form-control checkout-select  selStyle  validate[required]">
-                    <option>New Module</option>
-                    <option *ngFor="let m of modul" >{{m.moduleType}}</option>
-                 </select></span>   -->
+        <b>
+          Problem Solved ? <br>
+          <input type="radio" name="prblmSolved" value="yes" [(ngModel)]="rad_problem" [ngModelOptions]="{standalone: true}" (change)="onradiobtn_problemSolved($event)">Yes
+          <input type="radio" name="prblmSolved" value="no" [(ngModel)]="rad_problem" [ngModelOptions]="{standalone: true}" (change)="onradiobtn_problemSolved($event)">No
+        </b>
+        <div  *ngIf="divFeedbckYes">
+          <form (submit)="onFeedback($event)" style="position:relative;left:50px;">
+              <br><br>
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <!-- <span class="firstcol"><input type="text" [(ngModel)]="txt_module" [ngModelOptions]="{standalone: true}"  class="disabledtextStyle" readonly="readonly"> </span>   
+                    <span class="secdcol"><select  id="checkout_city_id"  (change)="onEditModChange($event)"    class="form-control checkout-select  selStyle  validate[required]">
+                      <option>New Module</option>
+                      <option *ngFor="let m of modul" >{{m.moduleType}}</option>
+                  </select></span>   -->
+                  
+                </div>
               </div>
-            </div>
-        
-            <br>
- 
-            <div class="form-group row">
+          
+              <br>
+  
+              <div class="form-group row" >
+                
+                <div class="col-sm-10">
+                  <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="fdbktext" [ngModelOptions]="{standalone: true}" placeholder="Enter  Your FeedBack Here" (keypress)="onKeyPress($event)"></textarea>
+                </div>
+              </div>
+              <br>
               
-              <div class="col-sm-10">
-                <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="fdbktext" [ngModelOptions]="{standalone: true}" placeholder="Enter  Your FeedBack Here" (keypress)="onKeyPress($event)"></textarea>
+                    
+              <div class="form-group row">
+                <div class="col-sm-10 btn-div2" >
+                  <button class="btn btn-danger btn-block" type="submit" >Submit FeedBack</button>
+                  <!-- <button type="submit" class="btn btn-lg btn-outline-primary modal-btn" >Regsiter </button> -->
+                </div>
               </div>
-            </div>
-            <br>
-            
-                   
-            <div class="form-group row">
-              <div class="col-sm-10 btn-div2" >
-                <button class="btn btn-danger btn-block" type="submit" >Submit FeedBack</button>
-                <!-- <button type="submit" class="btn btn-lg btn-outline-primary modal-btn" >Regsiter </button> -->
+            </form>
+          </div>
+
+          <div  *ngIf="divFeedbckNo">
+              <form (submit)="onFeedbackComplaint($event)" style="position:relative;left:50px;">
+                  <br><br>
+                  <div class="form-group row">
+                    <div class="col-sm-10">
+                    </div>
+                  </div>
+              
+                  <br>
+      
+                  <div class="form-group row" >
+                    
+                    <div class="col-sm-10">
+                      Complaint Description : 
+                      <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="fdbktext_compDescription" [ngModelOptions]="{standalone: true}" placeholder="Enter  Your FeedBack Here" (keypress)="onKeyPress($event)"></textarea>
+                    </div>
+                  </div>
+                  <br>     
+                  <div class="form-group row">
+                    <div class="col-sm-10 btn-div2" >
+                      <button class="btn btn-danger btn-block" type="submit" >Submit Complaint</button>
+                      <!-- <button type="submit" class="btn btn-lg btn-outline-primary modal-btn" >Regsiter </button> -->
+                    </div>
+                  </div>
+                </form>
               </div>
-            </div>
-          </form>
+
+
+
     </div>
     
  </div>

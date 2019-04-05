@@ -32,8 +32,8 @@ export class LoginComponent implements OnInit {
     //this.router.navigate(["view"]);
     this.dataService.onLogin(this.userData).subscribe(data=>{
     // this.dataService.onLogin(this.userDetails).subscribe(data=>{
-      console.log("success");
-      //this.completedComplaints=data;
+      console.log("success"+data);
+      
       console.log("data : "+JSON.stringify(data));
       })
 
