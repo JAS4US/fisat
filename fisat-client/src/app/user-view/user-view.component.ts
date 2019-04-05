@@ -54,6 +54,7 @@ divFeedbckNo:boolean;
 userNameSession:any;
 
 
+
 @Input() selectedValue;
 @Input() selectedValue_comp;
 @Input() txt_description;
@@ -66,6 +67,7 @@ userNameSession:any;
 @Input() fdbktext;
 @Input() fdbktext_compDescription;
 @Input() rad_problem;
+
 
 
 
@@ -94,9 +96,15 @@ userNameSession:any;
    this.compCheck();
   ///////////////Showing & hiding error message for complaint Type/////////////////////
 
+
+    this.dataService.getOpenComplaint().subscribe(data=>{
+      console.log("data-TETETEETT-"+data);
+this.complaints=data;
+
     // this.dataService.getOpenComplaint(this.userNameSession).subscribe(data=>{
     //   console.log("data--"+JSON.stringify(data));
     //   this.complaints=data;
+
 
 
     // })
@@ -386,8 +394,10 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
   //    };
   this.comp_details={
 
+
     "personalId":this.userNameSession,
     "complaintId":this.complaintNo,
+
      "module_type":e.target[0].value,
      "complaint_type":e.target[2].value,
      "description":e.target[4].value,
@@ -414,6 +424,16 @@ console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
 }
 
 
+ /* onDeleteRow(contentConfirm,user:any){
+    console.log("user=="+user.complaintId);
+    this.confirmhidden=user.complaintId;
+    this.modalService.open(contentConfirm,{ariaLabelledBy:'modal-confirm-title',size:'sm'}).result.then((result)=>{
+      this.confirmhidden=user;
+      console.log("inside function");
+    })
+  }*/
+///////////////////DELETIONNN END//////////////////////////////////////////////////////////////    
+
 //////////////////////////////DELETE COMPLAINT///////////////////////////////////////////////////////////////////
 onDeleteRow(contentConfirm,user:any){
   console.log("user=="+user.complaintId);
@@ -424,6 +444,16 @@ onDeleteRow(contentConfirm,user:any){
   })
 }
 /////////////////////////////DELETE COMPLAINT END////////////////////////////////////////////////////////////////
+
+
+//   onDeleteRow(contentConfirm,user:any){
+//     alert("sfsf");
+//     console.log("user=="+user.complaintId);
+//     this.confirmhidden=user.complaintId;
+//     this.modalService.open(contentConfirm, {ariaLabelledBy: 'modal-confirm-title', size:'sm'}).result.then((result) => {
+//       this.confirmhidden=user;
+//       console.log("inside fun");
+    
 
 
 
@@ -463,7 +493,9 @@ onFeedback(e){
       console.log("jjjjjj  :  "+this.complaintNo);
        this.comp_details={
            "complaintId":this.complaintNo,
+
             "personalId":this.userNameSession,
+
             "comments":e.target[0].value
             
           };
@@ -490,8 +522,9 @@ onFeedback(e){
     //      }
         
     //    )
-        // alert(" thank u for feedback");
+
       alert("Your Complaint Registered Again!!!");
+
       this.modalService.dismissAll();
       location.reload();
      }
