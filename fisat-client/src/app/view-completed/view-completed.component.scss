@@ -463,3 +463,11 @@ height: 20%;
   margin: 0 auto;
       margin-top: 0px;
 }
+
+// [contenteditable=true]:empty:before {
+//   content: attr(placeholder);
+//   color:gray;
+// }
+// [contenteditable=true] br{
+//   display:none;
+// }

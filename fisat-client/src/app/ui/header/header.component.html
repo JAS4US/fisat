@@ -23,7 +23,7 @@
               <div class="div_menuView" *ngIf="userWelcome">
                 WELCOME {{userNameSession}}
               </div>
-              <div class="div_menuLogout">
+              <div class="div_menuLogout" *ngIf="logoutMenu">
                 <!-- <a class="nav-item nav-link " [routerLink]="'/login'"> -->
                 <a class="a_textColor" (click)="onLogoutService()" [routerLink]="'/login'"><!--</a>-->
                   <!-- <i class="fas  fa-github"></i> -->

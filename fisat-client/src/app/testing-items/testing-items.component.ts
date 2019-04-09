@@ -13,7 +13,7 @@ import { DataService } from '../data.service';
 
 export class TestingItemsComponent implements OnInit {
 
-  constructor(private dataservice:DataService,private modalService: NgbModal) { }
+  constructor(private dataService:DataService,private modalService: NgbModal) { }
   @Input() in_compl;
   @Input()  in_modu;
 
@@ -23,22 +23,30 @@ export class TestingItemsComponent implements OnInit {
   processingCount:any;
   completedCount:any;
   closedCount:any;
+  userSession:any;
 
   ngOnInit() {
 
-    this.dataservice.getUnreadCount().subscribe(data=>{
+    this.userSession=sessionStorage.getItem("username");
+
+    this.dataService.gettingTheAdmin_StaffStatusUpdatedForClose(this.userSession).subscribe(data=>{
+      console.log("data testing : "+data);
+      return true;
+    })
+    
+    this.dataService.getUnreadCount().subscribe(data=>{
       this.unreadCount=data;
       return true;
     })
-    this.dataservice.getProcessingCount().subscribe(data=>{
+    this.dataService.getProcessingCount().subscribe(data=>{
       this.processingCount=data;
       return true;
     })
-    this.dataservice.getCompletedCount().subscribe(data=>{
+    this.dataService.getCompletedCount().subscribe(data=>{
       this.completedCount=data;
       return true;
     })
-    this.dataservice.getClosedCount().subscribe(data=>{
+    this.dataService.getClosedCount().subscribe(data=>{
       this.closedCount=data;
       
       return true;

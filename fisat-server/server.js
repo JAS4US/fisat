@@ -133,6 +133,68 @@ app.get('/masterComplaintlist',function(req,res,next){
 
  
 });
+
+/////////////////////////OPEN COMPLAINT ADMIN VIEW/////////////////////////////////////////////
+app.get('/complaintOpen_Admin',function(req,res,next){
+  
+  var list1=[];
+  var open_list=[];
+
+  console.log("req param url : "+req.url);
+  
+  var uname=req.params.uname;
+  console.log("Parms== : "+uname);
+  
+  pool.connect(function (err, client, done) {
+    //'select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"]
+  //  client.query('select ss."employeecode",scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=$2 and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 order by scm."complaintDate" desc' ,["Unread",uname], function (err, result) {
+    client.query('select ss."employeecode",hrm."fullname",scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus",acd."departmentname" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss,public."accdepartments" acd,public."hrmbasicinfo" hrm where acd."departmentid"=hrm."did" and sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=hrm."empcode" and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 order by scm."complaintDate" desc' ,["Unread"], function (err, result) {
+              done();
+              if (err)
+                  res.send(err)
+                 
+             for(i=0;i<result.rows.length;i++)
+             {
+                // data1=JSON.stringify(result.rows[i]["complaintDate"]);
+
+
+                
+                // data1=data1.substring(1, 11);
+
+                data1=JSON.stringify(result.rows[i]["to_jsonb"]);
+
+                
+                console.log("parsed date : "+result.rows[i]["to_jsonb"]);
+                data1=data1.substring(1, 11);
+
+                console.log("date openComplaintUserView  : "+data1);
+                //console.log("date "+data1);
+                list1={
+                  "eid":result.rows[i]["employeecode"],
+                  "empname":result.rows[i]["fullname"],
+                  "departmentName":result.rows[i]["departmentname"],
+                  "complaintId":result.rows[i]["complaintId"],
+                  "module_type":result.rows[i]["moduleType"],
+                  "complaint_type":result.rows[i]["complaintType"],
+                  "comp_others":result.rows[i]["complaintothers"],
+                  "description":result.rows[i]["complaintDescription"],
+                  "complaintDate":data1,
+                  "error_path":result.rows[i]["errorPath"],
+                  "remarks":result.rows[i]["remarks"],
+                  "stf_status":result.rows[i]["staffStatus"],
+                  "adm_status":result.rows[i]["adminStatus"]
+                };
+                open_list.push(list1);
+             }
+           
+            res.json(open_list);
+            
+            
+ });
+
+ })  
+});
+////////////////////////////////////OPEN COMPALINT ADMIN VIEW END///////////////////////////////
  
 //completed complaintlist
 app.get('/completedComplaint',function(req,res,next){
@@ -146,7 +208,8 @@ app.get('/completedComplaint',function(req,res,next){
   pool.connect(function (err, client, done) {
 
    //client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1',[stat], function (err, result) {
-    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and (scm."adminStatus"=$1 or scm."adminStatus"=$2) order by scm."complaintDate" desc',stat, function (err, result) {
+  // client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and (scm."adminStatus"=$1 or scm."adminStatus"=$2) order by scm."complaintDate" desc',stat, function (err, result) {
+    client.query('select hrm."fullname",acd."departmentname",scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss,public."accdepartments" acd,public."hrmbasicinfo" hrm where acd."departmentid"=hrm."did" and sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and ss."employeecode"=hrm."empcode" and (scm."adminStatus"=$1 or scm."adminStatus"=$2) order by scm."complaintDate" desc',stat, function (err, result) {
               done();
               if (err)
                   res.send(err)
@@ -157,6 +220,8 @@ app.get('/completedComplaint',function(req,res,next){
                     data1=data1.substring(1, 11);
                   //  console.log("date "+data1);
                     list1={
+                      "empname":result.rows[i]["fullname"],
+                      "departmentName":result.rows[i]["departmentname"],
                       "complaintId":result.rows[i]["complaintId"],
                       "module_type":result.rows[i]["moduleType"],
                       "complaint_type":result.rows[i]["complaintType"],
@@ -681,7 +746,7 @@ client.query('SELECT * from compl_id()',function(err,result){
     var list1=[];
     var closed_list=[];
     pool.connect(function (err, client, done) {
-     client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1 order by scm."complaintDate" desc',[stat], function (err, result) {
+     client.query('select hrm."fullname",acd."departmentname",scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss,public."accdepartments" acd,public."hrmbasicinfo" hrm where acd."departmentid"=hrm."did" and hrm."personalid"=scm."personalId"  and sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and (scm."staffStatus"=$1 and scm."adminStatus"=$1) order by scm."complaintDate" desc limit 15',[stat], function (err, result) {
                 done();
                 if (err)
                     res.send(err)
@@ -694,6 +759,8 @@ client.query('SELECT * from compl_id()',function(err,result){
                       data1=data1.substring(1, 11);
                       console.log("date  closed Complaitn  : "+data1);
                       list1={
+                        "empname":result.rows[i]["fullname"],
+                        "departmentName":result.rows[i]["departmentname"],
                         "complaintId":result.rows[i]["complaintId"],
                         "module_type":result.rows[i]["moduleType"],
                         "complaint_type":result.rows[i]["complaintType"],
@@ -706,6 +773,7 @@ client.query('SELECT * from compl_id()',function(err,result){
                    }
                 // console.log("leng json : "+Object.keys(closed_list));
                 //  console.log("open list : "+JSON.stringify(open_list));
+                console.log("list=====> : "+JSON.stringify(closed_list));
                 res.json(closed_list);
   
   
@@ -1043,12 +1111,19 @@ app.post('/changeAdminStatus',urlencodedParser,function(req,res,next){
   })
 
   pool.connect(function (err, client, done) {
-    client.query('SELECT "complaintDescription" FROM public."ssComplaintMaster" where "complaintId"=$1',[cid1],function (err, result) {
+    client.query('SELECT scm."complaintDescription",hrm."email" FROM public."ssComplaintMaster" scm,public."hrmbasicinfo" hrm where scm."complaintId"=$1 and scm."personalId"=hrm."personalid"',[cid1],function (err, result) {
              done();
              
       des=JSON.stringify(result.rows[0]["complaintDescription"]);
       des = des.replace(/^"(.*)"$/, '$1');
-      sendMailMsg(des);
+
+      emailId=JSON.stringify(result.rows[0]["email"]);
+      emailId=emailId.replace(/^"(.*)"$/, '$1');
+
+      console.log("description : "+des);
+      console.log("email : "+emailId);
+
+      sendMailMsg(des,emailId);
 });
 
 })
@@ -1175,7 +1250,8 @@ app.get('/getDateDiff:compId',function(req,res,next){
            }
           })
           //update tables/////////////////////////////////////////
-          client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"staffStatus"=$2,"completiondate"=$3 where "complaintId"=$4',["Closed","Closed",comp_date,s],function( err,result){
+          //client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"staffStatus"=$2,"completiondate"=$3 where "complaintId"=$4',["Closed","Closed",comp_date,s],function( err,result){
+            client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"staffStatus"=$2 where "complaintId"=$3',["Closed","Closed",s],function( err,result){
             if (err){
             console.log("error"+err);
             val=[];
@@ -1246,6 +1322,8 @@ app.post('/feedbackComplaintProcess',urlencodedParser,function(req,res,next){
       
       console.log("test req on proceed================ : "+JSON.stringify(request.body));
       var data=JSON.stringify(request.body);
+
+      var emailId;
     
       dataKey=JSON.parse(data);
       // console.log(dataKey["compId"]);
@@ -1271,20 +1349,27 @@ app.post('/feedbackComplaintProcess',urlencodedParser,function(req,res,next){
     })
 
     pool.connect(function (err, client, done) {
-      client.query('SELECT "complaintDescription" FROM public."ssComplaintMaster" where "complaintId"=$1',[cId],function (err, result) {
+      //client.query('SELECT "complaintDescription" FROM public."ssComplaintMaster" where "complaintId"=$1',[cId],function (err, result) {
+      client.query('SELECT ss."complaintDescription",hrm."email" FROM public."ssComplaintMaster" ss,public."hrmbasicinfo" hrm where ss."complaintId"=$1 and ss."personalId"=hrm."personalid" ',[cId],function (err, result) {
                done();
                
         des=JSON.stringify(result.rows[0]["complaintDescription"]);
         des = des.replace(/^"(.*)"$/, '$1');
+
+        emailId=JSON.stringify(result.rows[0]["email"]);
+        emailId=emailId.replace(/^"(.*)"$/, '$1');
+
+        console.log("description : "+des);
+        console.log("email : "+emailId);
         
-        sendMailMsg(des,status);
+        sendMailMsg(des,emailId,status);
   });
   
   })
     
     });
 
-    var sendMailMsg=function(des,status1)
+    var sendMailMsg=function(des,emailId,status1)
     {
       var sub;
       // console.log("inside function sendMailMsg(c_id) : "+des);
@@ -1310,7 +1395,8 @@ app.post('/feedbackComplaintProcess',urlencodedParser,function(req,res,next){
       
         var mailOptions = {
           from: 'mailjas4us@gmail.com',
-          to: 'cslifisat17@gmail.com',
+          //to: 'cslifisat17@gmail.com',
+          to:emailId,
           // to:details["uname"],
           // subject: 'Sending Email using Node.js',
           subject:sub,
@@ -1569,6 +1655,24 @@ app.get('/loginCheck',function(req,res,next){
   });
 /////////////////////////////////////////////////////////////////////////////////////LOGIN END/////////////////////////
 
+/////////////////////////////////////////////////////////////////RemoveCompletedComplaintAfter5Days/////////////////////////
+app.get('/gettingTheAdmin_StaffStatusUpdatedForClose',function(req,res,next){
+  console.log('inside remove complaint');
+  console.log("username : "+JSON.stringify(req.body));
+ 
+  pool.connect(function(err,client,done){
+    client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"staffStatus"=$2 where (current_date::date-"complaintDate"::date)>5 and "adminStatus"=$3',["Closed","Closed","Completed"],function(err,result){
+      if (err) {
+                    console.log(err);
+                    return;
+                } else {
+                  var msg="successfully updated!!!";
+                  res.json(msg);
+                }
+    }) 
+  })
+})
+/////////////////////////////////////////////////////////////////RemoveCompletedComplaintAfter5Days END/////////////////////////
 
 
 app.listen(3000);

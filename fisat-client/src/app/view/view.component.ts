@@ -24,11 +24,17 @@ export class ViewComponent implements OnInit {
 
   ngOnInit() {
     this.userNameSession=sessionStorage.getItem("username");
-    this.dataService.getOpenComplaint(this.userNameSession).subscribe(data=>{
-      console.log("data--===hhhhhhhhhhhhhh====%%%%"+JSON.stringify(data));
+//     this.dataService.getOpenComplaint(this.userNameSession).subscribe(data=>{
+//       console.log("data--===hhhhhhhhhhhhhh====%%%%"+JSON.stringify(data));
+//       this.openComplaints=data;
+
+//     })
+
+this.dataService.getOpenComplaintAdmin().subscribe(data=>{
+  console.log("data--===hhhhhhhhhhhhhh====%%%%"+JSON.stringify(data));
 this.openComplaints=data;
 
-    })
+})
   }
 
  
@@ -54,7 +60,7 @@ this.openComplaints=data;
   }
 
   onProceed(e){
-    alert("onprocess");
+    alert("On process...");
     //this.dataService.updateProcessStatus(complaintId)
     this.data={
       "complaintId":this.title
@@ -64,13 +70,14 @@ console.log("Onproceed-----"+this.data);
       return true;
       },
       error=>{
-       console.error("Error");
+       console.error("Error "+error);
        return false;
       }
      
     )
+    
     this.modalService.dismissAll();
- location.reload();
+    location.reload();
   }
 
     
