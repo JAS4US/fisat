@@ -2,7 +2,10 @@
 <link rel="shortcut icon" href="">
 <div class="form-group row">
   <div class="col-sm-10 btn-div" >
+<<<<<<< HEAD
     <!-- WELCOME {{userNameSession}} -->
+=======
+>>>>>>> c4c93b3de292c4e75a05349175e995b56968ea61
     <!-- <button class="btn btn-danger btn-block" type="submit">Register</button> -->
     <button type="button" class="btn btn-info modal-btn regbutton" (click)="open(content)">Regsiter Here</button>
   </div>
@@ -270,11 +273,17 @@
                   <br>
       
                   <div class="form-group row" >
-                    
+
+                    <div class="col-sm-10">
+                      Complaint Description : 
+                      <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="fdbktext_compDescription" [ngModelOptions]="{standalone: true}" placeholder="Enter  Your FeedBack Here" (keypress)="onKeyPress($event)"></textarea>
+
                     <div class="col-sm-10" style="color:cornflowerblue;font-weight: bold;">
                       <!-- Complaint Description : 
                       <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="fdbktext_compDescription" [ngModelOptions]="{standalone: true}" placeholder="Enter  Your FeedBack Here" (keypress)="onKeyPress($event)"></textarea> -->
-                      Your Complaint will be Resolved Soon!!!!
+
+                      Sorry for the Inconvenience.<br>Your Complaint will be Resolved Soon!!!!
+
                     </div>
                   </div>
                   <br>     
