@@ -3,6 +3,7 @@ var bodyParser=require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
 
 var ldap = require('ldapjs');
+
 //var app = express();
 var cors = require('cors') ;
  app = express();
@@ -74,13 +75,24 @@ app.get('/masterComplaintlist',function(req,res,next){
  
  //open Complaint lists
  
- app.get('/openComplaint',function(req,res,next){
-  console.log("TTTETETSTETTETD");
+
+//  app.get('/openComplaint',function(req,res,next){
+//   console.log("TTTETETSTETTETD");
+
+ app.get('/openComplaint:uname',function(req,res,next){
+  
+
   var list1=[];
   var open_list=[];
+
+  console.log("req param url : "+req.url);
+  
+  var uname=req.params.uname;
+  console.log("Parms== : "+uname);
+  
   pool.connect(function (err, client, done) {
     //'select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"]
-   client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 order by scm."complaintDate" desc' ,["Unread"], function (err, result) {
+   client.query('select ss."employeecode",scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=$2 and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 order by scm."complaintDate" desc' ,["Unread",uname], function (err, result) {
               done();
               if (err)
                   res.send(err)
@@ -102,6 +114,7 @@ app.get('/masterComplaintlist',function(req,res,next){
                 console.log("date openComplaintUserView  : "+data1);
                 //console.log("date "+data1);
                 list1={
+                  "eid":result.rows[i]["employeecode"],
                   "complaintId":result.rows[i]["complaintId"],
                   "module_type":result.rows[i]["moduleType"],
                   "complaint_type":result.rows[i]["complaintType"],
@@ -117,9 +130,13 @@ app.get('/masterComplaintlist',function(req,res,next){
              }
            
             res.json(open_list);
+            
+            
  });
 
- })
+ }) 
+
+ 
 });
  
 //completed complaintlist
@@ -256,7 +273,7 @@ app.get('/getOtherComplaint',function(req,res,next){
 
 
     var mid=dataKey["module_type"];
-    var pid="p1";//dataKey["personalId"];
+    var pid=dataKey["personalId"];
     comid=dataKey["complaint_type"];
     // console.log("ctype test   : "+comid);
     var comp_des=dataKey["description"];
@@ -721,7 +738,7 @@ client.query('SELECT * from compl_id()',function(err,result){
       cno=dataKey["complaintId"];
       var mid=dataKey["module_type"];
       console.log("before going to query : "+mid);
-      var pid="p1";//dataKey["personalId"];
+      var pid=dataKey["personalId"];
       comid=dataKey["complaint_type"];
       // console.log("ctype test   : "+comid);
       var comp_des=dataKey["description"];
@@ -898,15 +915,17 @@ app.get('/getOthersCountInEdit1:comptype',function(req,res,next){
 
 
 //////Complaint View For User///////////////////////////
-app.get('/openComplaintUserView',function(req,res,next){
-  var stat="Opened";
+// app.get('/openComplaintUserView',function(req,res,next){
+  app.get('/ComplaintUserView:uname',function(req,res,next){
+  // var stat="Opened";
   var list1=[];
   var open_list=[];
-  
+  var uname=req.params.uname;
+  console.log("openComplaintUserView  : "+uname);
   pool.connect(function (err, client, done) {
 
   // client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
-  client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"], function (err, result) {
+  client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId"  and ss."employeecode"=scm."personalId" and ss.employeecode=$2 and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed",uname], function (err, result) {
 
               done();
               if (err)
@@ -1131,7 +1150,13 @@ app.get('/getDateDiff:compId',function(req,res,next){
    console.log("hhhh"+JSON.stringify(req.body));
    d=JSON.stringify(req.body);
    var dk=JSON.parse(d);
- 
+
+   var currentdate = new Date();
+   var comp_date=(currentdate.getFullYear())+'-'+(currentdate.getMonth()+1)+'-'+currentdate.getDate();
+   console.log("year : "+(currentdate.getFullYear()));
+   console.log("month : "+(currentdate.getMonth()));
+   console.log("date : "+currentdate.getDate());
+   console.log("comp_date : "+comp_date);
    pool.connect(function(err,client,done){
     
     //  console.log("fgggg"+f);
@@ -1148,12 +1173,12 @@ app.get('/getDateDiff:compId',function(req,res,next){
    
            else
            {
-             console.log("success");
+             console.log("success insert feedback");
              val=[];
            }
           })
           //update tables/////////////////////////////////////////
-          client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"staffStatus"=$2 where "complaintId"=$3',["Closed","Closed",s],function( err,result){
+          client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"staffStatus"=$2,"completiondate"=$3 where "complaintId"=$4',["Closed","Closed",comp_date,s],function( err,result){
             if (err){
             console.log("error"+err);
             val=[];
@@ -1162,7 +1187,7 @@ app.get('/getDateDiff:compId',function(req,res,next){
     
             else
             {
-              console.log("success");
+              console.log("success update insertfeedback");
               val=[];
             }
            })
@@ -1181,7 +1206,7 @@ app.post('/feedbackComplaintProcess',urlencodedParser,function(req,res,next){
    pool.connect(function(err,client,done){
     
     //  console.log("fgggg"+f);
-    var f=dk["comments"];
+    //var f=dk["comments"];
     var s=dk["complaintId"];
     console.log("sssssss"+s);
     var ad_status="Unread";
@@ -1195,7 +1220,8 @@ app.post('/feedbackComplaintProcess',urlencodedParser,function(req,res,next){
     console.log("date : "+currentdate.getDate());
     
     console.log("date new 1 comp_date : "+comp_date); 
-    client.query('update public."ssComplaintMaster" set "complaintDescription"=$1,"complaintDate"=$3,"adminStatus"=$4,completiondate=$5 where "complaintId"=$2',[f,s,comp_date,ad_status,completedDate],function( err,result){
+    // client.query('update public."ssComplaintMaster" set "complaintDescription"=$1,"complaintDate"=$3,"adminStatus"=$4,completiondate=$5 where "complaintId"=$2',[f,s,comp_date,ad_status,completedDate],function( err,result){
+      client.query('update public."ssComplaintMaster" set "complaintDate"=$1,"adminStatus"=$2,completiondate=$3 where "complaintId"=$4',[comp_date,ad_status,completedDate,s],function( err,result){
       if (err){
         console.log("error"+err);
         val=[];
@@ -1203,7 +1229,7 @@ app.post('/feedbackComplaintProcess',urlencodedParser,function(req,res,next){
       }
       else
       {
-        console.log("success");
+        console.log("success update feedbackprocess");
       }
    })
 
@@ -1380,43 +1406,45 @@ app.post('/onaddcomplser',urlencodedParser,function(req,res,next){
   })
 })
 
-//LDAP LOGIN....
+
 app.get('/ldapLogin:userData',function(req,res,next){
 var d=JSON.parse(req.params.userData);
 console.log("d : "+d.userName+d.password);
 var userName=d.userName;
 var resp;
 var password=d.password;
+
 var staffName;
+
 var ldap_server = ldap.createClient({url: 'ldap://cim.fisat.edu'});
 var dn='uid='+userName+',ou=Users,dc=fisat,dc=edu';
+console.log("DN=================> : "+dn);
 ldap_server.bind(dn, password, function(err) {
   if (err) {
     console.log('LDAP binding failed... disconnecting',err);
     resp={"msg":0};
     res.send(resp);
   }else{
+   
    console.log("Bind Success");
     //query to get username
-    /**pool.connect(function (err, client, done) {
-  
-    client.query( */
 
-      pool.connect(function (err,client,done){
-        client.query('select password FROM public."ssStaffLogin" where employeecode=$1',[userName], function (err, result) {
-          done();
-          if (err)
-            console.log("not found");
-          else
-            console.log("here is"+result.rows[0]["password"]);
-            staffName=result.rows[0]["password"];
-            resp={"msg":staffName};
-            console.log(resp);
 
-        })
-      })
+      // pool.connect(function (err,client,done){
+      //   client.query('select password FROM public."ssStaffLogin" where employeecode=$1',[userName], function (err, result) {
+      //     done();
+      //     if (err)
+      //       console.log("not found");
+      //     else
+      //       console.log("here is"+result.rows[0]["password"]);
+      //       staffName=result.rows[0]["password"];
+      //       resp={"msg":staffName};
+      //       console.log(resp);
 
-   
+      //   })
+      // })
+   resp={"userName":userName};
+
    res.send(resp);
   }
 });
@@ -1522,6 +1550,30 @@ app.get('/closedCount',function(req,res,next){
  })
 });
 ///////////////////////////////////////Closed Count End///////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////////////LOGIN/////////////////////////////
+// app.get('/loginCheck',function(req,res,next){
+ 
+      
+//       pool.connect(function (err, client, done) {
+//        client.query('SELECT "employeecode", "password" FROM public."ssStaffLogin" ' , function (err, result) {
+//                   done();
+//                   if (err)
+//                       res.send(err)
+//                     //  console.log(result);
+//                   else{
+//                       console.log("result : "+JSON.stringify(result.rows));
+//                       res.json(result.rows);
+//                     }
+//      });
+   
+//      })
+//   });
+/////////////////////////////////////////////////////////////////////////////////////LOGIN END/////////////////////////
+
+
+
 
 
 app.listen(3000);
