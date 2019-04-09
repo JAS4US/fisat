@@ -150,10 +150,16 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
   }
 
   ///////////////////////////////////////////////////////////LOGIN////////////////////////////
+<<<<<<< HEAD
+  // getOnLogin(){
+  //   return this.httpClient.get('http://127.0.0.1:3000/loginCheck')
+  // }
+=======
   getOnLogin(){
     return this.httpClient.get('http://127.0.0.1:3000/loginCheck')
   }
 
+>>>>>>> c4c93b3de292c4e75a05349175e995b56968ea61
   
 
 

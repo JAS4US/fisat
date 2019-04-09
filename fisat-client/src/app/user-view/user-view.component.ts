@@ -96,18 +96,10 @@ userNameSession:any;
    this.compCheck();
   ///////////////Showing & hiding error message for complaint Type/////////////////////
 
-
-    this.dataService.getOpenComplaint().subscribe(data=>{
-      console.log("data-TETETEETT-"+data);
-this.complaints=data;
-
-    // this.dataService.getOpenComplaint(this.userNameSession).subscribe(data=>{
-    //   console.log("data--"+JSON.stringify(data));
-    //   this.complaints=data;
-
-
-
-    // })
+this.dataService.getOpenComplaint(this.userNameSession).subscribe(data=>{
+      console.log("data--"+JSON.stringify(data));
+      this.complaints=data;
+})
 
     this.dataService.getAllComplaints(this.userNameSession).subscribe(data=>{
       
@@ -395,6 +387,7 @@ console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
   this.comp_details={
 
 
+
     "personalId":this.userNameSession,
     "complaintId":this.complaintNo,
 
@@ -424,6 +417,17 @@ console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
 }
 
 
+
+//onDeleteRow(contentConfirm,user:any){
+//     console.log("user=="+user.complaintId);
+//     this.confirmhidden=user.complaintId;
+//     this.modalService.open(contentConfirm,{ariaLabelledBy:'modal-confirm-title',size:'sm'}).result.then((result)=>{
+//       this.confirmhidden=user;
+//       console.log("inside function");
+//     })
+//   }
+///////////////////DELETIONNN END//////////////////////////////////////////////////////////////    
+
  /* onDeleteRow(contentConfirm,user:any){
     console.log("user=="+user.complaintId);
     this.confirmhidden=user.complaintId;
@@ -435,14 +439,14 @@ console.log("sdfsdfg******777777777**"+JSON.stringify(this.comp_details));
 ///////////////////DELETIONNN END//////////////////////////////////////////////////////////////    
 
 //////////////////////////////DELETE COMPLAINT///////////////////////////////////////////////////////////////////
-onDeleteRow(contentConfirm,user:any){
-  console.log("user=="+user.complaintId);
-  this.confirmhidden=user.complaintId;
-  this.modalService.open(contentConfirm,{ariaLabelledBy:'modal-confirm-title',size:'sm'}).result.then((result)=>{
-    this.confirmhidden=user;
-    console.log("inside fun");
-  })
-}
+// onDeleteRow(contentConfirm,user:any){
+//   console.log("user=="+user.complaintId);
+//   this.confirmhidden=user.complaintId;
+//   this.modalService.open(contentConfirm,{ariaLabelledBy:'modal-confirm-title',size:'sm'}).result.then((result)=>{
+//     this.confirmhidden=user;
+//     console.log("inside fun");
+//   })
+// }
 /////////////////////////////DELETE COMPLAINT END////////////////////////////////////////////////////////////////
 
 
@@ -454,6 +458,16 @@ onDeleteRow(contentConfirm,user:any){
 //       this.confirmhidden=user;
 //       console.log("inside fun");
     
+//////////////////////DELETE COMPLAINT///////////////////////////////////////////////////////////////////
+onDeleteRow(contentConfirm,user:any){
+  console.log("user=="+user.complaintId);
+  this.confirmhidden=user.complaintId;
+  this.modalService.open(contentConfirm,{ariaLabelledBy:'modal-confirm-title',size:'sm'}).result.then((result)=>{
+    this.confirmhidden=user;
+    console.log("inside fun");
+  })
+}
+/////////////////////////////DELETE COMPLAINT END////////////////////////////////////////////////////////////////
 
 
 

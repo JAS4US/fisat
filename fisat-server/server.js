@@ -74,9 +74,20 @@ app.get('/masterComplaintlist',function(req,res,next){
 
  
  //open Complaint lists
+<<<<<<< HEAD
+ 
+
+//  app.get('/openComplaint',function(req,res,next){
+//   console.log("TTTETETSTETTETD");
+
+ app.get('/openComplaint:uname',function(req,res,next){
+  
+
+=======
 
  app.get('/openComplaint:uname',function(req,res,next){
  
+>>>>>>> c4c93b3de292c4e75a05349175e995b56968ea61
   var list1=[];
   var open_list=[];
 
@@ -1492,24 +1503,56 @@ app.post('/onaddcomplser',urlencodedParser,function(req,res,next){
   
   })
 })
+<<<<<<< HEAD
+
+
+=======
 //LDAP LOGIn
+>>>>>>> c4c93b3de292c4e75a05349175e995b56968ea61
 app.get('/ldapLogin:userData',function(req,res,next){
 var d=JSON.parse(req.params.userData);
 console.log("d : "+d.userName+d.password);
 var userName=d.userName;
 var resp;
 var password=d.password;
+<<<<<<< HEAD
+
 var staffName;
+
+=======
+var staffName;
+>>>>>>> c4c93b3de292c4e75a05349175e995b56968ea61
 var ldap_server = ldap.createClient({url: 'ldap://cim.fisat.edu'});
 var dn='uid='+userName+',ou=Users,dc=fisat,dc=edu';
+console.log("DN=================> : "+dn);
 ldap_server.bind(dn, password, function(err) {
   if (err) {
     console.log('LDAP binding failed... disconnecting',err);
     resp={"msg":0};
     res.send(resp);
   }else{
+   
    console.log("Bind Success");
     //query to get username
+<<<<<<< HEAD
+
+
+      // pool.connect(function (err,client,done){
+      //   client.query('select password FROM public."ssStaffLogin" where employeecode=$1',[userName], function (err, result) {
+      //     done();
+      //     if (err)
+      //       console.log("not found");
+      //     else
+      //       console.log("here is"+result.rows[0]["password"]);
+      //       staffName=result.rows[0]["password"];
+      //       resp={"msg":staffName};
+      //       console.log(resp);
+
+      //   })
+      // })
+   resp={"userName":userName};
+
+=======
     /**pool.connect(function (err, client, done) {
   
     client.query( */
@@ -1529,6 +1572,7 @@ ldap_server.bind(dn, password, function(err) {
       })
 
    
+>>>>>>> c4c93b3de292c4e75a05349175e995b56968ea61
    res.send(resp);
   }
 });
@@ -1634,25 +1678,29 @@ app.get('/closedCount',function(req,res,next){
  })
 });
 ///////////////////////////////////////Closed Count End///////////////////////////////////////////////////////////
+<<<<<<< HEAD
+
+=======
+>>>>>>> c4c93b3de292c4e75a05349175e995b56968ea61
 
 /////////////////////////////////////////////////////////////////////////////////////LOGIN/////////////////////////////
-app.get('/loginCheck',function(req,res,next){
+// app.get('/loginCheck',function(req,res,next){
  
       
-      pool.connect(function (err, client, done) {
-       client.query('SELECT "employeecode", "password" FROM public."ssStaffLogin" ' , function (err, result) {
-                  done();
-                  if (err)
-                      res.send(err)
-                    //  console.log(result);
-                  else{
-                      console.log("result : "+JSON.stringify(result.rows));
-                      res.json(result.rows);
-                    }
-     });
+//       pool.connect(function (err, client, done) {
+//        client.query('SELECT "employeecode", "password" FROM public."ssStaffLogin" ' , function (err, result) {
+//                   done();
+//                   if (err)
+//                       res.send(err)
+//                     //  console.log(result);
+//                   else{
+//                       console.log("result : "+JSON.stringify(result.rows));
+//                       res.json(result.rows);
+//                     }
+//      });
    
-     })
-  });
+//      })
+//   });
 /////////////////////////////////////////////////////////////////////////////////////LOGIN END/////////////////////////
 
 /////////////////////////////////////////////////////////////////RemoveCompletedComplaintAfter5Days/////////////////////////
@@ -1675,5 +1723,10 @@ app.get('/gettingTheAdmin_StaffStatusUpdatedForClose',function(req,res,next){
 /////////////////////////////////////////////////////////////////RemoveCompletedComplaintAfter5Days END/////////////////////////
 
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> c4c93b3de292c4e75a05349175e995b56968ea61
 app.listen(3000);
 console.log('Listening on port 3000...');

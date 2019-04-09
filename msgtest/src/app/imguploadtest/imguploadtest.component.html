@@ -1,9 +1,0 @@
-<!-- <p>
-  imguploadtest works!
-</p> -->
-<form id=  "uploadForm" method = "post" (submit)="onImageSubmit()">
-  <!-- <input type="file" name="userPhoto" [(ngModel)]="image1" [ngModelOptions]="{standalone: true}" />
-  <input type="submit" value="Upload Image" name="submit"> -->
-  <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
-  <button type="button" (click)="upload()">Upload</button>
-</form>
