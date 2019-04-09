@@ -92,7 +92,7 @@ app.get('/masterComplaintlist',function(req,res,next){
   
   pool.connect(function (err, client, done) {
     //'select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"]
-   client.query('select ss."employeecode",scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=$2 and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 order by scm."complaintDate" desc' ,["Unread",uname], function (err, result) {
+   client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and scm."personalId"=$1 and scm."adminStatus"=$2 order by scm."complaintDate" desc' ,[uname,"Unread"], function (err, result) {
               done();
               if (err)
                   res.send(err)
@@ -151,9 +151,7 @@ app.get('/complaintOpen_Admin',function(req,res,next){
   console.log("Parms== : "+uname);
   
   pool.connect(function (err, client, done) {
-    //'select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed"]
-  //  client.query('select ss."employeecode",scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=$2 and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 order by scm."complaintDate" desc' ,["Unread",uname], function (err, result) {
-    client.query('select ss."employeecode",hrm."fullname",scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus",acd."departmentname" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss,public."accdepartments" acd,public."hrmbasicinfo" hrm where acd."departmentid"=hrm."did" and sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=hrm."empcode" and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 order by scm."complaintDate" desc' ,["Unread"], function (err, result) {
+    client.query('select hrm."fullname",scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus",acd."departmentname" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."accdepartments" acd,public."hrmbasicinfo" hrm where acd."departmentid"=hrm."did" and sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and hrm."personalid"=scm."personalId" and scm."adminStatus"=$1 order by scm."complaintDate" desc' ,["Unread"], function (err, result) {
               done();
               if (err)
                   res.send(err)
@@ -214,7 +212,7 @@ app.get('/completedComplaint',function(req,res,next){
 
    //client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1',[stat], function (err, result) {
   // client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and (scm."adminStatus"=$1 or scm."adminStatus"=$2) order by scm."complaintDate" desc',stat, function (err, result) {
-    client.query('select hrm."fullname",acd."departmentname",scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss,public."accdepartments" acd,public."hrmbasicinfo" hrm where acd."departmentid"=hrm."did" and sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and ss."employeecode"=hrm."empcode" and (scm."adminStatus"=$1 or scm."adminStatus"=$2) order by scm."complaintDate" desc',stat, function (err, result) {
+    client.query('select hrm."fullname",acd."departmentname",scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."accdepartments" acd,public."hrmbasicinfo" hrm where acd."departmentid"=hrm."did" and sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and hrm."personalid"=scm."personalId" and (scm."adminStatus"=$1 or scm."adminStatus"=$2) order by scm."complaintDate" desc',stat, function (err, result) {
               done();
               if (err)
                   res.send(err)
@@ -751,7 +749,7 @@ client.query('SELECT * from compl_id()',function(err,result){
     var list1=[];
     var closed_list=[];
     pool.connect(function (err, client, done) {
-     client.query('select hrm."fullname",acd."departmentname",scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss,public."accdepartments" acd,public."hrmbasicinfo" hrm where acd."departmentid"=hrm."did" and hrm."personalid"=scm."personalId"  and sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and (scm."staffStatus"=$1 and scm."adminStatus"=$1) order by scm."complaintDate" desc limit 15',[stat], function (err, result) {
+     client.query('select hrm."fullname",acd."departmentname",scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."accdepartments" acd,public."hrmbasicinfo" hrm where acd."departmentid"=hrm."did" and hrm."personalid"=scm."personalId"  and sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and (scm."staffStatus"=$1 and scm."adminStatus"=$1) order by scm."complaintDate" desc limit 15',[stat], function (err, result) {
                 done();
                 if (err)
                     res.send(err)
@@ -790,9 +788,6 @@ client.query('SELECT * from compl_id()',function(err,result){
 
   app.post('/tsUpdateComplaint',urlencodedParser,function(req,res,next){
 
-   // console.log("testhhgjhgjhg");
-  
-   // console.log("test req  update : "+JSON.stringify(req.body));
     var data=JSON.stringify(req.body);
   
     dataKey=JSON.parse(data);
@@ -993,10 +988,11 @@ app.get('/getOthersCountInEdit1:comptype',function(req,res,next){
   var uname=req.params.uname;
   console.log("openComplaintUserView  : "+uname);
   pool.connect(function (err, client, done) {
-
+//select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and scm."personalId"=$1 and scm."adminStatus"=$2 order by scm."complaintDate" desc' ,[uname,"Unread"]
   // client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
-  client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId"  and ss."employeecode"=scm."personalId" and ss.employeecode=$2 and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed",uname], function (err, result) {
+ // client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId"  and ss."employeecode"=scm."personalId" and ss.employeecode=$2 and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed",uname], function (err, result) {
 
+    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and scm."personalId"=$1 and scm."adminStatus"=$2 order by scm."complaintDate" desc' ,[uname,"Unread"], function (err, result) {
               done();
               if (err)
                   res.send(err)
@@ -1172,7 +1168,7 @@ app.get('/ComplaintAfterAdminUpdateStatus_Complete:compId',function(req,res,next
   var completed_list=[];
   pool.connect(function (err, client, done) {
   //  client.query('select scm."complaintId",sm."moduleType",sc."complaintType",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."adminStatus",scm."staffStatus",to_jsonb(scm."completiondate") from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 and scm."complaintId"=$2 order by scm."complaintDate" desc',stat, function (err, result) {
-    client.query('select to_jsonb(scm."completiondate") from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where  ss."employeecode"=scm."personalId" and scm."adminStatus"=$1 and scm."complaintId"=$2 ',stat, function (err, result) {
+    client.query('select to_jsonb(scm."completiondate") from public."hrmbasicinfo" hrm,public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm where  hrm."personalid"=scm."personalId" and scm."adminStatus"=$1 and scm."complaintId"=$2 ',stat, function (err, result) {
               done();
               if (err)
                   res.send(err)

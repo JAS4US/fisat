@@ -48,7 +48,7 @@ uname:any;
       sessionStorage.setItem("staffName",data["staffName"]);
       sessionStorage.setItem("username",data["personalId"]);
       //console.log("data : "+JSON.stringify(data));
-      if(this.uname=="EMP59"){
+      if(this.uname=="EMP597"){
         this.router.navigateByUrl('/test');
       }
      else
