@@ -84,6 +84,7 @@ userNameSession:any;
 
    //this.userNameSession=sessionStorage.getItem("username");
    this.userNameSession=sessionStorage.getItem("username");
+   this
    console.log("session : "+this.userNameSession);
 
    ///////////////Showing & hiding error message for module Type/////////////////////

@@ -29,7 +29,7 @@ export class TestingItemsComponent implements OnInit {
 
     this.userSession=sessionStorage.getItem("username");
 
-    this.dataService.gettingTheAdmin_StaffStatusUpdatedForClose(this.userSession).subscribe(data=>{
+    this.dataService.gettingTheAdmin_StaffStatusUpdatedForClose().subscribe(data=>{
       console.log("data testing : "+data);
       return true;
     })
@@ -75,7 +75,7 @@ export class TestingItemsComponent implements OnInit {
             };
   // console.log("modder"+JSON.stringify(this.module_details));
   
-  this.dataservice.insertComplaint(this.compl_details).subscribe(data=>{
+  this.dataService.insertComplaint(this.compl_details).subscribe(data=>{
     return true;
   })
   this.in_compl="";
@@ -102,7 +102,7 @@ export class TestingItemsComponent implements OnInit {
          "moduleType":this.in_modu
           };
 // console.log("modder"+JSON.stringify(this.module_details));
-this.dataservice.insertModule(this.module_details).subscribe(data=>{
+this.dataService.insertModule(this.module_details).subscribe(data=>{
   return true;
 })
 this.modalService.dismissAll();
