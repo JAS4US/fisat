@@ -135,10 +135,20 @@ return this.httpClient.post('http://127.0.0.1:3000/tsUpdateComplaint',complaint)
     return this.httpClient.get('http://127.0.0.1:3000/closedCount');
   }
 
+  getOpenComplaintAdmin(){
+    return this.httpClient.get('http://127.0.0.1:3000/complaintOpen_Admin');
+  }
+
+  gettingTheAdmin_StaffStatusUpdatedForClose(comp:any){
+    console.log("inside service gettingTheAdmin_StaffStatusUpdatedForClose");
+    return this.httpClient.get('http://127.0.0.1:3000/gettingTheAdmin_StaffStatusUpdatedForClose',comp);
+  }
+
   ///////////////////////////////////////////////////////////LOGIN////////////////////////////
   getOnLogin(){
     return this.httpClient.get('http://127.0.0.1:3000/loginCheck')
   }
+
   
 
 }

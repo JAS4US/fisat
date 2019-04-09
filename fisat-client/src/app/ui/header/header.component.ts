@@ -9,9 +9,11 @@ export class HeaderComponent implements OnInit {
 
   userNameSession:any;
   userWelcome:boolean;
+  logoutMenu:any;
 
   constructor() {
     this.userWelcome=false;
+    this.logoutMenu=false;
    }
 
   ngOnInit() {
@@ -20,9 +22,11 @@ export class HeaderComponent implements OnInit {
     console.log("username header : "+this.userNameSession);
     if(this.userNameSession!=null){
       this.userWelcome=true;
+      this.logoutMenu=true;
     }
     else{
       this.userWelcome=false;
+      this.logoutMenu=false;
     }
 
   }

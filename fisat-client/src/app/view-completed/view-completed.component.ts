@@ -25,18 +25,26 @@ export class ViewCompletedComponent implements OnInit {
   @Input() lbl_complaintDate;
   @Input() lbl_completionDateDiff;
 
+  userSession:any;
+
   remarks:any;
   completed_status:any;
   r:any;
+
   
 
   constructor(private dataService:DataService,private modalService: NgbModal) {}
 //completedComplaints
   ngOnInit() {
+
+    this.userSession=sessionStorage.getItem("username");
+    console.log("Completed View session : "+this.userSession);
+
+    
+
     this.dataService. getDataCompleted().subscribe(data=>{
     console.log("lllllllllllllll"+JSON.stringify(data));
     this.completedComplaints=data;
-
     })
   }
 
@@ -139,6 +147,7 @@ export class ViewCompletedComponent implements OnInit {
      this.txt_remarks="";
      this.modalService.dismissAll();
      location.reload();
+     
    }
 
    onCompleteComplaint(){
@@ -166,6 +175,7 @@ export class ViewCompletedComponent implements OnInit {
       return false;
       })
       this.txt_remarks="";
+      
       this.modalService.dismissAll();
       location.reload();
       

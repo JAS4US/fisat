@@ -22,33 +22,37 @@
           <tr class=" rowstyle tr-style">
             <th scope="col" class="thstyle">Serial No.</th>
             <!-- <th scope="col">to be hidden</th> -->
+            <th scope="col" class="thstyle">Employee Name</th>
+            <th scop="col" class="thstyle">Department</th>
             <th scope="col"class="thstyle">ModuleName</th>
-            <th scope="col"class="thstyle">Complaint Id</th>
+            <!-- <th scope="col"class="thstyle">Complaint Id</th> -->
             <th scope="col"class="thstyle">ComplaintType</th>
             <!-- <th scope="col"class="thstyle">Description</th> -->
             <th scope="col"class="thstyle">ComplaintDate</th>
             <!-- <th scope="col"class="thstyle">ErrorPath</th> -->
             <!-- <th scope="col"class="thstyle">Remarks</th> -->
-            <th scope="col"class="thstyle">Status</th>
+            <!-- <th scope="col"class="thstyle">STATUS</th> -->
             <th scope="col"class="thstyle">Action</th>
           </tr>
         </thead>
         <tbody>
           <!-- <tr class="rowstyle" *ngFor="let user of openComplaints;let i = index"> -->
-              <tr class="rowstyle" *ngFor="let user of openComplaints|filterdata: queryString : 'complaint_type'|filterdataMod: queryString_mod : 'module_type';let i = index">
+              <tr class="rowstyle" *ngFor="let user of openComplaints|filterdata: queryString : 'complaint_type'|filterdataMod: queryString_mod : 'module_type';let i = index" data-toggle="tooltip" data-placement="right" title={{user.description}} >
             <th scope="row">{{i+1}}</th>
             <!-- <td>{{user.complaintId}}</td>  -->
+            <td class="tdstyle">{{user.empname}}</td>
+            <td class="tdstyle">{{user.departmentName}}</td>
             <td class="tdstyle">{{user.module_type}}</td>
-            <td class="tdstyle">{{user.complaintId}}</td>
+            <!-- <td class="tdstyle">{{user.complaintId}}</td> -->
             <td class="tdstyle">{{user.complaint_type}}</td>
             <!-- <td class="tdstyle">{{user.description}}</td> -->
             <td class="tdstyle">{{user.complaintDate}}</td>
             <!-- <td class="tdstyle">{{user.error_path}}</td> -->
 
             <!-- <td class="tdstyle" >{{user.adm_status}}</td> -->
-            <td class="tdstyle" data-toggle="tooltip" data-placement="right" title={{user.description}}>
+            <!-- <td class="tdstyle" data-toggle="tooltip" data-placement="right" title={{user.description}}>
               {{user.adm_status}}
-            </td>
+            </td> -->
             <!-- <p data-toggle="tooltip" data-placement="left" data-container="body" title="hi">some text</p> -->
            
             <!-- <td class="tdstyle">{{user.remarks}}</td> -->
@@ -88,6 +92,7 @@
         <div class="col-sm-10" style="color: #0099cc">
           Description : 
             <input type="text" style="border:none;background-color: white;" readonly="readonly" class="disabledtextStyle" [(ngModel)]="txt_Description" [ngModelOptions]="{standalone: true}" > 
+            <!-- <textarea [(ngModel)]="txt_Description" [ngModelOptions]="{standalone: true}" id="" style="border:none;background-color: white;" readonly="readonly" class="disabledtextStyle" cols="30" ></textarea> -->
         </div>
       </div>
       <div class="form-group row">
