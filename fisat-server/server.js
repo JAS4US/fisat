@@ -1505,6 +1505,7 @@ var userName=d.userName;
 var resp;
 var password=d.password;
 var staffName;
+var personalId;
 var ldap_server = ldap.createClient({url: 'ldap://cim.fisat.edu'});
 var dn='uid='+userName+',ou=Users,dc=fisat,dc=edu';
 console.log("DN=================> : "+dn);
@@ -1520,42 +1521,24 @@ ldap_server.bind(dn, password, function(err) {
 
 
 
-      // pool.connect(function (err,client,done){
-      //   client.query('select password FROM public."ssStaffLogin" where employeecode=$1',[userName], function (err, result) {
-      //     done();
-      //     if (err)
-      //       console.log("not found");
-      //     else
-      //       console.log("here is"+result.rows[0]["password"]);
-      //       staffName=result.rows[0]["password"];
-      //       resp={"msg":staffName};
-      //       console.log(resp);
-
-      //   })
-      // })
-   resp={"userName":userName};
-
-
-    /**pool.connect(function (err, client, done) {
-  
-    client.query( */
-
       pool.connect(function (err,client,done){
-        client.query('select password FROM public."ssStaffLogin" where employeecode=$1',[userName], function (err, result) {
+        client.query('select personalid,fullname FROM public."hrmbasicinfo" where empcode=$1',[userName], function (err, result) {
           done();
           if (err)
             console.log("not found");
           else
-            console.log("here is"+result.rows[0]["password"]);
-            staffName=result.rows[0]["password"];
-            resp={"msg":staffName};
+            console.log("here is"+result.rows[0]["personalid"]+result.rows[0]["fullname"]);
+            personalId=result.rows[0]["personalid"];
+            staffName=result.rows[0]["fullname"];
+            resp={"staffName":staffName,
+                  "personalId":personalId};
             console.log(resp);
-
+            res.send(resp);
         })
+       
       })
-
   
-   res.send(resp);
+  
   }
 });
 
