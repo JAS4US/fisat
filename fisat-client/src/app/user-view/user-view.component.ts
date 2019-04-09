@@ -84,7 +84,6 @@ userNameSession:any;
 
    //this.userNameSession=sessionStorage.getItem("username");
    this.userNameSession=sessionStorage.getItem("username");
-   this
    console.log("session : "+this.userNameSession);
 
    ///////////////Showing & hiding error message for module Type/////////////////////
@@ -97,10 +96,10 @@ userNameSession:any;
    this.compCheck();
   ///////////////Showing & hiding error message for complaint Type/////////////////////
 
-this.dataService.getOpenComplaint(this.userNameSession).subscribe(data=>{
-      console.log("data--"+JSON.stringify(data));
-      this.complaints=data;
-})
+// this.dataService.getOpenComplaint(this.userNameSession).subscribe(data=>{
+//       console.log("data--"+JSON.stringify(data));
+//       this.complaints=data;
+// })
 
     this.dataService.getAllComplaints(this.userNameSession).subscribe(data=>{
       
@@ -377,21 +376,9 @@ console.log("sdfsdfg register : "+JSON.stringify(this.comp_details));
 onUpdateSubmit(e){
 console.log("secomplaint ID===-vxsdvgdfgfhgdefhf---"+this.User);
  
-  // this.comp_details={
-  //     "complaintId":this.complaintNo,
-  //      "module_type":e.target[1].value,
-  //      "complaint_type":e.target[3].value,
-  //      "description":e.target[4].value,
-  //      "error_path":e.target[5].value,
-  //      "other_Complaints":e.target[6].value
-  //    };
   this.comp_details={
-
-
-
     "personalId":this.userNameSession,
     "complaintId":this.complaintNo,
-
      "module_type":e.target[0].value,
      "complaint_type":e.target[2].value,
      "description":e.target[4].value,
