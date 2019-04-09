@@ -30,6 +30,7 @@ import { FilterdataPipe } from './filterdata.pipe';
 import { FilterdataModPipe } from './filterdata-mod.pipe';
 import { FiltermodPipe } from './filtermod.pipe';
 import { FilterstatusPipe } from './filterstatus.pipe';
+import { TestComponent } from './test/test.component';
 
 
 
@@ -54,7 +55,8 @@ library.add(faCoffee);
     FilterdataPipe,
     FilterdataModPipe,
     FiltermodPipe,
-    FilterstatusPipe
+    FilterstatusPipe,
+    TestComponent
   ],
 
   imports: [BrowserModule,

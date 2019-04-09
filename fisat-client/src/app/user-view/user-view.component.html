@@ -269,11 +269,17 @@
                   <br>
       
                   <div class="form-group row" >
-                    
+
+                    <div class="col-sm-10">
+                      Complaint Description : 
+                      <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="fdbktext_compDescription" [ngModelOptions]="{standalone: true}" placeholder="Enter  Your FeedBack Here" (keypress)="onKeyPress($event)"></textarea>
+
                     <div class="col-sm-10" style="color:cornflowerblue;font-weight: bold;">
                       <!-- Complaint Description : 
                       <textarea class="form-control txtAreaStyle" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="fdbktext_compDescription" [ngModelOptions]="{standalone: true}" placeholder="Enter  Your FeedBack Here" (keypress)="onKeyPress($event)"></textarea> -->
+
                       Sorry for the Inconvenience.<br>Your Complaint will be Resolved Soon!!!!
+
                     </div>
                   </div>
                   <br>     

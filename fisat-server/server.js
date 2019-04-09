@@ -2,8 +2,7 @@ var express  = require('express');
 var bodyParser=require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
 
-
-
+var ldap = require('ldapjs');
 
 //var app = express();
 var cors = require('cors') ;
@@ -75,9 +74,9 @@ app.get('/masterComplaintlist',function(req,res,next){
 
  
  //open Complaint lists
- 
+
  app.get('/openComplaint:uname',function(req,res,next){
-  
+ 
   var list1=[];
   var open_list=[];
 
@@ -248,6 +247,7 @@ app.get('/completedComplaint',function(req,res,next){
 //complaint listOthers
 app.get('/getOtherComplaint',function(req,res,next){
   var c_others='Others';
+  
    pool.connect(function (err, client, done) {
     // client.query('SELECT "complaintothers" FROM public."ssSoftwareComplaint" where "complaintType"=$1',[c_others], function (err, result) {
       client.query('SELECT "complaintType" FROM public."ssSoftwareComplaint" where "complaintothers"=$1',[c_others], function (err, result) {
@@ -801,7 +801,9 @@ client.query('SELECT * from compl_id()',function(err,result){
       cno=dataKey["complaintId"];
       var mid=dataKey["module_type"];
       console.log("before going to query : "+mid);
+
       var pid=dataKey["personalId"];
+
       comid=dataKey["complaint_type"];
       // console.log("ctype test   : "+comid);
       var comp_des=dataKey["description"];
@@ -1275,9 +1277,9 @@ app.post('/feedbackComplaintProcess',urlencodedParser,function(req,res,next){
    var dk=JSON.parse(d);
  
    pool.connect(function(err,client,done){
-    
-    //  console.log("fgggg"+f);
-    //var f=dk["comments"];
+
+    var f=dk["comments"];
+
     var s=dk["complaintId"];
     console.log("sssssss"+s);
     var ad_status="Unread";
@@ -1291,8 +1293,10 @@ app.post('/feedbackComplaintProcess',urlencodedParser,function(req,res,next){
     console.log("date : "+currentdate.getDate());
     
     console.log("date new 1 comp_date : "+comp_date); 
+
     // client.query('update public."ssComplaintMaster" set "complaintDescription"=$1,"complaintDate"=$3,"adminStatus"=$4,completiondate=$5 where "complaintId"=$2',[f,s,comp_date,ad_status,completedDate],function( err,result){
       client.query('update public."ssComplaintMaster" set "complaintDate"=$1,"adminStatus"=$2,completiondate=$3 where "complaintId"=$4',[comp_date,ad_status,completedDate,s],function( err,result){
+
       if (err){
         console.log("error"+err);
         val=[];
@@ -1300,7 +1304,9 @@ app.post('/feedbackComplaintProcess',urlencodedParser,function(req,res,next){
       }
       else
       {
+
         console.log("success update feedbackprocess");
+
       }
    })
 
@@ -1418,14 +1424,14 @@ app.post('/onaddmoduleser',urlencodedParser,function(req,res,next){
 
 /////////sequence////
 //mid
-client.query('SELECT * from modid_f()',function(err,result){
+client.query('SELECT * from modidnewf()',function(err,result){
   if (err) {
                 console.log(err);
                 return;
             } else {
               //console.log("select compid : "+JSON.stringify(result.rows[0]["compl_id"]));
               
-              md=JSON.stringify(result.rows[0]["modid_f"]);
+              md=JSON.stringify(result.rows[0]["modidnewf"]);
               md ="m"+md.replace(/^"(.*)"$/, '$1');
               console.log("mid1 : "+md);
               var m1=dataKey["moduleType"];
@@ -1458,14 +1464,14 @@ app.post('/onaddcomplser',urlencodedParser,function(req,res,next){
 
     var m1=dataKey["complaintType"];
     console.log("jinnni md  "+m1);
-    client.query('SELECT * from compl_id()',function(err,result){
+    client.query('SELECT * from compidnewf()',function(err,result){
       if (err) {
                     console.log(err);
                     return;
                 } else {
                   //console.log("select compid : "+JSON.stringify(result.rows[0]["compl_id"]));
                   cid="comp";
-                  cid+=JSON.stringify(result.rows[0]["compl_id"]);
+                  cid+=JSON.stringify(result.rows[0]["compidnewf"]);
                   console.log("cid : "+cid);
                   console.log("mid2 : "+cid);
                   var v=[];
@@ -1485,6 +1491,48 @@ app.post('/onaddcomplser',urlencodedParser,function(req,res,next){
 
   
   })
+})
+//LDAP LOGIn
+app.get('/ldapLogin:userData',function(req,res,next){
+var d=JSON.parse(req.params.userData);
+console.log("d : "+d.userName+d.password);
+var userName=d.userName;
+var resp;
+var password=d.password;
+var staffName;
+var ldap_server = ldap.createClient({url: 'ldap://cim.fisat.edu'});
+var dn='uid='+userName+',ou=Users,dc=fisat,dc=edu';
+ldap_server.bind(dn, password, function(err) {
+  if (err) {
+    console.log('LDAP binding failed... disconnecting',err);
+    resp={"msg":0};
+    res.send(resp);
+  }else{
+   console.log("Bind Success");
+    //query to get username
+    /**pool.connect(function (err, client, done) {
+  
+    client.query( */
+
+      pool.connect(function (err,client,done){
+        client.query('select password FROM public."ssStaffLogin" where employeecode=$1',[userName], function (err, result) {
+          done();
+          if (err)
+            console.log("not found");
+          else
+            console.log("here is"+result.rows[0]["password"]);
+            staffName=result.rows[0]["password"];
+            resp={"msg":staffName};
+            console.log(resp);
+
+        })
+      })
+
+   
+   res.send(resp);
+  }
+});
+
 })
 
 ///////////////////////////////////////Unread Count////////////////////////////////////////////////////////////////
