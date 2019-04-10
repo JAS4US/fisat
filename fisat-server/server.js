@@ -147,8 +147,8 @@ app.get('/complaintOpen_Admin',function(req,res,next){
 
   console.log("req param url : "+req.url);
   
-  var uname=req.params.uname;
-  console.log("Parms== : "+uname);
+  //var uname=req.params.uname;
+ // console.log("Parms== : "+uname);
   
   pool.connect(function (err, client, done) {
     client.query('select hrm."fullname",scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus",acd."departmentname" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."accdepartments" acd,public."hrmbasicinfo" hrm where acd."departmentid"=hrm."did" and sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and hrm."personalid"=scm."personalId" and scm."adminStatus"=$1 order by scm."complaintDate" desc' ,["Unread"], function (err, result) {
@@ -173,7 +173,7 @@ app.get('/complaintOpen_Admin',function(req,res,next){
                 console.log("date openComplaintUserView  : "+data1);
                 //console.log("date "+data1);
                 list1={
-                  "eid":result.rows[i]["employeecode"],
+                  //"eid":result.rows[i]["employeecode"],
                   "empname":result.rows[i]["fullname"],
                   "departmentName":result.rows[i]["departmentname"],
                   "complaintId":result.rows[i]["complaintId"],
@@ -992,7 +992,7 @@ app.get('/getOthersCountInEdit1:comptype',function(req,res,next){
   // client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",scm."complaintDate",scm."errorPath",scm."remarks",scm."staffStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and ss."employeecode"=scm."personalId" and scm."staffStatus"=$1',[stat], function (err, result) {
  // client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm,public."ssStaffLogin" ss where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId"  and ss."employeecode"=scm."personalId" and ss.employeecode=$2 and scm."adminStatus"!=$1 order by scm."complaintDate" desc',["Closed",uname], function (err, result) {
 
-    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and scm."personalId"=$1 and scm."adminStatus"=$2 order by scm."complaintDate" desc' ,[uname,"Unread"], function (err, result) {
+    client.query('select scm."complaintId",sm."moduleType",sc."complaintType",sc."complaintothers",scm."complaintDescription",to_jsonb(scm."complaintDate"),scm."errorPath",scm."remarks",scm."staffStatus",scm."adminStatus" from public."ssSoftwareModules" sm,public."ssSoftwareComplaint" sc,public."ssComplaintMaster" scm where sc."complaintTypeId"=scm."complainttypeId" and sm."moduleId"=scm."moduleId" and scm."personalId"=$1 and scm."adminStatus"!=$2 order by scm."complaintDate" desc' ,[uname,"Closed"], function (err, result) {
               done();
               if (err)
                   res.send(err)
@@ -1528,7 +1528,8 @@ ldap_server.bind(dn, password, function(err) {
             staffName=result.rows[0]["fullname"];
             resp={"staffName":staffName,
                   "personalId":personalId};
-            console.log(resp);
+                  console.log("test");
+            console.log("resp: "+JSON.stringify(resp));
             res.send(resp);
         })
        
@@ -1551,12 +1552,12 @@ app.get('/unreadCount',function(req,res,next){
               done();
               if (err)
                   res.send(err)
-               
+               else{
               //res.json(result.rows);
               
               console.log("Unread count : "+JSON.stringify(result.rows));
               res.json(result.rows);
-
+            }
 
            
  });
@@ -1646,7 +1647,7 @@ app.get('/closedCount',function(req,res,next){
 /////////////////////////////////////////////////////////////////RemoveCompletedComplaintAfter5Days/////////////////////////
 app.get('/gettingTheAdmin_StaffStatusUpdatedForClose',function(req,res,next){
   console.log('inside remove complaint');
-  console.log("username : "+JSON.stringify(req.body));
+  //console.log("username : "+JSON.stringify(req.body));
  
   pool.connect(function(err,client,done){
     client.query('update public."ssComplaintMaster" set "adminStatus"=$1,"staffStatus"=$2 where (current_date::date-"complaintDate"::date)>5 and "adminStatus"=$3',["Closed","Closed","Completed"],function(err,result){
